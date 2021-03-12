@@ -31,3 +31,5 @@ public SomeStatementBuilder extends SomeLanguageBaseVisitor<Void> {
 As you can see, if the above code works, we can effectively cut the compiler files by almost half (comparing to [Cylvre](https://github.com/Cylvre-Language/Cylvre)) and all the code for the compiling of `SomeStatement` is present in one file, so bug fixing will be made easier. And obviously, I will still be using ANTLRv4 for lexing/parsing. 
 
 So far, all of this is just theory, and it is being implemented. I am going to set up a proper compiler though so that if the theory doesn't work, reverting to the original model (the one present in Cylvre) will be easy.
+
+**If this README has an (Available for Testing) label right below the heading, anyone is welcome to try out and test the compiler and report bugs (user testing)**

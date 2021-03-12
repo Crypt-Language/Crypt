@@ -1,0 +1,6 @@
+language : java
+
+branches :
+    only : main
+    
+script : gradle compileJava build jar

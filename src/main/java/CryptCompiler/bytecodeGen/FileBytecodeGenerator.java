@@ -1,10 +1,14 @@
 package CryptCompiler.bytecodeGen;
 
+import CryptCompiler.IRBuilder.statement.StatementBuilder;
 import CryptCompiler.node.file.FileUnit;
+import CryptCompiler.node.interfaces.Statement;
 import org.apache.commons.lang3.StringUtils;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+
+import java.util.List;
 
 public class FileBytecodeGenerator {
     private final ClassWriter classWriter;
@@ -19,7 +23,9 @@ public class FileBytecodeGenerator {
 
         //Main method will be auto generated now
         MethodVisitor mv = classWriter.visitMethod(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC, "main", "([Ljava/lang/String;)V", null, null);
-        mv.visitCode();
+        StatementBuilder statementBuilder = new StatementBuilder(mv);
+
+        List<Statement> statements = fileUnit.getStatements();
 
         /*
         List<Void> functions = fileUnit.getFunctions();

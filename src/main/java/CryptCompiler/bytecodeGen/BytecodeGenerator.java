@@ -12,6 +12,7 @@ public class BytecodeGenerator {
     }
 
     public byte[] generateBytecode(){
+        //FileUnitVisitor fileVisitor = new FileUnitVisitor();
         FileBytecodeGenerator fileBytecodeGenerator = new FileBytecodeGenerator();
         return fileBytecodeGenerator.generate(fileName, fileUnit).toByteArray();
     }

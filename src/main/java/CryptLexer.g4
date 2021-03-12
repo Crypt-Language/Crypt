@@ -23,6 +23,7 @@ tokens { RELOP, VAL_KW, PRINTLN_KW, PRINT_KW, TO_KW, IMPORT_KW,
 
 // Of course keywords has to be defined before the rules for identifiers
 VAL_KW              : 'val';
+FIELD_KW            : 'field';
 PRINTLN_KW          : 'println';
 PRINT_KW            : 'print';
 TO_KW               : 'to';

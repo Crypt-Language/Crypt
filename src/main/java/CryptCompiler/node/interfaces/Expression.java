@@ -1,9 +1,12 @@
 package CryptCompiler.node.interfaces;
 
+import CryptCompiler.IRBuilder.expression.ExpressionBuilder;
+import CryptCompiler.IRBuilder.statement.StatementBuilder;
+
 public interface Expression extends Statement {
     Type getTypeOf();
-    void acceptExpressionGenerator();
+    void acceptExpressionBuilder(ExpressionBuilder builder);
 
     @Override
-    void acceptStatementGenerator();
+    Statement acceptStatementBuilder(StatementBuilder builder);
 }

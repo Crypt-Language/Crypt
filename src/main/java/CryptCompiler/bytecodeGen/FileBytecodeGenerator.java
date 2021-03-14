@@ -25,7 +25,9 @@ public class FileBytecodeGenerator {
         MethodVisitor mv = classWriter.visitMethod(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC, "main", "([Ljava/lang/String;)V", null, null);
         StatementBuilder statementBuilder = new StatementBuilder(mv);
 
-        List<Statement> statements = fileUnit.getStatements();
+        List<Statement> statementList = fileUnit.getStatements();
+        statementList.forEach(statement -> statement.acceptStatementBuilder(statementBuilder));
+
 
         /*
         List<Void> functions = fileUnit.getFunctions();

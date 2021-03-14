@@ -1,5 +1,7 @@
 package CryptCompiler.node.interfaces;
 
+import CryptCompiler.IRBuilder.statement.StatementBuilder;
+
 public interface Statement {
-    void acceptStatementGenerator();
+    Statement acceptStatementBuilder(StatementBuilder builder);
 }

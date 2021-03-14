@@ -1,11 +1,14 @@
 package CryptCompiler.node.interfaces;
 
+import CryptCompiler.IRBuilder.expression.ExpressionBuilder;
+import CryptCompiler.IRBuilder.statement.StatementBuilder;
+
 public interface Reference extends Expression{
     String getName();
 
     @Override
-    void acceptExpressionGenerator(/*ExpressionBuilder builder*/);
+    void acceptExpressionBuilder(ExpressionBuilder builder);
 
     @Override
-    void acceptStatementGenerator(/*StatementBuilder builder*/);
+    Statement acceptStatementBuilder(StatementBuilder builder);
 }

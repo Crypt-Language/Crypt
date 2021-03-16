@@ -1,6 +1,6 @@
 // Generated from C:/Users/user/IdeaProjects/Crypt/src/main/java/CryptCompiler/parse\CryptParser.g4 by ANTLR 4.9.1
-package gen;
-import CryptCompiler.parse.Parser;
+package CryptUtilities.gen;
+import CryptCompiler.parse.CryptCompilerModule;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -8,7 +8,7 @@ import org.antlr.v4.runtime.tree.*;
 import java.util.List;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class CryptParser extends Parser {
+public class CryptParser extends CryptCompilerModule {
 	static { RuntimeMetaData.checkVersion("4.9.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -99,7 +99,7 @@ public class CryptParser extends Parser {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "CryptParser.g4"; }
+	public String getGrammarFileName() { return "CryptUtilities/gen/CryptParser.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }

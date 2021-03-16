@@ -1,9 +1,8 @@
 package CryptCompiler;
 
-import CryptCompiler.bytecodeGen.BytecodeGenerator;
+import CryptCompiler.IRBuilder.FileBuilder;
 import CryptCompiler.node.file.FileUnit;
-import CryptCompiler.parse.Parser;
-import lombok.SneakyThrows;
+import CryptCompiler.parse.CryptCompilerModule;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -11,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 
 public class CryptC {
@@ -26,24 +26,28 @@ public class CryptC {
         }
     }
 
-    @SneakyThrows //change later
     public void compile(String[] args){
         cryptFile = new File(args[0]);
 
         if(!cryptFile.getAbsolutePath().endsWith(".crypt")){
-            LOGGER.error("File isn't a Crypt file. Crypt files must end in .crypt extension");
+            LOGGER.error("File isn't a Crypt file. Crypt files must end in the .crypt extension");
         }
 
         String fileAbsolutePath = cryptFile.getAbsolutePath();
-        LOGGER.info("Parsing Crypt file... '{}'", fileAbsolutePath);
-        FileUnit fileUnit = new Parser().getFileUnit(fileAbsolutePath);
-        LOGGER.info("Parsing (Success). Compiling to Bytecode...");
-        BytecodeGenerator bytecodeGenerator = new BytecodeGenerator(cryptFile.getName(), fileUnit);
-        byte[] bytecode = bytecodeGenerator.generateBytecode();
-        LOGGER.info("Compilation (Success). Saving Bytecode...");
-        OutputStream outputStream = new FileOutputStream(StringUtils.replace(cryptFile.getName(), ".crypt", ".class"));
-        IOUtils.write(bytecode, outputStream);
-        LOGGER.info("Compiled successfully. To run the file, execute 'java {}'", StringUtils.remove(cryptFile.getName(), ".crypt"));
+
+        try {
+            LOGGER.info("Compiling Crypt file '{}'. Path: '{}'", cryptFile.getName(), fileAbsolutePath);
+
+            FileUnit fileUnit = new CryptCompilerModule().getFileUnit(fileAbsolutePath, cryptFile.getName());
+            FileBuilder fileBuilder = new FileBuilder(cryptFile.getName());
+            byte[] bytecode = fileBuilder.getBytecode(fileUnit);
+            OutputStream outputStream = new FileOutputStream(StringUtils.replace(cryptFile.getName(), ".crypt", ".class"));
+            IOUtils.write(bytecode, outputStream);
+
+            LOGGER.info("Compiled successfully in '{} ms'. To run the file, execute 'java {}'", System.currentTimeMillis(), StringUtils.remove(cryptFile.getName(), ".crypt"));
+        } catch (IOException e){
+            LOGGER.error(e.getMessage());
+        }
     }
 }
 

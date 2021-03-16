@@ -1,8 +1,8 @@
 package CryptCompiler.IRBuilder.statement;
 
 import CryptCompiler.node.interfaces.Expression;
-import gen.CryptParser;
-import gen.CryptParserBaseVisitor;
+import CryptUtilities.gen.CryptParser;
+import CryptUtilities.gen.CryptParserBaseVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 

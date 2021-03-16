@@ -1,5 +1,5 @@
 // Generated from C:/Users/user/IdeaProjects/Crypt/src/main/java/CryptCompiler/parse\CryptLexer.g4 by ANTLR 4.9.1
-package gen;
+package CryptUtilities.gen;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.ATN;
 import org.antlr.v4.runtime.atn.ATNDeserializer;
@@ -125,7 +125,7 @@ public class CryptLexer extends Lexer {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "CryptLexer.g4"; }
+	public String getGrammarFileName() { return "CryptUtilities/gen/CryptLexer.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }

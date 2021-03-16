@@ -1,5 +1,5 @@
 // Generated from C:/Users/user/IdeaProjects/Crypt/src/main/java/CryptCompiler/parse\CryptParser.g4 by ANTLR 4.9.1
-package gen;
+package CryptUtilities.gen;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**

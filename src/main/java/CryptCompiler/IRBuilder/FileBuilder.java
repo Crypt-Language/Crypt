@@ -2,7 +2,6 @@ package CryptCompiler.IRBuilder;
 
 import CryptCompiler.IRBuilder.statement.StatementBuilder;
 import CryptCompiler.node.file.FileUnit;
-import CryptCompiler.node.interfaces.Statement;
 import CryptUtilities.gen.CryptParser;
 import CryptUtilities.gen.CryptParserBaseVisitor;
 import org.apache.commons.lang3.StringUtils;
@@ -11,7 +10,6 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FileBuilder extends CryptParserBaseVisitor<FileUnit> {
     private final String fileName;
@@ -27,12 +25,8 @@ public class FileBuilder extends CryptParserBaseVisitor<FileUnit> {
     public FileUnit visitFileUnit(CryptParser.FileUnitContext ctx){
         StatementBuilder statementBuilder = new StatementBuilder(mv);
 
-        List<Statement> statements = (List<Statement>) ctx.fileBody().statement()
-                .stream()
-                .peek()
-                .collect(Collectors.toList());
+        List<CryptParser.StatementContext> statements = ctx.fileBody().statement();
 
-        FileUnit fileUnit = new FileUnit(statements);
         return new FileUnit(statements);
     }
 
@@ -48,8 +42,8 @@ public class FileBuilder extends CryptParserBaseVisitor<FileUnit> {
 
         StatementBuilder statementBuilder = new StatementBuilder(mv);
 
-        List<Statement> statementList = fileUnit.getStatements();
-        statementList.forEach(statement -> statement.acceptStatementBuilder(statementBuilder));
+        List<CryptParser.StatementContext> statementList = fileUnit.getStatements();
+        statementList.forEach(statement -> statement.accept(statementBuilder));
 
         return classWriter;
     }

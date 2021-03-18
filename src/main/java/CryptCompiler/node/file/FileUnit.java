@@ -1,19 +1,24 @@
 package CryptCompiler.node.file;
 
-import CryptCompiler.node.interfaces.Statement;
+import CryptCompiler.IRBuilder.FileBuilder;
+import CryptUtilities.gen.CryptParser;
 
 import java.util.Collections;
 import java.util.List;
 
 public class FileUnit {
-    private final List<Statement> statements;
+    private final List<CryptParser.StatementContext> statements;
 
-    public FileUnit(List<Statement> statements){
+    public FileUnit(List<CryptParser.StatementContext> statements){
         this.statements = statements;
     }
 
-    public List<Statement> getStatements(){
+    public List<CryptParser.StatementContext> getStatements(){
         return Collections.unmodifiableList(statements);
+    }
+
+    public void acceptFileGenerator(FileBuilder fileBuilder){
+        fileBuilder.generate(this);
     }
 
     /*

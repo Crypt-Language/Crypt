@@ -1,5 +1,4 @@
-// Generated from C:/Users/user/IdeaProjects/Crypt/src/main/java/CryptCompiler/parse\CryptParser.g4 by ANTLR 4.9.1
-package CryptUtilities.gen;
+package CryptUtilities.gen;// Generated from C:/Users/user/IdeaProjects/Crypt/src/main/java\CryptParser.g4 by ANTLR 4.9.1
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**

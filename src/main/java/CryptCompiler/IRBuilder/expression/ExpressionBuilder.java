@@ -6,7 +6,6 @@ import CryptUtilities.gen.CryptParserBaseVisitor;
 import org.jetbrains.annotations.NotNull;
 
 public class ExpressionBuilder extends CryptParserBaseVisitor<Expression>{
-    private CryptParser.ValueExprContext valueExprContext;
 
     @Override
     public Expression visitValueExpr(@NotNull CryptParser.ValueExprContext ctx) {

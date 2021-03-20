@@ -23,10 +23,7 @@ public class FileBuilder extends CryptParserBaseVisitor<FileUnit> {
 
     @Override
     public FileUnit visitFileUnit(CryptParser.FileUnitContext ctx){
-        StatementBuilder statementBuilder = new StatementBuilder(mv);
-
         List<CryptParser.StatementContext> statements = ctx.fileBody().statement();
-
         return new FileUnit(statements);
     }
 

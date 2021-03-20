@@ -198,14 +198,4 @@ public interface CryptParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitValue(CryptParser.ValueContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link CryptParser#decimal}.
-	 * @param ctx the parse tree
-	 */
-	void enterDecimal(CryptParser.DecimalContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link CryptParser#decimal}.
-	 * @param ctx the parse tree
-	 */
-	void exitDecimal(CryptParser.DecimalContext ctx);
 }

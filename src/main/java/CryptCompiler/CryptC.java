@@ -44,7 +44,7 @@ public class CryptC {
             OutputStream outputStream = new FileOutputStream(StringUtils.replace(cryptFile.getName(), ".crypt", ".class"));
             IOUtils.write(bytecode, outputStream);
 
-            LOGGER.info("Compiled successfully in '{} ms'. To run the file, execute 'java {}'", System.currentTimeMillis(), StringUtils.remove(cryptFile.getName(), ".crypt"));
+            LOGGER.info("Compiled successfully in '{} ms' and '{} ns'. To run the file, execute 'java {}'", (System.nanoTime() / 1000000), (System.nanoTime() % 1000000), StringUtils.remove(cryptFile.getName(), ".crypt"));
         } catch (IOException e){
             LOGGER.error(e.getMessage());
         }

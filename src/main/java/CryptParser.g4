@@ -28,9 +28,9 @@ statement   : printlnStatement
             | LINE_COMMENT
             ;
 
-printlnStatement : PRINTLN_KW LPAREN expression RPAREN /*SEMICOLON*/;
+printlnStatement : PRINTLN_KW LPAREN expression RPAREN SEMICOLON;
 
-printStatement : PRINT_KW LPAREN expression RPAREN /*SEMICOLON*/;
+printStatement : PRINT_KW LPAREN expression RPAREN SEMICOLON;
 
 //parametersList : parameter (COMMA paramter)*;
 
@@ -55,6 +55,4 @@ expression                  //variableReference                                 
                             | expression cmp=LESSEQ expression                            #ConditionalExpression
                             ;
 
-value : STRING_START | INT | decimal;
-
-decimal: INT POINT INT;
+value : STRING_START | INT | F_DECIMAL | F_BOOLEAN;

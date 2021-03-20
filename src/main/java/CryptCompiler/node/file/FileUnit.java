@@ -1,6 +1,5 @@
 package CryptCompiler.node.file;
 
-import CryptCompiler.IRBuilder.FileBuilder;
 import CryptUtilities.gen.CryptParser;
 
 import java.util.Collections;
@@ -17,9 +16,6 @@ public class FileUnit {
         return Collections.unmodifiableList(statements);
     }
 
-    public void acceptFileGenerator(FileBuilder fileBuilder){
-        fileBuilder.generate(this);
-    }
 
     /*
     Functions and fields will be implemented in later stages

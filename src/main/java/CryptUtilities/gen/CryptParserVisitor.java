@@ -123,10 +123,4 @@ public interface CryptParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitValue(CryptParser.ValueContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link CryptParser#decimal}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDecimal(CryptParser.DecimalContext ctx);
 }

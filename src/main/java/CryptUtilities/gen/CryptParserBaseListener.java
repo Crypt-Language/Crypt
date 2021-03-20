@@ -226,18 +226,6 @@ public class CryptParserBaseListener implements CryptParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitValue(CryptParser.ValueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterDecimal(CryptParser.DecimalContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitDecimal(CryptParser.DecimalContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

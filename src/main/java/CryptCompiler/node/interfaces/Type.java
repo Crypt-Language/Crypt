@@ -1,7 +1,7 @@
 package CryptCompiler.node.interfaces;
 
 public interface Type {
-    String getNameOf();
+    String getName();
     Class<?> getTypeClass();
     String getDescriptor();
     String getInternalName();

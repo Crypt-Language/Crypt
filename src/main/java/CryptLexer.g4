@@ -12,12 +12,12 @@ channels{
 tokens { RELOP, VAL_KW, PRINTLN_KW, PRINT_KW, TO_KW, IMPORT_KW,
          VOID_KW, RETURN_KW, FALSE_KW, TRUE_KW, SUPER_KW, FOR_KW,
          AND_KW, OR_KW, NOT_KW, LPAREN, RPAREN, LBRACKET, RBRACKET,
-         LSQUARE, RSQUARE, COMMA, POINT, COLON, Q_MARK, EQUAL,
+         LSQUARE, RSQUARE, COMMA, POINT, COLON, SEMICOLON, Q_MARK, EQUAL,
          DIFFERENT, LESSEQ, MOREEQ, LESS_THAN, MORE_THAN, ASSIGNMENT,
          ASTERISK, SLASH, PLUS, MINUS, PRIMITIVE_TYPE, BASIC_TYPE,
          TYPE_ID, INT, STRING_START, WS, NL, COMMENT,LINE_COMMENT,
          STRING_STOP, STRING_CONTENT, INTERPOLATION_START,
-         INTERPOLATION_END, FUNC_KW, ELSE_KW }
+         INTERPOLATION_END, FUNC_KW, ELSE_KW, F_BOOLEAN }
 
 /*LEXER*/
 
@@ -52,8 +52,8 @@ COMMA               : ',';
 POINT               : '.';
 COLON               : ':';
 Q_MARK              : '?';
+SEMICOLON           : ';';
 
-// We use just one token type to reduce the number of states (and not crash Antlr...)
 // https://github.com/antlr/antlr4/issues/840
 EQUAL               : '=' -> type(RELOP);
 DIFFERENT           : '!=' -> type(RELOP);
@@ -134,8 +134,10 @@ fragment F_VALUE_ID       : ('_')*'a'..'z' ('A'..'Z' | 'a'..'z' | '0'..'9' | '_'
 
 // Only for types
 F_INT            : '0' | (('1'..'9')('0'..'9')*);
+F_DECIMAL        : ('0'| ('1'..'9')('0'..'9')*) '.' ('0'| ('1'..'9')('0'..'9')*);
 F_PRIMITIVE_TYPE : 'byte' | 'int' | 'long' | 'bool' | 'char' | 'float' | 'double' | 'short';
 F_OBJECT_TYPE    : 'string' | 'void' ;
+F_BOOLEAN        : TRUE_KW | FALSE_KW;
 F_BASIC_TYPE     : 'UInt';
 
 fragment ESCAPE_SEQUENCE  : 'r'|'n'|'t'|'"';

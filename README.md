@@ -1,5 +1,7 @@
 # The Crypt Programming Language
 
+<img src="https://github.com/Crypt-Language/Crypt/blob/main/Logo/PNG/CryptLogoLarge_Dark.png" width="1000px" height="auto">
+
 Welcome to the home of the Crypt Programming language!
 
 ## Phase

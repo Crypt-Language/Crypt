@@ -1,5 +1,6 @@
 package CryptCompiler.IRBuilder.statement;
 
+import CryptCompiler.IRBuilder.expression.ExpressionBuilder;
 import CryptCompiler.node.interfaces.Expression;
 import CryptUtilities.gen.CryptParser;
 import CryptUtilities.gen.CryptParserBaseVisitor;
@@ -8,14 +9,16 @@ import org.objectweb.asm.Opcodes;
 
 public class PrintlnBuilder extends CryptParserBaseVisitor<Void> {
     private final MethodVisitor methodVisitor;
+    private final ExpressionBuilder expressionBuilder;
 
     public PrintlnBuilder(MethodVisitor methodVisitor){
         this.methodVisitor = methodVisitor;
+        expressionBuilder = new ExpressionBuilder(methodVisitor);
     }
 
     @Override
     public Void visitPrintlnStatement(CryptParser.PrintlnStatementContext ctx){
-        Expression expression = ctx.expression().accept(null /*Need ExpressionBuilder*/);
+        Expression expression = ctx.expression().accept(expressionBuilder);
         buildPrintln(expression, methodVisitor);
         return null;
     }

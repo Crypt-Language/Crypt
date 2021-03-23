@@ -46,6 +46,19 @@ public class TypeResolver {
         return BuiltInTypes.STRING;
     }
 
+    public static Type getFromExpression(@NotNull CryptParser.ExpressionContext expression) {
+        String stringValue = expression.getText();
+        if (StringUtils.isEmpty(stringValue)) return BuiltInTypes.VOID;
+
+        if (StringUtils.startsWith(stringValue, "\"")) {
+            return BuiltInTypes.STRING;
+        } else if (Ints.tryParse(stringValue) != null){
+            return BuiltInTypes.INT;
+        } else {
+            throw new UnsupportedOperationException("Type unrecognizable");
+        }
+    }
+
     public static Object getValueFromString(String stringValue, Type type) {
         if (TypeChecker.isInt(type)) {
             return Integer.valueOf(stringValue);

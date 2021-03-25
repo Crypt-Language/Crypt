@@ -5,7 +5,7 @@
 Welcome to the home of the Crypt Programming language!
 
 ## Phase
-**Pre-Indev** : Compiler is still experimental (WIP) and isn't fully implemented. 
+**Pre-Indev** : Compiler is still experimental (WIP) and isn't fully implemented. Updates once every week 
 
 The reason for a repository right now is to document the journey/growth of Crypt from the very beginning.
 

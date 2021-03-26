@@ -4,13 +4,15 @@
 
 Welcome to the home of the Crypt Programming language!
 
+Crypt aims to be a powerful yet easy to use language leveraging Java's libraries and cross-platform ability by running on the JVM.
+
 ## Phase
 **Pre-Indev** : Compiler is still experimental (WIP) and isn't fully implemented. Updates once every week 
 
 The reason for a repository right now is to document the journey/growth of Crypt from the very beginning.
 
 ### Contributing
-If you wish to contribute, you can use this community chat room -->  [![Gitter](https://badges.gitter.im/Crypt-Language/community.svg)](https://gitter.im/Crypt-Language/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)  where you can contact me for a feature that you would like to implement.
+If you wish to contribute, you can use this community chat room -->  [![Gitter](https://badges.gitter.im/Crypt-Language/community.svg)](https://gitter.im/Crypt-Language/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)  where you can contact me for a feature that you would like to implement (or ask questions).
 
 ## Compiler
 

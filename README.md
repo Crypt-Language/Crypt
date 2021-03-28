@@ -4,19 +4,20 @@
 
 Welcome to the home of the Crypt Programming language!
 
-Crypt aims to be a powerful yet easy to use language leveraging Java's libraries and cross-platform ability by running on the JVM.
+## Goal
+Crypt aims to be a powerful, yet easy to learn/use  programming language leveraging Java's libraries and cross-platform ability by running on the JVM.
 
 ## Phase
-**Pre-Indev** : Compiler is still experimental (WIP) and isn't fully implemented. Updates once every week 
+**Indev** : Compiler Experimental but fully implemented (Sadly, Causes error while running `.class` file. See [this issue](https://github.com/Crypt-Language/Crypt/issues/20) for more info). Updates once every week. 
 
-The reason for a repository right now is to document the journey/growth of Crypt from the very beginning.
+### Community
+Community chat room : [![Gitter](https://badges.gitter.im/Crypt-Language/community.svg)](https://gitter.im/Crypt-Language/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-### Contributing
-If you wish to contribute, you can use this community chat room -->  [![Gitter](https://badges.gitter.im/Crypt-Language/community.svg)](https://gitter.im/Crypt-Language/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)  where you can contact me for a feature that you would like to implement (or ask questions).
+## Compiler Structure
 
-## Compiler
+RuleContext visiting and bytecode generation for a statement (or expression) in Crypt will be handled by one file.
 
-The compiler structure and build will be a sort of experiment, where the visiting and bytecode generation for a statement in Crypt will be handled by one file. An example to demonstrate is given below:
+Demo Structure given below:
 
 ```java
 public SomeStatementBuilder extends SomeLanguageBaseVisitor<Void> {
@@ -34,9 +35,5 @@ public SomeStatementBuilder extends SomeLanguageBaseVisitor<Void> {
   }
 }
 ```
-
-As you can see, if the above code works, we can effectively cut the compiler files by almost half (comparing to [Cylvre](https://github.com/Cylvre-Language/Cylvre)) and all the code for the compiling of `SomeStatement` is present in one file, so bug fixing will be made easier. And obviously, I will still be using ANTLRv4 for lexing/parsing. 
-
-So far, all of this is just theory, and it is being implemented. I am going to set up a proper compiler though so that if the theory doesn't work, reverting to the original model (the one present in Cylvre) will be easy.
 
 **If this README has an (Available for Testing) label right below the heading, anyone is welcome to try out and test the compiler and report bugs (user testing)**

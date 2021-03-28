@@ -36,4 +36,10 @@ public SomeStatementBuilder extends SomeLanguageBaseVisitor<Void> {
 }
 ```
 
-**If this README has an (Available for Testing) label right below the heading, anyone is welcome to try out and test the compiler and report bugs (user testing)**
+## Contributing
+
+Wish to take part in the development of Crypt? Refer [CONTRIBUTING.md](https://github.com/Crypt-Language/Crypt/blob/main/CONTRIBUTING.md) for morte info.
+
+## License
+
+This project is licensed under the MIT License.

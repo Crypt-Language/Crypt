@@ -1,6 +1,6 @@
 package CryptCompiler.node.file;
 
-import CryptUtilities.gen.CryptParser;
+import gen.CryptParser;
 
 import java.util.Collections;
 import java.util.List;

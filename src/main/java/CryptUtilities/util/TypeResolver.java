@@ -3,7 +3,7 @@ package CryptUtilities.util;
 import CryptCompiler.IRBuilder.types.BuiltInTypes;
 import CryptCompiler.IRBuilder.types.ClassType;
 import CryptCompiler.node.interfaces.Type;
-import CryptUtilities.gen.CryptParser;
+import gen.CryptParser;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Floats;
 import com.google.common.primitives.Ints;
@@ -48,16 +48,51 @@ public class TypeResolver {
 
     public static Type getFromExpression(@NotNull CryptParser.ExpressionContext expression) {
         String stringValue = expression.getText();
+        String finalString;
+        String[] arithmeticOP = {"+", "-", "*", "/"};
         if (StringUtils.isEmpty(stringValue)) return BuiltInTypes.VOID;
+        else {
+            /*
+            removal of any arithmetic expressions in the expression
+            and replacement with whitespace
+            */
+            if (stringValue.contains(arithmeticOP[0])) {
+                finalString = stringValue.replace(arithmeticOP[0], " ");
+            } else if (stringValue.contains(arithmeticOP[1])) {
+                finalString = stringValue.replace(arithmeticOP[1], " ");
+            } else if (stringValue.contains(arithmeticOP[2])) {
+                finalString = stringValue.replace(arithmeticOP[2], " ");
+            } else if (stringValue.contains(arithmeticOP[3])) {
+                finalString = stringValue.replace(arithmeticOP[3], " ");
+            } else {
+                finalString = null;
+            }
 
-        if (StringUtils.startsWith(stringValue, "\"")) {
-            return BuiltInTypes.STRING;
-        } else if (Ints.tryParse(stringValue) != null){
-            return BuiltInTypes.INT;
-        } else {
-            throw new UnsupportedOperationException("Type unrecognizable");
+
+            if (finalString != null) {
+                if (StringUtils.startsWith(stringValue, "\"")) {
+                    return BuiltInTypes.STRING;
+                }
+
+                if (Ints.tryParse(finalString) != null) {
+                    return BuiltInTypes.INT;
+                }
+                if (finalString.contains(".") && Floats.tryParse(finalString) != null) {
+                    return BuiltInTypes.FLOAT;
+                }
+                if (finalString.contains(".") && Doubles.tryParse(finalString) != null) {
+                    return BuiltInTypes.DOUBLE;
+                }
+                if (finalString.equals("true") || finalString.equals("false")){
+                    return BuiltInTypes.BOOLEAN;
+                }
+                throw new UnsupportedOperationException("Type unrecognizable");
+            } else {
+                throw new NullPointerException("Expression is null therefore type cannot be found");
+            }
         }
     }
+
 
     public static Object getValueFromString(String stringValue, Type type) {
         if (TypeChecker.isInt(type)) {

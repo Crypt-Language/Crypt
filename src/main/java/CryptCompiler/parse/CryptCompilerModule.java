@@ -2,8 +2,8 @@ package CryptCompiler.parse;
 
 import CryptCompiler.IRBuilder.FileBuilder;
 import CryptCompiler.node.file.FileUnit;
-import CryptUtilities.gen.CryptLexer;
-import CryptUtilities.gen.CryptParser;
+import gen.CryptLexer;
+import gen.CryptParser;
 import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;

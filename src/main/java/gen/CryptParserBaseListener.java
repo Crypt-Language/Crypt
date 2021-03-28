@@ -1,4 +1,4 @@
-package CryptUtilities.gen;// Generated from C:/Users/user/IdeaProjects/Crypt/src/main/java\CryptParser.g4 by ANTLR 4.9.1
+package gen;// Generated from C:/Users/user/IdeaProjects/Crypt/src/main/java\CryptParser.g4 by ANTLR 4.9.1
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;

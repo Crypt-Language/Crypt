@@ -2,21 +2,22 @@ package CryptCompiler.IRBuilder.expression;
 
 import CryptCompiler.IRBuilder.expression.arithmetic.ArithmeticExpressionBuilder;
 import CryptCompiler.node.interfaces.Expression;
-import CryptUtilities.gen.CryptParser;
-import CryptUtilities.gen.CryptParserBaseVisitor;
+import gen.CryptParser;
+import gen.CryptParserBaseVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.MethodVisitor;
 
 public class ExpressionBuilder extends CryptParserBaseVisitor<Expression>{
     private final ArithmeticExpressionBuilder arithmeticExpressionBuilder;
+    private final ValueExpressionBuilder valueExpressionBuilder;
 
     public ExpressionBuilder(MethodVisitor methodVisitor){
-        arithmeticExpressionBuilder = new ArithmeticExpressionBuilder(this, methodVisitor);;
+        arithmeticExpressionBuilder = new ArithmeticExpressionBuilder(this, methodVisitor);
+        valueExpressionBuilder = new ValueExpressionBuilder(methodVisitor);
     }
 
     @Override
     public Expression visitValueExpr(@NotNull CryptParser.ValueExprContext ctx) {
-        ValueExpressionBuilder valueExpressionBuilder = new ValueExpressionBuilder();
         valueExpressionBuilder.visitValue(ctx.value());
         return null;
     }

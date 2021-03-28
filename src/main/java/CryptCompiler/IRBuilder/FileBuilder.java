@@ -2,8 +2,8 @@ package CryptCompiler.IRBuilder;
 
 import CryptCompiler.IRBuilder.statement.StatementBuilder;
 import CryptCompiler.node.file.FileUnit;
-import CryptUtilities.gen.CryptParser;
-import CryptUtilities.gen.CryptParserBaseVisitor;
+import gen.CryptParser;
+import gen.CryptParserBaseVisitor;
 import org.apache.commons.lang3.StringUtils;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
@@ -33,7 +33,6 @@ public class FileBuilder extends CryptParserBaseVisitor<FileUnit> {
 
         //Main method will be auto generated now
         mv = classWriter.visitMethod(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC, "main", "([Ljava/lang/String;)V", null, null);
-        mv.visitCode();
 
         initializeMethodVisitor(mv);
 

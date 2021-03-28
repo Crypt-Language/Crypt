@@ -1,4 +1,4 @@
-package CryptUtilities.gen;// Generated from C:/Users/user/IdeaProjects/Crypt/src/main/java\CryptLexer.g4 by ANTLR 4.9.1
+package gen;// Generated from C:/Users/user/IdeaProjects/Crypt/src/main/java\CryptLexer.g4 by ANTLR 4.9.1
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.ATN;
 import org.antlr.v4.runtime.atn.ATNDeserializer;
@@ -8,7 +8,7 @@ import org.antlr.v4.runtime.dfa.DFA;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class CryptLexer extends Lexer {
-	static { RuntimeMetaData.checkVersion("4.9.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.9.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -118,7 +118,6 @@ public class CryptLexer extends Lexer {
 	public Vocabulary getVocabulary() {
 		return VOCABULARY;
 	}
-
 
 	public CryptLexer(CharStream input) {
 		super(input);

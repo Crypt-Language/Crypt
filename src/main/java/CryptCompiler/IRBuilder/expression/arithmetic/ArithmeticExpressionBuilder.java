@@ -4,8 +4,8 @@ import CryptCompiler.IRBuilder.expression.ExpressionBuilder;
 import CryptCompiler.IRBuilder.types.BuiltInTypes;
 import CryptCompiler.node.interfaces.Expression;
 import CryptCompiler.node.interfaces.Type;
-import CryptUtilities.gen.CryptParser;
-import CryptUtilities.gen.CryptParserBaseVisitor;
+import gen.CryptParser;
+import gen.CryptParserBaseVisitor;
 import CryptUtilities.util.TypeResolver;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.MethodVisitor;
@@ -86,16 +86,26 @@ public class ArithmeticExpressionBuilder extends CryptParserBaseVisitor<Void> im
             Type type = getTypeOf(leftExpr);
             methodVisitor.visitInsn(type.getSubtractOpcode());
         } else {
-            throw new ArithmeticException("Cross type addition not yet supported");
+            throw new ArithmeticException("Cross type subtraction not yet supported");
         }
     }
 
     public void buildMultiplication(CryptParser.ExpressionContext leftExpr, CryptParser.ExpressionContext rightExpr){
-
+        if(getTypeOf(leftExpr) == getTypeOf(rightExpr)) {
+            Type type = getTypeOf(leftExpr);
+            methodVisitor.visitInsn(type.getMultiplyOpcode());
+        } else {
+            throw new ArithmeticException("Cross type multiplication not yet supported");
+        }
     }
 
     public void buildDivision(CryptParser.ExpressionContext leftExpr, CryptParser.ExpressionContext rightExpr){
-
+        if(getTypeOf(leftExpr) == getTypeOf(rightExpr)) {
+            Type type = getTypeOf(leftExpr);
+            methodVisitor.visitInsn(type.getDivideOpcode());
+        } else {
+            throw new ArithmeticException("Cross type division not yet supported");
+        }
     }
 
     private void generateStringAppend(CryptParser.ExpressionContext leftExpr, CryptParser.ExpressionContext rightExpr) {
@@ -111,9 +121,7 @@ public class ArithmeticExpressionBuilder extends CryptParserBaseVisitor<Void> im
         methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;");
     }
 
-    @Override
     public Type getTypeOf(CryptParser.ExpressionContext expressionContext){
         return TypeResolver.getFromExpression(expressionContext);
     }
-
 }

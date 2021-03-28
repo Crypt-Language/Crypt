@@ -1,7 +1,7 @@
 package CryptCompiler.IRBuilder.statement;
 
-import CryptUtilities.gen.CryptParser;
-import CryptUtilities.gen.CryptParserBaseVisitor;
+import gen.CryptParser;
+import gen.CryptParserBaseVisitor;
 import org.objectweb.asm.MethodVisitor;
 
 public class StatementBuilder extends CryptParserBaseVisitor<Void>{

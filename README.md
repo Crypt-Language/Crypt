@@ -11,7 +11,7 @@ Crypt aims to be a powerful, yet easy to learn/use  programming language leverag
 **Indev** : Compiler Experimental but fully implemented (Sadly, Causes error while running `.class` file. See [this issue](https://github.com/Crypt-Language/Crypt/issues/20) for more info). Updates once every week. 
 
 ### Community
-Community chat room : [![Gitter](https://badges.gitter.im/Crypt-Language/community.svg)](https://gitter.im/Crypt-Language/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Gitter](https://badges.gitter.im/Crypt-Language/community.svg)](https://gitter.im/Crypt-Language/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ## Compiler Structure
 

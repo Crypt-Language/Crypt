@@ -24,7 +24,7 @@ public SomeStatementBuilder extends SomeLanguageBaseVisitor<Void> {
   // some fields for data handling
 
   @Override
-  public void visitSomeStatement(@NotNull SomeStatementContext ctx){
+  public Void visitSomeStatement(@NotNull SomeStatementContext ctx){
     //visitor code goes here
     
     generate(/*Arguments if parameters are there (possibly SomeStatementContext)*/);

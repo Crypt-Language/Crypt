@@ -27,10 +27,10 @@ public SomeStatementBuilder extends SomeLanguageBaseVisitor<Void> {
   public Void visitSomeStatement(@NotNull SomeStatementContext ctx){
     //visitor code goes here
     
-    generate(/*Arguments if parameters are there (possibly SomeStatementContext)*/);
+    buildSomeStatement(/*Arguments if parameters are present (probably visited values)*/);
   }
   
-  public void generate(/*Parameters if needed*/){
+  public void buildSomeStatement(/*Parameters if needed*/){
     //bytecode generation for someStatement here
   }
 }
@@ -38,8 +38,8 @@ public SomeStatementBuilder extends SomeLanguageBaseVisitor<Void> {
 
 ## Contributing
 
-Wish to take part in the development of Crypt? Refer [CONTRIBUTING.md](https://github.com/Crypt-Language/Crypt/blob/main/CONTRIBUTING.md) for more info.
+Interested in contributing to Crypt? Refer [CONTRIBUTING.md](https://github.com/Crypt-Language/Crypt/blob/main/CONTRIBUTING.md) for more info. 
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the [MIT License](https://github.com/Crypt-Language/Crypt/blob/main/LICENSE).

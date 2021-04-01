@@ -38,7 +38,7 @@ public SomeStatementBuilder extends SomeLanguageBaseVisitor<Void> {
 
 ## Contributing
 
-Wish to take part in the development of Crypt? Refer [CONTRIBUTING.md](https://github.com/Crypt-Language/Crypt/blob/main/CONTRIBUTING.md) for morte info.
+Wish to take part in the development of Crypt? Refer [CONTRIBUTING.md](https://github.com/Crypt-Language/Crypt/blob/main/CONTRIBUTING.md) for more info.
 
 ## License
 

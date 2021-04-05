@@ -11,7 +11,9 @@ Welcome to the home of the Crypt Programming language!
 Crypt aims to be a powerful, yet easy to learn/use  programming language leveraging Java's libraries and cross-platform ability by running on the JVM.
 
 ## Phase
-**Indev** : Compiler Experimental but fully implemented (Sadly, Causes error while running `.class` file. See [this issue](https://github.com/Crypt-Language/Crypt/issues/20) for more info). Updates once every week. 
+**Indev** : Compiler Experimental but fully implemented. Updates once every week.
+
+_I Recommend not downloading source code just yet, as there are a couple of issues that need to be fixed before the first indev release._
 
 ### Community
 Have some ideas for Crypt features? Maybe you have a couple questions to ask about Crypt (or related)? If you do, don't hesitate to ask at the community chat room below.

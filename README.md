@@ -10,6 +10,8 @@ Welcome to the home of the Crypt Programming language!
 ## Goal
 Crypt aims to be a powerful, yet easy to learn/use  programming language leveraging Java's libraries and cross-platform ability by running on the JVM.
 
+I wrote a small "post" [here](https://aurumbyte.github.io/SourceGold/Posts/Creating%20Crypt) describing the dev process of Crypt and where it stands as of 5th April 2021
+
 ## Phase
 **Indev** : Compiler Experimental but fully implemented. Updates once every week.
 

@@ -13,7 +13,7 @@ Crypt aims to be a powerful, yet easy to learn/use  programming language leverag
 I wrote a small "post" [here](https://aurumbyte.github.io/SourceGold/Posts/Creating%20Crypt) describing the dev process of Crypt and where it stands as of 5th April 2021
 
 ## Phase
-**Indev** : Compiler Experimental but fully implemented. Updates once every week.
+**Indev** : Compiler Experimental but fully implemented (Handles only printing for now). Updates once every week. Features to be added incrementally.
 
 _I Recommend not downloading source code just yet, as there are a couple of issues that need to be fixed before the first indev release._
 

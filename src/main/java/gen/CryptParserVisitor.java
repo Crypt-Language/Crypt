@@ -52,11 +52,19 @@ public interface CryptParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFunctionName(CryptParser.FunctionNameContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CryptParser#block}.
+	 * Visit a parse tree produced by the {@code MultiStatementBlock}
+	 * labeled alternative in {@link CryptParser#block}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBlock(CryptParser.BlockContext ctx);
+	T visitMultiStatementBlock(CryptParser.MultiStatementBlockContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code SingleStatementBlock}
+	 * labeled alternative in {@link CryptParser#block}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSingleStatementBlock(CryptParser.SingleStatementBlockContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link CryptParser#statement}.
 	 * @param ctx the parse tree
@@ -75,6 +83,24 @@ public interface CryptParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitPrintStatement(CryptParser.PrintStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link CryptParser#variableDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVariableDeclaration(CryptParser.VariableDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link CryptParser#identifier}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdentifier(CryptParser.IdentifierContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link CryptParser#variableReference}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVariableReference(CryptParser.VariableReferenceContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Add}
 	 * labeled alternative in {@link CryptParser#expression}.
@@ -96,6 +122,13 @@ public interface CryptParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitDivide(CryptParser.DivideContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code VarReference}
+	 * labeled alternative in {@link CryptParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVarReference(CryptParser.VarReferenceContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Multiply}
 	 * labeled alternative in {@link CryptParser#expression}.

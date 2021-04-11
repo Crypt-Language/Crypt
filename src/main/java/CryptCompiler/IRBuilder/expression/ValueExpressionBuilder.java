@@ -15,15 +15,14 @@ public class ValueExpressionBuilder extends CryptParserBaseVisitor<Expression> {
     }
 
     @Override
-    public Expression visitValue(CryptParser.ValueContext ctx){
-        String value = ctx.getText();
-        Type type = TypeResolver.getFromValue(ctx);
-
-        buildValue(type, value);
+    public Expression visitValueExpr(CryptParser.ValueExprContext ctx){
+        String value = ctx.value().getText();
+        Type type = TypeResolver.getFromValue(ctx.value());
+        buildValue(value, type);
         return null;
     }
 
-    public void buildValue(Type type, String value){
+    public void buildValue(String value, Type type){
         Object transformedValue = TypeResolver.getValueFromString(value, type);
         methodVisitor.visitLdcInsn(transformedValue);
     }

@@ -77,15 +77,29 @@ public interface CryptParserListener extends ParseTreeListener {
 	 */
 	void exitFunctionName(CryptParser.FunctionNameContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link CryptParser#block}.
+	 * Enter a parse tree produced by the {@code MultiStatementBlock}
+	 * labeled alternative in {@link CryptParser#block}.
 	 * @param ctx the parse tree
 	 */
-	void enterBlock(CryptParser.BlockContext ctx);
+	void enterMultiStatementBlock(CryptParser.MultiStatementBlockContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link CryptParser#block}.
+	 * Exit a parse tree produced by the {@code MultiStatementBlock}
+	 * labeled alternative in {@link CryptParser#block}.
 	 * @param ctx the parse tree
 	 */
-	void exitBlock(CryptParser.BlockContext ctx);
+	void exitMultiStatementBlock(CryptParser.MultiStatementBlockContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code SingleStatementBlock}
+	 * labeled alternative in {@link CryptParser#block}.
+	 * @param ctx the parse tree
+	 */
+	void enterSingleStatementBlock(CryptParser.SingleStatementBlockContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code SingleStatementBlock}
+	 * labeled alternative in {@link CryptParser#block}.
+	 * @param ctx the parse tree
+	 */
+	void exitSingleStatementBlock(CryptParser.SingleStatementBlockContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CryptParser#statement}.
 	 * @param ctx the parse tree
@@ -116,6 +130,36 @@ public interface CryptParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPrintStatement(CryptParser.PrintStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CryptParser#variableDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariableDeclaration(CryptParser.VariableDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CryptParser#variableDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariableDeclaration(CryptParser.VariableDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CryptParser#identifier}.
+	 * @param ctx the parse tree
+	 */
+	void enterIdentifier(CryptParser.IdentifierContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CryptParser#identifier}.
+	 * @param ctx the parse tree
+	 */
+	void exitIdentifier(CryptParser.IdentifierContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CryptParser#variableReference}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariableReference(CryptParser.VariableReferenceContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CryptParser#variableReference}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariableReference(CryptParser.VariableReferenceContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code Add}
 	 * labeled alternative in {@link CryptParser#expression}.
@@ -152,6 +196,18 @@ public interface CryptParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDivide(CryptParser.DivideContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code VarReference}
+	 * labeled alternative in {@link CryptParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterVarReference(CryptParser.VarReferenceContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code VarReference}
+	 * labeled alternative in {@link CryptParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitVarReference(CryptParser.VarReferenceContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code Multiply}
 	 * labeled alternative in {@link CryptParser#expression}.

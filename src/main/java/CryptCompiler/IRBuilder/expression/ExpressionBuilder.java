@@ -7,7 +7,7 @@ import gen.CryptParserBaseVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.MethodVisitor;
 
-public class ExpressionBuilder extends CryptParserBaseVisitor<Expression>{
+public class ExpressionBuilder extends CryptParserBaseVisitor<Expression> {
     private final ArithmeticExpressionBuilder arithmeticExpressionBuilder;
     private final ValueExpressionBuilder valueExpressionBuilder;
 
@@ -17,8 +17,8 @@ public class ExpressionBuilder extends CryptParserBaseVisitor<Expression>{
     }
 
     @Override
-    public Expression visitValue(@NotNull CryptParser.ValueContext ctx) {
-        valueExpressionBuilder.visitValue(ctx);
+    public Expression visitValueExpr(@NotNull CryptParser.ValueExprContext ctx) {
+        valueExpressionBuilder.visitValueExpr(ctx);
         return null;
     }
 
@@ -36,8 +36,8 @@ public class ExpressionBuilder extends CryptParserBaseVisitor<Expression>{
 
     @Override
     public Expression visitSubtract(@NotNull CryptParser.SubtractContext ctx){
-        arithmeticExpressionBuilder.visitSubtract(ctx);
-        return null;
+       arithmeticExpressionBuilder.visitSubtract(ctx);
+       return null;
     }
 
     @Override

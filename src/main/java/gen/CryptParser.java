@@ -2,12 +2,15 @@ package gen;// Generated from C:/Users/user/IdeaProjects/Crypt/src/main/java\Cry
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.misc.*;
 import org.antlr.v4.runtime.tree.*;
 import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class CryptParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.9.2", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.9.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -21,19 +24,20 @@ public class CryptParser extends Parser {
 		ASTERISK=34, SLASH=35, PLUS=36, MINUS=37, PRIMITIVE_TYPE=38, BASIC_TYPE=39, 
 		TYPE_ID=40, INT=41, STRING_START=42, WS=43, NL=44, COMMENT=45, LINE_COMMENT=46, 
 		STRING_STOP=47, STRING_CONTENT=48, INTERPOLATION_START=49, INTERPOLATION_END=50, 
-		FUNC_KW=51, ELSE_KW=52, F_BOOLEAN=53, FIELD_KW=54, VALUE_ID=55, F_AND=56, 
-		F_OR=57, F_NOT=58, F_INT=59, F_DECIMAL=60, F_PRIMITIVE_TYPE=61, F_OBJECT_TYPE=62, 
-		F_BASIC_TYPE=63;
+		FUNC_KW=51, ELSE_KW=52, F_BOOLEAN=53, STRING=54, BLOCK_OP=55, FIELD_KW=56, 
+		VALUE_ID=57, F_AND=58, F_OR=59, F_NOT=60, F_INT=61, F_DECIMAL=62, F_PRIMITIVE_TYPE=63, 
+		F_OBJECT_TYPE=64, F_BASIC_TYPE=65;
 	public static final int
 		RULE_fileUnit = 0, RULE_fileBody = 1, RULE_field = 2, RULE_function = 3, 
 		RULE_type = 4, RULE_name = 5, RULE_functionName = 6, RULE_block = 7, RULE_statement = 8, 
-		RULE_printlnStatement = 9, RULE_printStatement = 10, RULE_expression = 11, 
-		RULE_value = 12;
+		RULE_printlnStatement = 9, RULE_printStatement = 10, RULE_variableDeclaration = 11, 
+		RULE_identifier = 12, RULE_variableReference = 13, RULE_expression = 14, 
+		RULE_value = 15;
 	private static String[] makeRuleNames() {
 		return new String[] {
 			"fileUnit", "fileBody", "field", "function", "type", "name", "functionName", 
-			"block", "statement", "printlnStatement", "printStatement", "expression", 
-			"value"
+			"block", "statement", "printlnStatement", "printStatement", "variableDeclaration", 
+			"identifier", "variableReference", "expression", "value"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -41,12 +45,12 @@ public class CryptParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, null, "'val'", "'println'", "'print'", "'to'", "'import'", "'void'", 
-			"'return'", null, null, "'super'", "'for'", null, null, null, null, null, 
-			"'{'", null, null, null, null, null, "':'", "';'", null, null, null, 
-			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, null, null, null, null, null, "'~{'", null, "'fn'", 
-			null, null, "'field'", null, "'and'", "'or'", "'not'", null, null, null, 
-			null, "'UInt'"
+			"'return'", "'false'", "'true'", "'super'", "'for'", null, null, null, 
+			"'('", "')'", "'{'", "'}'", "'['", "']'", "','", "'.'", "':'", "';'", 
+			"'?'", "'='", "'!='", "'<='", "'>='", "'<'", "'>'", null, "'*'", "'/'", 
+			"'+'", "'-'", null, null, null, null, null, null, null, null, null, null, 
+			null, null, null, "'fn'", "'else'", null, null, "'>>'", "'field'", null, 
+			"'and'", "'or'", "'not'", null, null, null, null, "'UInt'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -60,8 +64,9 @@ public class CryptParser extends Parser {
 			"ASTERISK", "SLASH", "PLUS", "MINUS", "PRIMITIVE_TYPE", "BASIC_TYPE", 
 			"TYPE_ID", "INT", "STRING_START", "WS", "NL", "COMMENT", "LINE_COMMENT", 
 			"STRING_STOP", "STRING_CONTENT", "INTERPOLATION_START", "INTERPOLATION_END", 
-			"FUNC_KW", "ELSE_KW", "F_BOOLEAN", "FIELD_KW", "VALUE_ID", "F_AND", "F_OR", 
-			"F_NOT", "F_INT", "F_DECIMAL", "F_PRIMITIVE_TYPE", "F_OBJECT_TYPE", "F_BASIC_TYPE"
+			"FUNC_KW", "ELSE_KW", "F_BOOLEAN", "STRING", "BLOCK_OP", "FIELD_KW", 
+			"VALUE_ID", "F_AND", "F_OR", "F_NOT", "F_INT", "F_DECIMAL", "F_PRIMITIVE_TYPE", 
+			"F_OBJECT_TYPE", "F_BASIC_TYPE"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -144,7 +149,7 @@ public class CryptParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(26);
+			setState(32);
 			fileBody();
 			}
 		}
@@ -192,17 +197,17 @@ public class CryptParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(31);
+			setState(37);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PRINTLN_KW) | (1L << PRINT_KW) | (1L << COMMENT) | (1L << LINE_COMMENT))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PRINTLN_KW) | (1L << PRINT_KW) | (1L << LBRACKET) | (1L << COMMENT) | (1L << LINE_COMMENT))) != 0)) {
 				{
 				{
-				setState(28);
+				setState(34);
 				statement();
 				}
 				}
-				setState(33);
+				setState(39);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -251,9 +256,9 @@ public class CryptParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(34);
+			setState(40);
 			type();
-			setState(35);
+			setState(41);
 			name();
 			}
 		}
@@ -303,15 +308,15 @@ public class CryptParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(37);
+			setState(43);
 			match(FUNC_KW);
-			setState(38);
+			setState(44);
 			functionName();
-			setState(39);
+			setState(45);
 			match(LPAREN);
-			setState(40);
+			setState(46);
 			match(RPAREN);
-			setState(41);
+			setState(47);
 			block();
 			}
 		}
@@ -355,7 +360,7 @@ public class CryptParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(43);
+			setState(49);
 			_la = _input.LA(1);
 			if ( !(_la==F_PRIMITIVE_TYPE || _la==F_OBJECT_TYPE) ) {
 			_errHandler.recoverInline(this);
@@ -405,7 +410,7 @@ public class CryptParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(45);
+			setState(51);
 			match(VALUE_ID);
 			}
 		}
@@ -447,7 +452,7 @@ public class CryptParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(47);
+			setState(53);
 			match(VALUE_ID);
 			}
 		}
@@ -463,29 +468,59 @@ public class CryptParser extends Parser {
 	}
 
 	public static class BlockContext extends ParserRuleContext {
-		public TerminalNode LBRACKET() { return getToken(CryptParser.LBRACKET, 0); }
-		public TerminalNode RBRACKET() { return getToken(CryptParser.RBRACKET, 0); }
+		public BlockContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_block; }
+	 
+		public BlockContext() { }
+		public void copyFrom(BlockContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class SingleStatementBlockContext extends BlockContext {
+		public TerminalNode BLOCK_OP() { return getToken(CryptParser.BLOCK_OP, 0); }
+		public TerminalNode WS() { return getToken(CryptParser.WS, 0); }
+		public StatementContext statement() {
+			return getRuleContext(StatementContext.class,0);
+		}
+		public SingleStatementBlockContext(BlockContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CryptParserListener ) ((CryptParserListener)listener).enterSingleStatementBlock(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CryptParserListener ) ((CryptParserListener)listener).exitSingleStatementBlock(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CryptParserVisitor ) return ((CryptParserVisitor<? extends T>)visitor).visitSingleStatementBlock(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class MultiStatementBlockContext extends BlockContext {
+		public TerminalNode BLOCK_OP() { return getToken(CryptParser.BLOCK_OP, 0); }
+		public TerminalNode NL() { return getToken(CryptParser.NL, 0); }
+		public TerminalNode WS() { return getToken(CryptParser.WS, 0); }
 		public List<StatementContext> statement() {
 			return getRuleContexts(StatementContext.class);
 		}
 		public StatementContext statement(int i) {
 			return getRuleContext(StatementContext.class,i);
 		}
-		public BlockContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_block; }
+		public MultiStatementBlockContext(BlockContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CryptParserListener ) ((CryptParserListener)listener).enterBlock(this);
+			if ( listener instanceof CryptParserListener ) ((CryptParserListener)listener).enterMultiStatementBlock(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CryptParserListener ) ((CryptParserListener)listener).exitBlock(this);
+			if ( listener instanceof CryptParserListener ) ((CryptParserListener)listener).exitMultiStatementBlock(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CryptParserVisitor ) return ((CryptParserVisitor<? extends T>)visitor).visitBlock(this);
+			if ( visitor instanceof CryptParserVisitor ) return ((CryptParserVisitor<? extends T>)visitor).visitMultiStatementBlock(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -495,26 +530,47 @@ public class CryptParser extends Parser {
 		enterRule(_localctx, 14, RULE_block);
 		int _la;
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(49);
-			match(LBRACKET);
-			setState(53);
+			setState(66);
 			_errHandler.sync(this);
-			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PRINTLN_KW) | (1L << PRINT_KW) | (1L << COMMENT) | (1L << LINE_COMMENT))) != 0)) {
+			switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
+			case 1:
+				_localctx = new MultiStatementBlockContext(_localctx);
+				enterOuterAlt(_localctx, 1);
 				{
-				{
-				setState(50);
-				statement();
-				}
-				}
 				setState(55);
+				match(BLOCK_OP);
+				setState(56);
+				match(NL);
+				setState(57);
+				match(WS);
+				setState(59); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			}
-			setState(56);
-			match(RBRACKET);
+				do {
+					{
+					{
+					setState(58);
+					statement();
+					}
+					}
+					setState(61); 
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PRINTLN_KW) | (1L << PRINT_KW) | (1L << LBRACKET) | (1L << COMMENT) | (1L << LINE_COMMENT))) != 0) );
+				}
+				break;
+			case 2:
+				_localctx = new SingleStatementBlockContext(_localctx);
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(63);
+				match(BLOCK_OP);
+				setState(64);
+				match(WS);
+				setState(65);
+				statement();
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -534,6 +590,9 @@ public class CryptParser extends Parser {
 		}
 		public PrintStatementContext printStatement() {
 			return getRuleContext(PrintStatementContext.class,0);
+		}
+		public VariableDeclarationContext variableDeclaration() {
+			return getRuleContext(VariableDeclarationContext.class,0);
 		}
 		public TerminalNode COMMENT() { return getToken(CryptParser.COMMENT, 0); }
 		public TerminalNode LINE_COMMENT() { return getToken(CryptParser.LINE_COMMENT, 0); }
@@ -560,34 +619,41 @@ public class CryptParser extends Parser {
 		StatementContext _localctx = new StatementContext(_ctx, getState());
 		enterRule(_localctx, 16, RULE_statement);
 		try {
-			setState(62);
+			setState(73);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case PRINTLN_KW:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(58);
+				setState(68);
 				printlnStatement();
 				}
 				break;
 			case PRINT_KW:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(59);
+				setState(69);
 				printStatement();
 				}
 				break;
-			case COMMENT:
+			case LBRACKET:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(60);
+				setState(70);
+				variableDeclaration();
+				}
+				break;
+			case COMMENT:
+				enterOuterAlt(_localctx, 4);
+				{
+				setState(71);
 				match(COMMENT);
 				}
 				break;
 			case LINE_COMMENT:
-				enterOuterAlt(_localctx, 4);
+				enterOuterAlt(_localctx, 5);
 				{
-				setState(61);
+				setState(72);
 				match(LINE_COMMENT);
 				}
 				break;
@@ -639,15 +705,15 @@ public class CryptParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(64);
+			setState(75);
 			match(PRINTLN_KW);
-			setState(65);
+			setState(76);
 			match(LPAREN);
-			setState(66);
+			setState(77);
 			expression(0);
-			setState(67);
+			setState(78);
 			match(RPAREN);
-			setState(68);
+			setState(79);
 			match(SEMICOLON);
 			}
 		}
@@ -695,16 +761,160 @@ public class CryptParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(70);
+			setState(81);
 			match(PRINT_KW);
-			setState(71);
+			setState(82);
 			match(LPAREN);
-			setState(72);
+			setState(83);
 			expression(0);
-			setState(73);
+			setState(84);
 			match(RPAREN);
-			setState(74);
+			setState(85);
 			match(SEMICOLON);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class VariableDeclarationContext extends ParserRuleContext {
+		public TerminalNode LBRACKET() { return getToken(CryptParser.LBRACKET, 0); }
+		public TypeContext type() {
+			return getRuleContext(TypeContext.class,0);
+		}
+		public TerminalNode RBRACKET() { return getToken(CryptParser.RBRACKET, 0); }
+		public IdentifierContext identifier() {
+			return getRuleContext(IdentifierContext.class,0);
+		}
+		public TerminalNode SEMICOLON() { return getToken(CryptParser.SEMICOLON, 0); }
+		public VariableDeclarationContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_variableDeclaration; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CryptParserListener ) ((CryptParserListener)listener).enterVariableDeclaration(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CryptParserListener ) ((CryptParserListener)listener).exitVariableDeclaration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CryptParserVisitor ) return ((CryptParserVisitor<? extends T>)visitor).visitVariableDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final VariableDeclarationContext variableDeclaration() throws RecognitionException {
+		VariableDeclarationContext _localctx = new VariableDeclarationContext(_ctx, getState());
+		enterRule(_localctx, 22, RULE_variableDeclaration);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(87);
+			match(LBRACKET);
+			setState(88);
+			type();
+			setState(89);
+			match(RBRACKET);
+			setState(90);
+			identifier();
+			setState(91);
+			match(SEMICOLON);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class IdentifierContext extends ParserRuleContext {
+		public TerminalNode VALUE_ID() { return getToken(CryptParser.VALUE_ID, 0); }
+		public IdentifierContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_identifier; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CryptParserListener ) ((CryptParserListener)listener).enterIdentifier(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CryptParserListener ) ((CryptParserListener)listener).exitIdentifier(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CryptParserVisitor ) return ((CryptParserVisitor<? extends T>)visitor).visitIdentifier(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final IdentifierContext identifier() throws RecognitionException {
+		IdentifierContext _localctx = new IdentifierContext(_ctx, getState());
+		enterRule(_localctx, 24, RULE_identifier);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(93);
+			match(VALUE_ID);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class VariableReferenceContext extends ParserRuleContext {
+		public IdentifierContext identifier() {
+			return getRuleContext(IdentifierContext.class,0);
+		}
+		public VariableReferenceContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_variableReference; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CryptParserListener ) ((CryptParserListener)listener).enterVariableReference(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CryptParserListener ) ((CryptParserListener)listener).exitVariableReference(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CryptParserVisitor ) return ((CryptParserVisitor<? extends T>)visitor).visitVariableReference(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final VariableReferenceContext variableReference() throws RecognitionException {
+		VariableReferenceContext _localctx = new VariableReferenceContext(_ctx, getState());
+		enterRule(_localctx, 26, RULE_variableReference);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(95);
+			identifier();
 			}
 		}
 		catch (RecognitionException re) {
@@ -736,6 +946,10 @@ public class CryptParser extends Parser {
 		}
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
+		}
+		public List<TerminalNode> WS() { return getTokens(CryptParser.WS); }
+		public TerminalNode WS(int i) {
+			return getToken(CryptParser.WS, i);
 		}
 		public TerminalNode PLUS() { return getToken(CryptParser.PLUS, 0); }
 		public TerminalNode RPAREN() { return getToken(CryptParser.RPAREN, 0); }
@@ -781,6 +995,10 @@ public class CryptParser extends Parser {
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
+		public List<TerminalNode> WS() { return getTokens(CryptParser.WS); }
+		public TerminalNode WS(int i) {
+			return getToken(CryptParser.WS, i);
+		}
 		public TerminalNode SLASH() { return getToken(CryptParser.SLASH, 0); }
 		public TerminalNode RPAREN() { return getToken(CryptParser.RPAREN, 0); }
 		public DivideContext(ExpressionContext ctx) { copyFrom(ctx); }
@@ -798,6 +1016,25 @@ public class CryptParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class VarReferenceContext extends ExpressionContext {
+		public VariableReferenceContext variableReference() {
+			return getRuleContext(VariableReferenceContext.class,0);
+		}
+		public VarReferenceContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof CryptParserListener ) ((CryptParserListener)listener).enterVarReference(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof CryptParserListener ) ((CryptParserListener)listener).exitVarReference(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof CryptParserVisitor ) return ((CryptParserVisitor<? extends T>)visitor).visitVarReference(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class MultiplyContext extends ExpressionContext {
 		public TerminalNode LPAREN() { return getToken(CryptParser.LPAREN, 0); }
 		public List<ExpressionContext> expression() {
@@ -805,6 +1042,10 @@ public class CryptParser extends Parser {
 		}
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
+		}
+		public List<TerminalNode> WS() { return getTokens(CryptParser.WS); }
+		public TerminalNode WS(int i) {
+			return getToken(CryptParser.WS, i);
 		}
 		public TerminalNode ASTERISK() { return getToken(CryptParser.ASTERISK, 0); }
 		public TerminalNode RPAREN() { return getToken(CryptParser.RPAREN, 0); }
@@ -860,6 +1101,10 @@ public class CryptParser extends Parser {
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
+		public List<TerminalNode> WS() { return getTokens(CryptParser.WS); }
+		public TerminalNode WS(int i) {
+			return getToken(CryptParser.WS, i);
+		}
 		public TerminalNode MINUS() { return getToken(CryptParser.MINUS, 0); }
 		public TerminalNode RPAREN() { return getToken(CryptParser.RPAREN, 0); }
 		public SubtractContext(ExpressionContext ctx) { copyFrom(ctx); }
@@ -887,115 +1132,144 @@ public class CryptParser extends Parser {
 		int _parentState = getState();
 		ExpressionContext _localctx = new ExpressionContext(_ctx, _parentState);
 		ExpressionContext _prevctx = _localctx;
-		int _startState = 22;
-		enterRecursionRule(_localctx, 22, RULE_expression, _p);
+		int _startState = 28;
+		enterRecursionRule(_localctx, 28, RULE_expression, _p);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(102);
+			setState(132);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
 			case 1:
 				{
-				_localctx = new ValueExprContext(_localctx);
+				_localctx = new VarReferenceContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
 
-				setState(77);
-				value();
+				setState(98);
+				variableReference();
 				}
 				break;
 			case 2:
 				{
-				_localctx = new MultiplyContext(_localctx);
+				_localctx = new ValueExprContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(78);
-				match(LPAREN);
-				setState(79);
-				expression(0);
-				setState(80);
-				match(ASTERISK);
-				setState(81);
-				expression(0);
-				setState(82);
-				match(RPAREN);
+				setState(99);
+				value();
 				}
 				break;
 			case 3:
 				{
-				_localctx = new DivideContext(_localctx);
+				_localctx = new MultiplyContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(84);
+				setState(100);
 				match(LPAREN);
-				setState(85);
+				setState(101);
 				expression(0);
-				setState(86);
-				match(SLASH);
-				setState(87);
+				setState(102);
+				match(WS);
+				setState(103);
+				match(ASTERISK);
+				setState(104);
+				match(WS);
+				setState(105);
 				expression(0);
-				setState(88);
+				setState(106);
 				match(RPAREN);
 				}
 				break;
 			case 4:
 				{
-				_localctx = new AddContext(_localctx);
+				_localctx = new DivideContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(90);
+				setState(108);
 				match(LPAREN);
-				setState(91);
+				setState(109);
 				expression(0);
-				setState(92);
-				match(PLUS);
-				setState(93);
+				setState(110);
+				match(WS);
+				setState(111);
+				match(SLASH);
+				setState(112);
+				match(WS);
+				setState(113);
 				expression(0);
-				setState(94);
+				setState(114);
 				match(RPAREN);
 				}
 				break;
 			case 5:
 				{
+				_localctx = new AddContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(116);
+				match(LPAREN);
+				setState(117);
+				expression(0);
+				setState(118);
+				match(WS);
+				setState(119);
+				match(PLUS);
+				setState(120);
+				match(WS);
+				setState(121);
+				expression(0);
+				setState(122);
+				match(RPAREN);
+				}
+				break;
+			case 6:
+				{
 				_localctx = new SubtractContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(96);
+				setState(124);
 				match(LPAREN);
-				setState(97);
+				setState(125);
 				expression(0);
-				setState(98);
+				setState(126);
+				match(WS);
+				setState(127);
 				match(MINUS);
-				setState(99);
+				setState(128);
+				match(WS);
+				setState(129);
 				expression(0);
-				setState(100);
+				setState(130);
 				match(RPAREN);
 				}
 				break;
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(136);
+			setState(174);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(134);
+					setState(172);
 					_errHandler.sync(this);
-					switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
+					switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
 					case 1:
 						{
 						_localctx = new MultiplyContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(104);
+						setState(134);
 						if (!(precpred(_ctx, 13))) throw new FailedPredicateException(this, "precpred(_ctx, 13)");
-						setState(105);
+						setState(135);
+						match(WS);
+						setState(136);
 						match(ASTERISK);
-						setState(106);
+						setState(137);
+						match(WS);
+						setState(138);
 						expression(14);
 						}
 						break;
@@ -1003,11 +1277,15 @@ public class CryptParser extends Parser {
 						{
 						_localctx = new DivideContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(107);
+						setState(139);
 						if (!(precpred(_ctx, 11))) throw new FailedPredicateException(this, "precpred(_ctx, 11)");
-						setState(108);
+						setState(140);
+						match(WS);
+						setState(141);
 						match(SLASH);
-						setState(109);
+						setState(142);
+						match(WS);
+						setState(143);
 						expression(12);
 						}
 						break;
@@ -1015,11 +1293,15 @@ public class CryptParser extends Parser {
 						{
 						_localctx = new AddContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(110);
+						setState(144);
 						if (!(precpred(_ctx, 9))) throw new FailedPredicateException(this, "precpred(_ctx, 9)");
-						setState(111);
+						setState(145);
+						match(WS);
+						setState(146);
 						match(PLUS);
-						setState(112);
+						setState(147);
+						match(WS);
+						setState(148);
 						expression(10);
 						}
 						break;
@@ -1027,11 +1309,15 @@ public class CryptParser extends Parser {
 						{
 						_localctx = new SubtractContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(113);
+						setState(149);
 						if (!(precpred(_ctx, 7))) throw new FailedPredicateException(this, "precpred(_ctx, 7)");
-						setState(114);
+						setState(150);
+						match(WS);
+						setState(151);
 						match(MINUS);
-						setState(115);
+						setState(152);
+						match(WS);
+						setState(153);
 						expression(8);
 						}
 						break;
@@ -1039,11 +1325,11 @@ public class CryptParser extends Parser {
 						{
 						_localctx = new ConditionalExpressionContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(116);
+						setState(154);
 						if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
-						setState(117);
+						setState(155);
 						((ConditionalExpressionContext)_localctx).cmp = match(MORE_THAN);
-						setState(118);
+						setState(156);
 						expression(7);
 						}
 						break;
@@ -1051,11 +1337,11 @@ public class CryptParser extends Parser {
 						{
 						_localctx = new ConditionalExpressionContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(119);
+						setState(157);
 						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
-						setState(120);
+						setState(158);
 						((ConditionalExpressionContext)_localctx).cmp = match(LESS_THAN);
-						setState(121);
+						setState(159);
 						expression(6);
 						}
 						break;
@@ -1063,11 +1349,11 @@ public class CryptParser extends Parser {
 						{
 						_localctx = new ConditionalExpressionContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(122);
+						setState(160);
 						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
-						setState(123);
+						setState(161);
 						((ConditionalExpressionContext)_localctx).cmp = match(EQUAL);
-						setState(124);
+						setState(162);
 						expression(5);
 						}
 						break;
@@ -1075,11 +1361,11 @@ public class CryptParser extends Parser {
 						{
 						_localctx = new ConditionalExpressionContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(125);
+						setState(163);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(126);
+						setState(164);
 						((ConditionalExpressionContext)_localctx).cmp = match(DIFFERENT);
-						setState(127);
+						setState(165);
 						expression(4);
 						}
 						break;
@@ -1087,11 +1373,11 @@ public class CryptParser extends Parser {
 						{
 						_localctx = new ConditionalExpressionContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(128);
+						setState(166);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
-						setState(129);
+						setState(167);
 						((ConditionalExpressionContext)_localctx).cmp = match(MOREEQ);
-						setState(130);
+						setState(168);
 						expression(3);
 						}
 						break;
@@ -1099,20 +1385,20 @@ public class CryptParser extends Parser {
 						{
 						_localctx = new ConditionalExpressionContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(131);
+						setState(169);
 						if (!(precpred(_ctx, 1))) throw new FailedPredicateException(this, "precpred(_ctx, 1)");
-						setState(132);
+						setState(170);
 						((ConditionalExpressionContext)_localctx).cmp = match(LESSEQ);
-						setState(133);
+						setState(171);
 						expression(2);
 						}
 						break;
 					}
 					} 
 				}
-				setState(138);
+				setState(176);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
 			}
 			}
 		}
@@ -1128,7 +1414,7 @@ public class CryptParser extends Parser {
 	}
 
 	public static class ValueContext extends ParserRuleContext {
-		public TerminalNode STRING_START() { return getToken(CryptParser.STRING_START, 0); }
+		public TerminalNode STRING() { return getToken(CryptParser.STRING, 0); }
 		public TerminalNode INT() { return getToken(CryptParser.INT, 0); }
 		public TerminalNode F_DECIMAL() { return getToken(CryptParser.F_DECIMAL, 0); }
 		public TerminalNode F_BOOLEAN() { return getToken(CryptParser.F_BOOLEAN, 0); }
@@ -1153,14 +1439,14 @@ public class CryptParser extends Parser {
 
 	public final ValueContext value() throws RecognitionException {
 		ValueContext _localctx = new ValueContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_value);
+		enterRule(_localctx, 30, RULE_value);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(139);
+			setState(177);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << INT) | (1L << STRING_START) | (1L << F_BOOLEAN) | (1L << F_DECIMAL))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << INT) | (1L << F_BOOLEAN) | (1L << STRING) | (1L << F_DECIMAL))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -1183,7 +1469,7 @@ public class CryptParser extends Parser {
 
 	public boolean sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 11:
+		case 14:
 			return expression_sempred((ExpressionContext)_localctx, predIndex);
 		}
 		return true;
@@ -1215,44 +1501,59 @@ public class CryptParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3A\u0090\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3C\u00b6\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
-		"\13\4\f\t\f\4\r\t\r\4\16\t\16\3\2\3\2\3\3\7\3 \n\3\f\3\16\3#\13\3\3\4"+
-		"\3\4\3\4\3\5\3\5\3\5\3\5\3\5\3\5\3\6\3\6\3\7\3\7\3\b\3\b\3\t\3\t\7\t\66"+
-		"\n\t\f\t\16\t9\13\t\3\t\3\t\3\n\3\n\3\n\3\n\5\nA\n\n\3\13\3\13\3\13\3"+
-		"\13\3\13\3\13\3\f\3\f\3\f\3\f\3\f\3\f\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r"+
-		"\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3"+
-		"\r\5\ri\n\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3"+
-		"\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\7\r\u0089"+
-		"\n\r\f\r\16\r\u008c\13\r\3\16\3\16\3\16\2\3\30\17\2\4\6\b\n\f\16\20\22"+
-		"\24\26\30\32\2\4\3\2?@\5\2+,\67\67>>\2\u0095\2\34\3\2\2\2\4!\3\2\2\2\6"+
-		"$\3\2\2\2\b\'\3\2\2\2\n-\3\2\2\2\f/\3\2\2\2\16\61\3\2\2\2\20\63\3\2\2"+
-		"\2\22@\3\2\2\2\24B\3\2\2\2\26H\3\2\2\2\30h\3\2\2\2\32\u008d\3\2\2\2\34"+
-		"\35\5\4\3\2\35\3\3\2\2\2\36 \5\22\n\2\37\36\3\2\2\2 #\3\2\2\2!\37\3\2"+
-		"\2\2!\"\3\2\2\2\"\5\3\2\2\2#!\3\2\2\2$%\5\n\6\2%&\5\f\7\2&\7\3\2\2\2\'"+
-		"(\7\65\2\2()\5\16\b\2)*\7\22\2\2*+\7\23\2\2+,\5\20\t\2,\t\3\2\2\2-.\t"+
-		"\2\2\2.\13\3\2\2\2/\60\79\2\2\60\r\3\2\2\2\61\62\79\2\2\62\17\3\2\2\2"+
-		"\63\67\7\24\2\2\64\66\5\22\n\2\65\64\3\2\2\2\669\3\2\2\2\67\65\3\2\2\2"+
-		"\678\3\2\2\28:\3\2\2\29\67\3\2\2\2:;\7\25\2\2;\21\3\2\2\2<A\5\24\13\2"+
-		"=A\5\26\f\2>A\7/\2\2?A\7\60\2\2@<\3\2\2\2@=\3\2\2\2@>\3\2\2\2@?\3\2\2"+
-		"\2A\23\3\2\2\2BC\7\5\2\2CD\7\22\2\2DE\5\30\r\2EF\7\23\2\2FG\7\33\2\2G"+
-		"\25\3\2\2\2HI\7\6\2\2IJ\7\22\2\2JK\5\30\r\2KL\7\23\2\2LM\7\33\2\2M\27"+
-		"\3\2\2\2NO\b\r\1\2Oi\5\32\16\2PQ\7\22\2\2QR\5\30\r\2RS\7$\2\2ST\5\30\r"+
-		"\2TU\7\23\2\2Ui\3\2\2\2VW\7\22\2\2WX\5\30\r\2XY\7%\2\2YZ\5\30\r\2Z[\7"+
-		"\23\2\2[i\3\2\2\2\\]\7\22\2\2]^\5\30\r\2^_\7&\2\2_`\5\30\r\2`a\7\23\2"+
-		"\2ai\3\2\2\2bc\7\22\2\2cd\5\30\r\2de\7\'\2\2ef\5\30\r\2fg\7\23\2\2gi\3"+
-		"\2\2\2hN\3\2\2\2hP\3\2\2\2hV\3\2\2\2h\\\3\2\2\2hb\3\2\2\2i\u008a\3\2\2"+
-		"\2jk\f\17\2\2kl\7$\2\2l\u0089\5\30\r\20mn\f\r\2\2no\7%\2\2o\u0089\5\30"+
-		"\r\16pq\f\13\2\2qr\7&\2\2r\u0089\5\30\r\fst\f\t\2\2tu\7\'\2\2u\u0089\5"+
-		"\30\r\nvw\f\b\2\2wx\7\"\2\2x\u0089\5\30\r\tyz\f\7\2\2z{\7!\2\2{\u0089"+
-		"\5\30\r\b|}\f\6\2\2}~\7\35\2\2~\u0089\5\30\r\7\177\u0080\f\5\2\2\u0080"+
-		"\u0081\7\36\2\2\u0081\u0089\5\30\r\6\u0082\u0083\f\4\2\2\u0083\u0084\7"+
-		" \2\2\u0084\u0089\5\30\r\5\u0085\u0086\f\3\2\2\u0086\u0087\7\37\2\2\u0087"+
-		"\u0089\5\30\r\4\u0088j\3\2\2\2\u0088m\3\2\2\2\u0088p\3\2\2\2\u0088s\3"+
-		"\2\2\2\u0088v\3\2\2\2\u0088y\3\2\2\2\u0088|\3\2\2\2\u0088\177\3\2\2\2"+
-		"\u0088\u0082\3\2\2\2\u0088\u0085\3\2\2\2\u0089\u008c\3\2\2\2\u008a\u0088"+
-		"\3\2\2\2\u008a\u008b\3\2\2\2\u008b\31\3\2\2\2\u008c\u008a\3\2\2\2\u008d"+
-		"\u008e\t\3\2\2\u008e\33\3\2\2\2\b!\67@h\u0088\u008a";
+		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\3\2\3\2\3"+
+		"\3\7\3&\n\3\f\3\16\3)\13\3\3\4\3\4\3\4\3\5\3\5\3\5\3\5\3\5\3\5\3\6\3\6"+
+		"\3\7\3\7\3\b\3\b\3\t\3\t\3\t\3\t\6\t>\n\t\r\t\16\t?\3\t\3\t\3\t\5\tE\n"+
+		"\t\3\n\3\n\3\n\3\n\3\n\5\nL\n\n\3\13\3\13\3\13\3\13\3\13\3\13\3\f\3\f"+
+		"\3\f\3\f\3\f\3\f\3\r\3\r\3\r\3\r\3\r\3\r\3\16\3\16\3\17\3\17\3\20\3\20"+
+		"\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20"+
+		"\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20"+
+		"\3\20\3\20\3\20\3\20\3\20\5\20\u0087\n\20\3\20\3\20\3\20\3\20\3\20\3\20"+
+		"\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20"+
+		"\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20"+
+		"\3\20\3\20\3\20\3\20\7\20\u00af\n\20\f\20\16\20\u00b2\13\20\3\21\3\21"+
+		"\3\21\2\3\36\22\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \2\4\3\2AB\5\2"+
+		"++\678@@\2\u00bb\2\"\3\2\2\2\4\'\3\2\2\2\6*\3\2\2\2\b-\3\2\2\2\n\63\3"+
+		"\2\2\2\f\65\3\2\2\2\16\67\3\2\2\2\20D\3\2\2\2\22K\3\2\2\2\24M\3\2\2\2"+
+		"\26S\3\2\2\2\30Y\3\2\2\2\32_\3\2\2\2\34a\3\2\2\2\36\u0086\3\2\2\2 \u00b3"+
+		"\3\2\2\2\"#\5\4\3\2#\3\3\2\2\2$&\5\22\n\2%$\3\2\2\2&)\3\2\2\2\'%\3\2\2"+
+		"\2\'(\3\2\2\2(\5\3\2\2\2)\'\3\2\2\2*+\5\n\6\2+,\5\f\7\2,\7\3\2\2\2-.\7"+
+		"\65\2\2./\5\16\b\2/\60\7\22\2\2\60\61\7\23\2\2\61\62\5\20\t\2\62\t\3\2"+
+		"\2\2\63\64\t\2\2\2\64\13\3\2\2\2\65\66\7;\2\2\66\r\3\2\2\2\678\7;\2\2"+
+		"8\17\3\2\2\29:\79\2\2:;\7.\2\2;=\7-\2\2<>\5\22\n\2=<\3\2\2\2>?\3\2\2\2"+
+		"?=\3\2\2\2?@\3\2\2\2@E\3\2\2\2AB\79\2\2BC\7-\2\2CE\5\22\n\2D9\3\2\2\2"+
+		"DA\3\2\2\2E\21\3\2\2\2FL\5\24\13\2GL\5\26\f\2HL\5\30\r\2IL\7/\2\2JL\7"+
+		"\60\2\2KF\3\2\2\2KG\3\2\2\2KH\3\2\2\2KI\3\2\2\2KJ\3\2\2\2L\23\3\2\2\2"+
+		"MN\7\5\2\2NO\7\22\2\2OP\5\36\20\2PQ\7\23\2\2QR\7\33\2\2R\25\3\2\2\2ST"+
+		"\7\6\2\2TU\7\22\2\2UV\5\36\20\2VW\7\23\2\2WX\7\33\2\2X\27\3\2\2\2YZ\7"+
+		"\24\2\2Z[\5\n\6\2[\\\7\25\2\2\\]\5\32\16\2]^\7\33\2\2^\31\3\2\2\2_`\7"+
+		";\2\2`\33\3\2\2\2ab\5\32\16\2b\35\3\2\2\2cd\b\20\1\2d\u0087\5\34\17\2"+
+		"e\u0087\5 \21\2fg\7\22\2\2gh\5\36\20\2hi\7-\2\2ij\7$\2\2jk\7-\2\2kl\5"+
+		"\36\20\2lm\7\23\2\2m\u0087\3\2\2\2no\7\22\2\2op\5\36\20\2pq\7-\2\2qr\7"+
+		"%\2\2rs\7-\2\2st\5\36\20\2tu\7\23\2\2u\u0087\3\2\2\2vw\7\22\2\2wx\5\36"+
+		"\20\2xy\7-\2\2yz\7&\2\2z{\7-\2\2{|\5\36\20\2|}\7\23\2\2}\u0087\3\2\2\2"+
+		"~\177\7\22\2\2\177\u0080\5\36\20\2\u0080\u0081\7-\2\2\u0081\u0082\7\'"+
+		"\2\2\u0082\u0083\7-\2\2\u0083\u0084\5\36\20\2\u0084\u0085\7\23\2\2\u0085"+
+		"\u0087\3\2\2\2\u0086c\3\2\2\2\u0086e\3\2\2\2\u0086f\3\2\2\2\u0086n\3\2"+
+		"\2\2\u0086v\3\2\2\2\u0086~\3\2\2\2\u0087\u00b0\3\2\2\2\u0088\u0089\f\17"+
+		"\2\2\u0089\u008a\7-\2\2\u008a\u008b\7$\2\2\u008b\u008c\7-\2\2\u008c\u00af"+
+		"\5\36\20\20\u008d\u008e\f\r\2\2\u008e\u008f\7-\2\2\u008f\u0090\7%\2\2"+
+		"\u0090\u0091\7-\2\2\u0091\u00af\5\36\20\16\u0092\u0093\f\13\2\2\u0093"+
+		"\u0094\7-\2\2\u0094\u0095\7&\2\2\u0095\u0096\7-\2\2\u0096\u00af\5\36\20"+
+		"\f\u0097\u0098\f\t\2\2\u0098\u0099\7-\2\2\u0099\u009a\7\'\2\2\u009a\u009b"+
+		"\7-\2\2\u009b\u00af\5\36\20\n\u009c\u009d\f\b\2\2\u009d\u009e\7\"\2\2"+
+		"\u009e\u00af\5\36\20\t\u009f\u00a0\f\7\2\2\u00a0\u00a1\7!\2\2\u00a1\u00af"+
+		"\5\36\20\b\u00a2\u00a3\f\6\2\2\u00a3\u00a4\7\35\2\2\u00a4\u00af\5\36\20"+
+		"\7\u00a5\u00a6\f\5\2\2\u00a6\u00a7\7\36\2\2\u00a7\u00af\5\36\20\6\u00a8"+
+		"\u00a9\f\4\2\2\u00a9\u00aa\7 \2\2\u00aa\u00af\5\36\20\5\u00ab\u00ac\f"+
+		"\3\2\2\u00ac\u00ad\7\37\2\2\u00ad\u00af\5\36\20\4\u00ae\u0088\3\2\2\2"+
+		"\u00ae\u008d\3\2\2\2\u00ae\u0092\3\2\2\2\u00ae\u0097\3\2\2\2\u00ae\u009c"+
+		"\3\2\2\2\u00ae\u009f\3\2\2\2\u00ae\u00a2\3\2\2\2\u00ae\u00a5\3\2\2\2\u00ae"+
+		"\u00a8\3\2\2\2\u00ae\u00ab\3\2\2\2\u00af\u00b2\3\2\2\2\u00b0\u00ae\3\2"+
+		"\2\2\u00b0\u00b1\3\2\2\2\u00b1\37\3\2\2\2\u00b2\u00b0\3\2\2\2\u00b3\u00b4"+
+		"\t\3\2\2\u00b4!\3\2\2\2\t\'?DK\u0086\u00ae\u00b0";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

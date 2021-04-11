@@ -99,13 +99,25 @@ public class CryptParserBaseListener implements CryptParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBlock(CryptParser.BlockContext ctx) { }
+	@Override public void enterMultiStatementBlock(CryptParser.MultiStatementBlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBlock(CryptParser.BlockContext ctx) { }
+	@Override public void exitMultiStatementBlock(CryptParser.MultiStatementBlockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSingleStatementBlock(CryptParser.SingleStatementBlockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSingleStatementBlock(CryptParser.SingleStatementBlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -147,6 +159,42 @@ public class CryptParserBaseListener implements CryptParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterVariableDeclaration(CryptParser.VariableDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVariableDeclaration(CryptParser.VariableDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIdentifier(CryptParser.IdentifierContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIdentifier(CryptParser.IdentifierContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterVariableReference(CryptParser.VariableReferenceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVariableReference(CryptParser.VariableReferenceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAdd(CryptParser.AddContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -178,6 +226,18 @@ public class CryptParserBaseListener implements CryptParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitDivide(CryptParser.DivideContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterVarReference(CryptParser.VarReferenceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVarReference(CryptParser.VarReferenceContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

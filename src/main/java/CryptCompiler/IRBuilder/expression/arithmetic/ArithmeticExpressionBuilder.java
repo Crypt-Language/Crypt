@@ -2,16 +2,15 @@ package CryptCompiler.IRBuilder.expression.arithmetic;
 
 import CryptCompiler.IRBuilder.expression.ExpressionBuilder;
 import CryptCompiler.IRBuilder.types.BuiltInTypes;
-import CryptCompiler.node.interfaces.Expression;
 import CryptCompiler.node.interfaces.Type;
+import CryptUtilities.util.TypeResolver;
 import gen.CryptParser;
 import gen.CryptParserBaseVisitor;
-import CryptUtilities.util.TypeResolver;
 import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-public class ArithmeticExpressionBuilder extends CryptParserBaseVisitor<Void> implements Expression{
+public class ArithmeticExpressionBuilder extends CryptParserBaseVisitor<Void>{
     private final ExpressionBuilder expressionBuilder;
     private final MethodVisitor methodVisitor;
 

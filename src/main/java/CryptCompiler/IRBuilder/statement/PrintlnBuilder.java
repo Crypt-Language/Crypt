@@ -27,10 +27,10 @@ public class PrintlnBuilder extends CryptParserBaseVisitor<Void> {
         methodVisitor.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
         String descriptor;
 
-        if (expression != null) {
-            descriptor = "(Ljava/lang/String)V";
-        } else {
+        if (expression == null) {
             descriptor = "()V";
+        } else {
+            descriptor = "(Ljava/lang/String)V";
         }
 
         methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", descriptor);

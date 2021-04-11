@@ -17,7 +17,7 @@ tokens { RELOP, VAL_KW, PRINTLN_KW, PRINT_KW, TO_KW, IMPORT_KW,
          ASTERISK, SLASH, PLUS, MINUS, PRIMITIVE_TYPE, BASIC_TYPE,
          TYPE_ID, INT, STRING_START, WS, NL, COMMENT,LINE_COMMENT,
          STRING_STOP, STRING_CONTENT, INTERPOLATION_START,
-         INTERPOLATION_END, FUNC_KW, ELSE_KW, F_BOOLEAN }
+         INTERPOLATION_END, FUNC_KW, ELSE_KW, F_BOOLEAN, STRING, BLOCK_OP}
 
 /*LEXER*/
 
@@ -77,7 +77,7 @@ VALUE_ID            : F_VALUE_ID;
 INT                 : F_INT;
 
 // Let's switch to another mode here
-STRING_START        : '"' -> pushMode(IN_STRING);
+//STRING_START        : '"' -> pushMode(IN_STRING);
 
 WS                  : (' ' | 't')+ -> channel(WHITESPACE);
 NL                  : 'r'? 'n';
@@ -86,6 +86,11 @@ COMMENT             : '/*' .*? '*/' -> channel(COMMENTS);
 
 LINE_COMMENT        : '//' ~[rn]* -> channel(COMMENTS);
 
+BLOCK_OP            : '>>';
+
+STRING              : '"' .*? '"';
+
+/*
 mode IN_STRING;
 
 STRING_STOP         : '"' -> popMode;
@@ -126,6 +131,7 @@ I_MOREEQ            : '>=' -> type(RELOP);
 I_MORE              : '>'  -> type(RELOP);
 I_STRING_START      : '"' -> type(STRING_START), pushMode(IN_STRING);
 I_WS                : (' ' | 't')+ -> type(WS), channel(WHITESPACE);
+*/
 
 F_AND            : 'and';
 F_OR             : 'or';
@@ -136,7 +142,7 @@ fragment F_VALUE_ID       : ('_')*'a'..'z' ('A'..'Z' | 'a'..'z' | '0'..'9' | '_'
 F_INT            : '0' | (('1'..'9')('0'..'9')*);
 F_DECIMAL        : ('0'| ('1'..'9')('0'..'9')*) '.' ('0'| ('1'..'9')('0'..'9')*);
 F_PRIMITIVE_TYPE : 'byte' | 'int' | 'long' | 'bool' | 'char' | 'float' | 'double' | 'short';
-F_OBJECT_TYPE    : 'string' | 'void' ;
+F_OBJECT_TYPE    : 'string' | VOID_KW ;
 F_BOOLEAN        : TRUE_KW | FALSE_KW;
 F_BASIC_TYPE     : 'UInt';
 

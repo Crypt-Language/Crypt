@@ -114,11 +114,6 @@ public class CryptLexer extends Lexer {
 		return VOCABULARY;
 	}
 
-
-	    public static final int WHITESPACE = 1;
-	    public static final int COMMENTS = 2;
-
-
 	public CryptLexer(CharStream input) {
 		super(input);
 		_interp = new LexerATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);

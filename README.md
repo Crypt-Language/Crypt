@@ -45,7 +45,8 @@ public SomeStatementBuilder extends SomeLanguageBaseVisitor<Void> {
 
 ## Contributing
 
-Interested in contributing to Crypt? Refer [CONTRIBUTING.md](https://github.com/Crypt-Language/Crypt/blob/main/CONTRIBUTING.md) for more info. 
+<!--Interested in contributing to Crypt? Refer [CONTRIBUTING.md](https://github.com/Crypt-Language/Crypt/blob/main/CONTRIBUTING.md) for more info.-->
+Contributions are currently closed. (*Sorry*)
 
 ## License
 

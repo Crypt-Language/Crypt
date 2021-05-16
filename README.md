@@ -15,7 +15,7 @@ Crypt aims to be a powerful, yet easy to learn/use  programming language leverag
 
 To keep a track of what is currently in progress : visit this [issue](https://github.com/Crypt-Language/Crypt/issues/29).
 
-_I Recommend not downloading source code as the compiler is incomplete is subject to many changes._
+_I Recommend not downloading source code as the compiler is incomplete and is subject to many changes._
 
 ### Community
 Have some ideas for Crypt features? Maybe you have a couple questions to ask about Crypt (or related)? If you do, don't hesitate to ask at the community chat room below.

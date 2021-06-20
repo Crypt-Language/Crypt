@@ -10,6 +10,9 @@ Welcome to the home of the Crypt Programming language!
 ## Goal
 Crypt aims to be a powerful, yet easy to learn/use  programming language leveraging Java's libraries and cross-platform ability by running on the JVM.
 
+## Compiler Pipeline
+Lexing -> Parsing -> Compiling to IR -> IR Compiles to JVM Bytecode.
+
 ## Phase
 **In Development** : A new compiler is being actively developed, with updates being released every week. The full compiler, once completed, will be uploaded into this repository.
 

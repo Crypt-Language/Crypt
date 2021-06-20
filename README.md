@@ -3,7 +3,6 @@
 <img src="https://github.com/Crypt-Language/Crypt/blob/main/Logo/PNG/CryptLogoLarge_Dark.png" width="1000px" height="auto">
 
 ![](https://img.shields.io/github/license/Crypt-Language/Crypt)
-[![Build Status](https://travis-ci.com/Crypt-Language/Crypt.svg?branch=main)](https://travis-ci.com/Crypt-Language/Crypt)
 <!--![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Crypt-Language/Crypt?include_prereleases)-->
 
 Welcome to the home of the Crypt Programming language!

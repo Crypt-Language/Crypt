@@ -2,6 +2,8 @@ package CryptCompiler.utils;
 
 import CryptCompiler.Lexer.token.Token;
 
+import java.util.List;
+
 public abstract class Expression {
 
     public static class Binary extends Expression {
@@ -107,6 +109,23 @@ public abstract class Expression {
         }
     }
 
+    public static class Call extends Expression {
+        public Call(Expression callee, Token paren, List<Expression> arguments){
+            this.callee = callee;
+            this.paren = paren;
+            this.arguments = arguments;
+        }
+
+        final Expression callee;
+        final Token paren;
+        final List<Expression> arguments;
+
+        @Override
+        <T> T accept(Visitor<T> visitor){
+            return visitor.visit(this);
+        }
+    }
+
     abstract <T> T accept(Visitor<T> visitor);
 
     public interface Visitor<T> {
@@ -116,6 +135,7 @@ public abstract class Expression {
         T visitGrouping();
         T visitVariableExpression();
         T visitLogicalExpression();
+        T visitCallExpression();
 
         T visit(Expression expression);
     }

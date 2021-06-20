@@ -35,6 +35,11 @@ public class IRCompiler implements Expression.Visitor<Object>, Statement.Visitor
     }
 
     @Override
+    public Object visitCallExpression(){
+        return null;
+    }
+
+    @Override
     public Object visit(Expression expression) {
         return null;
     }
@@ -78,4 +83,5 @@ public class IRCompiler implements Expression.Visitor<Object>, Statement.Visitor
     public Void visit(Statement statement) {
         return null;
     }
+
 }

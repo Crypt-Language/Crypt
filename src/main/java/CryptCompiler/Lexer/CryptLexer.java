@@ -16,7 +16,7 @@ public class CryptLexer {
     private int current = 0;
     private int line = 1;
 
-    private List<Integer> indentStack;
+    private final List<Integer> indentStack = new ArrayList<>();
     private int indentLevel;
     private int currentIndent = 0;
 
@@ -108,12 +108,15 @@ public class CryptLexer {
                 else if(isAlpha(c)){ identifier();}
                 else {EncoderCLI.error(line, "Unexpected character '" + c + "'");}
 
-                if(!indentStack.isEmpty()){
-                    while(!indentStack.isEmpty()){
+                if (indentStack.isEmpty()) EncoderCLI.error(line, "Indent stack is null");
+
+                if(!indentStack.isEmpty()) {
+                    while (!indentStack.isEmpty()) {
                         newToken(TokenType.DEDENT);
                         indentStack.remove(indentStack.size() - 1);
                     }
                 }
+
                 break;
         }
     }

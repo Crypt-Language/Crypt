@@ -98,7 +98,34 @@ public class CryptParser {
             return new Expression.Unary(operator, right);
         }
 
-        return primary();
+        return call();
+    }
+
+    private Expression call() {
+        Expression expr = primary();
+
+        while (true) {
+            if (match(TokenType.L_PAREN)) {
+                expr = finishCall(expr);
+            } else {
+                break;
+            }
+        }
+
+        return expr;
+    }
+
+    private Expression finishCall(Expression callee) {
+        List<Expression> arguments = new ArrayList<>();
+        if (!check(TokenType.R_PAREN)) {
+            do {
+                arguments.add(expression());
+            } while (match(TokenType.COMMA));
+        }
+
+        Token paren = consumeWithError(TokenType.R_PAREN, "Expect ')' after arguments.");
+
+        return new Expression.Call(callee, paren, arguments);
     }
 
     private Expression primary() {
@@ -198,7 +225,7 @@ public class CryptParser {
 
     private Statement blockStatement(){
         List<Statement> statements = new ArrayList<>();
-
+/*
         if(check(TokenType.NEWLINE)) {
             consumeWithError(TokenType.INDENT, "A block must start with indent or '{' ");
 
@@ -210,7 +237,7 @@ public class CryptParser {
            consumeWithError(TokenType.DEDENT, "");
         }
 
-
+ */
 
         if(check(TokenType.L_CURLY)) {
             consume();
@@ -220,8 +247,9 @@ public class CryptParser {
             }
         } else {
             statements.add(statement());
-            consumeWithError(TokenType.R_CURLY, "If a block starts with a '{', it must end with a '}'");
         }
+
+        consumeWithError(TokenType.R_CURLY, "If a block starts with a '{', it must end with a '}'");
 
         return new Statement.Block(statements);
     }
@@ -303,12 +331,12 @@ public class CryptParser {
             if (previous().type == TokenType.SEMICOLON) return;
 
             switch (peek().type) {
-                //case CLASS:
+                case CLASS:
                 case FN:
-                //case FOR:
-                //case WHILE:
+                case FOR:
+                case WHILE:
                 case PRINT:
-                //case RETURN:
+                case RETURN:
                     return;
             }
 

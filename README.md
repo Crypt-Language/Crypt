@@ -16,7 +16,10 @@ Lexing -> Parsing -> Compiling to IR -> IR Compiles to JVM Bytecode.
 ## Phase
 **In Development** : A new compiler is being actively developed, with updates being released every week. The full compiler, once completed, will be uploaded into this repository.
 
-To keep a track of what is currently in progress : visit this [issue](https://github.com/Crypt-Language/Crypt/issues/29).
+  - [x] Lexer
+  - [ ] Parser --> In Progress
+  - [ ] IRCompiler
+  - [ ] IR to JVM Bytecode Compiler
 
 _I Recommend not downloading source code as the compiler is incomplete and is subject to many changes._
 

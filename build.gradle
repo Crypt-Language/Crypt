@@ -1,18 +1,9 @@
 plugins {
     id 'java'
-    id "org.sonarqube" version "3.3"
 }
 
 group 'crypt.aurumbyte'
 version '0.1.0'
-
-sonarqube {
-  properties {
-    property "sonar.projectKey", "Crypt-Language_Crypt"
-    property "sonar.organization", "crypt-language"
-    property "sonar.host.url", "https://sonarcloud.io"
-  }
-}
 
 repositories {
     mavenCentral()

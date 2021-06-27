@@ -28,6 +28,8 @@ Have some ideas for Crypt features? Maybe you have a couple questions to ask abo
 
 [![Gitter](https://badges.gitter.im/Crypt-Language/community.svg)](https://gitter.im/Crypt-Language/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
+Discord coming soon!
+
 ## Contributing
 
 <!--Interested in contributing to Crypt? Refer [CONTRIBUTING.md](https://github.com/Crypt-Language/Crypt/blob/main/CONTRIBUTING.md) for more info.-->

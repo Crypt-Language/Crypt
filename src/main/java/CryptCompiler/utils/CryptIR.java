@@ -3,7 +3,7 @@ package CryptCompiler.utils;
 public enum CryptIR {
     EOF,
 
-    ADD, MUL, DIV, SUB, IFGT, IFEQ, IFLT, IFGE, IFLE,
+    ADD, MUL, DIV, SUB, IFGT, IFEQ, IFLT, IFGE, IFLE, IFNE,
 
     LOAD, STORE,
 

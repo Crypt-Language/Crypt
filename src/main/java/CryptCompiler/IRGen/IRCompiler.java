@@ -4,6 +4,7 @@ import CryptCompiler.Lexer.token.Token;
 import CryptCompiler.utils.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import static CryptCompiler.utils.CryptIR.*;
 
@@ -26,32 +27,47 @@ public class IRCompiler implements Expression.Visitor<Object>, Statement.Visitor
 
         switch (expression.operator.type) {
             case GREATER_THAN:
-                cryptIR.add(null);
-                cryptIR.add(IFGT);
+                addCryptIR(left, IFGT, right);
                 break;
             case GREATER_OR_EQUAL:
-                return (double)left >= (double)right;
+                addCryptIR(left, IFGE, right);
+                break;
             case LESS_THAN:
-                return (double)left < (double)right;
+                addCryptIR(left, IFLT, right);
+                break;
             case LESS_OR_EQUAL:
-                return (double)left <= (double)right;
+                addCryptIR(left, IFLE, right);
+                break;
             case MINUS:
-                return (double)left - (double)right;
+                addCryptIR(left, SUB, right);
+                break;
             case SLASH:
-                return (double)left / (double)right;
+                addCryptIR(left, DIV, right);
+                break;
             case ASTERISK:
-                return (double)left * (double)right;
+                addCryptIR(left, MUL, right);
+                break;
 
-            case NOT_EQUAL: return !isEqual(left, right);
-            case EQUALS: return isEqual(left, right);
+            case NOT_EQUAL: {
+                if(!isEqual(left, right)){
+                    addCryptIR(left, IFNE, right);
+                }
+                break;
+            }
+            case EQUALS: {
+                if(isEqual(left, right)){
+                    addCryptIR(left, IFEQ, right);
+                }
+                break;
+            }
 
             case PLUS:
                 if (left instanceof Double && right instanceof Double) {
-                    return (double)left + (double)right;
+                    addCryptIR(left, ADD, right);
                 }
 
                 if (left instanceof String && right instanceof String) {
-                    return left + (String)right;
+                    addCryptIR(String.valueOf(left), ADD, String.valueOf(right));
                 }
 
                 break;
@@ -63,7 +79,8 @@ public class IRCompiler implements Expression.Visitor<Object>, Statement.Visitor
 
     @Override
     public Object visitLiteralExpression(Expression.Literal expression) {
-        return expression.literal;
+        addCryptIR(expression.literal);
+        return null;
     }
 
     @Override
@@ -72,7 +89,7 @@ public class IRCompiler implements Expression.Visitor<Object>, Statement.Visitor
 
         switch (expression.operator.type) {
             case MINUS:
-                return -(double)right;
+                addCryptIR(-(double)right);
         }
 
         // Unreachable.
@@ -167,6 +184,10 @@ public class IRCompiler implements Expression.Visitor<Object>, Statement.Visitor
     private void checkNumberOperands(Token operator, Object operand) {
         if (operand instanceof Double) return;
         throw new RuntimeError(operator, "Operand must be a number.");
+    }
+
+    public void addCryptIR(Object... objects){
+        cryptIR.addAll(Arrays.asList(objects));
     }
 
 }

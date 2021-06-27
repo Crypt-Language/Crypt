@@ -2,6 +2,7 @@ package CryptCompiler.utils;
 
 import CryptCompiler.Lexer.token.Token;
 
+import javax.swing.plaf.nimbus.State;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,7 +12,7 @@ public abstract class Statement {
             this.value = value;
         }
 
-        final Expression value;
+        public final Expression value;
 
         @Override
         <T> T accept(Visitor<T> visitor){
@@ -24,7 +25,7 @@ public abstract class Statement {
             this.value = value;
         }
 
-        final Expression value;
+        public final Expression value;
 
         @Override
         <T> T accept(Visitor<T> visitor){
@@ -37,7 +38,7 @@ public abstract class Statement {
             this.expression = expression;
         }
 
-        final Expression expression;
+        public final Expression expression;
 
         @Override
         <T> T accept(Visitor<T> visitor){
@@ -52,9 +53,9 @@ public abstract class Statement {
             this.type = type;
         }
 
-        final Token name;
-        final Expression initializer;
-        final Token type;
+        public final Token name;
+        public final Expression initializer;
+        public final Token type;
         @Override
         <T> T accept(Visitor<T> visitor){
             return visitor.visit(this);
@@ -66,7 +67,7 @@ public abstract class Statement {
             this.statementList = statementList;
         }
 
-        final List<Statement> statementList;
+        public final List<Statement> statementList;
 
         @Override
         <T> T accept(Visitor<T> visitor){
@@ -81,9 +82,9 @@ public abstract class Statement {
             this.elseStatement = elseStatement;
         }
 
-        final Expression condition;
-        final Statement thenStatement;
-        final Statement elseStatement;
+        public final Expression condition;
+        public final Statement thenStatement;
+        public final Statement elseStatement;
 
         @Override
         <T> T accept(Visitor<T> visitor){
@@ -97,8 +98,8 @@ public abstract class Statement {
             this.body = body;
         }
 
-        final Expression condition;
-        final Statement body;
+        public final Expression condition;
+        public final Statement body;
 
         @Override
         <T> T accept(Visitor<T> visitor){
@@ -109,13 +110,13 @@ public abstract class Statement {
     abstract <T> T accept(Visitor<T> visitor);
 
     public interface Visitor<T> {
-        T visitPrintStatement();
-        T visitPrintlnStatement();
-        T visitExpressionStatement();
-        T visitVariableDeclarationStatement();
-        T visitBlockStatement();
-        T visitIfStatement();
-        T visitWhileStatement();
+        T visitPrintStatement(Statement.Print statement);
+        T visitPrintlnStatement(Statement.Println statement);
+        T visitExpressionStatement(Statement.ExpressionStatement statement);
+        T visitVariableDeclarationStatement(Statement.VariableDeclaration statement);
+        T visitBlockStatement(Statement.Block statement);
+        T visitIfStatement(Statement.If statement);
+        T visitWhileStatement(Statement.While statement);
 
         T visit(Statement statement);
     }

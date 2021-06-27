@@ -320,8 +320,7 @@ public class CryptParser {
 
     private Token consumeWithError(TokenType type, String message) {
         if (check(type)) return consume();
-
-        throw error(peek().line, message);
+        else throw error(peek().line, message);
     }
 
     private void synchronize() {

@@ -13,12 +13,12 @@ public abstract class Expression {
             this.right = right;
         }
 
-        final Expression left;
-        final Token operator;
-        final Expression right;
+        public final Expression left;
+        public final Token operator;
+        public final Expression right;
 
         @Override
-        <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor){
             return visitor.visit(this);
         }
     }
@@ -31,7 +31,7 @@ public abstract class Expression {
         public final Object literal;
 
         @Override
-        <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor){
             return visitor.visit(this);
         }
     }
@@ -41,10 +41,10 @@ public abstract class Expression {
             this.expression = expression;
         }
 
-        final Expression expression;
+        public final Expression expression;
 
         @Override
-        <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor){
             return visitor.visit(this);
         }
     }
@@ -52,14 +52,14 @@ public abstract class Expression {
     public static class Unary extends Expression{
         public Unary(Token operator, Expression expression){
             this.operator = operator;
-            this.expression = expression;
+            this.right = expression;
         }
 
-        final Token operator;
-        final Expression expression;
+        public final Token operator;
+        public final Expression right;
 
         @Override
-        <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor){
             return visitor.visit(this);
         }
     }
@@ -72,7 +72,7 @@ public abstract class Expression {
         public final Token name;
 
         @Override
-        <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor){
             return visitor.visit(this);
         }
     }
@@ -83,11 +83,11 @@ public abstract class Expression {
             this.value = value;
         }
 
-        final Token name;
-        final Expression value;
+        public final Token name;
+        public final Expression value;
 
         @Override
-        <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor){
             return visitor.visit(this);
         }
     }
@@ -99,12 +99,12 @@ public abstract class Expression {
             this.right = right;
         }
 
-        final Expression left;
-        final Token operator;
-        final Expression right;
+        public final Expression left;
+        public final Token operator;
+        public final Expression right;
 
         @Override
-        <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor){
             return visitor.visit(this);
         }
     }
@@ -116,26 +116,26 @@ public abstract class Expression {
             this.arguments = arguments;
         }
 
-        final Expression callee;
-        final Token paren;
-        final List<Expression> arguments;
+        public final Expression callee;
+        public final Token paren;
+        public final List<Expression> arguments;
 
         @Override
-        <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor){
             return visitor.visit(this);
         }
     }
 
-    abstract <T> T accept(Visitor<T> visitor);
+    public abstract <T> T accept(Visitor<T> visitor);
 
     public interface Visitor<T> {
-        T visitBinaryExpression();
-        T visitLiteralExpression();
-        T visitUnaryExpression();
-        T visitGrouping();
-        T visitVariableExpression();
-        T visitLogicalExpression();
-        T visitCallExpression();
+        T visitBinaryExpression(Expression.Binary expression);
+        T visitLiteralExpression(Expression.Literal expression);
+        T visitUnaryExpression(Expression.Unary expression);
+        T visitGrouping(Expression.Grouping expression);
+        T visitVariableExpression(Expression.Variable expression);
+        T visitLogicalExpression(Expression.Logical expression);
+        T visitCallExpression(Expression.Call expression);
 
         T visit(Expression expression);
     }

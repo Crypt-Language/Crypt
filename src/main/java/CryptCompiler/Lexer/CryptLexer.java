@@ -21,6 +21,7 @@ public class CryptLexer {
     private int currentIndent = 0;
 
     public CryptLexer(String input) {
+        indentStack.add(0);
         this.input = input;
     }
 
@@ -85,7 +86,7 @@ public class CryptLexer {
 
             case '\n': {
                 if(match(' ')){
-                    while(peek() == ' '){
+                    while(match(' ')){
                         indentLevel++;
 
                         if(peek() == '\t') EncoderCLI.error(line, "Tabs for indentation are not yet supported. Sorry :(");
@@ -100,7 +101,7 @@ public class CryptLexer {
                     indentStack.add(currentIndent);
                 }
 
-                nextNewline(c, currentIndent);
+                untilNewline(c, currentIndent);
             }
 
             default:
@@ -123,9 +124,10 @@ public class CryptLexer {
 
     /*Helper Functions*/
 
-    private void nextNewline(char c, int currentIndent) throws Exception {
+    private void untilNewline(char c, int currentIndent) throws Exception {
         if(c == ' '){
-            while(peek() == ' '){
+            while(match(' ')){
+                consume();
                 indentLevel++;
 
                 if(peek() == '\t') EncoderCLI.error(line, "Tabs for indentation are not yet supported. Sorry :(");

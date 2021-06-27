@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VariableSymbolTable {
-    final VariableSymbolTable enclosing;
+    private final VariableSymbolTable enclosing;
     private final Map<String, Object> values = new HashMap<>();
 
-    VariableSymbolTable() {
+    public VariableSymbolTable() {
         enclosing = null;
     }
 

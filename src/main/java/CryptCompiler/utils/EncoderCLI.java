@@ -1,5 +1,6 @@
 package CryptCompiler.utils;
 
+import CryptCompiler.IRGen.IRCompiler;
 import CryptCompiler.Lexer.CryptLexer;
 import CryptCompiler.Lexer.token.Token;
 import CryptCompiler.Parser.CryptParser;
@@ -50,7 +51,8 @@ public class EncoderCLI {
         CryptLexer lexer = new CryptLexer(source);
         List<Token> tokens = lexer.lex();
         CryptParser parser = new CryptParser(tokens);
-        parser.parse();
+        List<Statement> statements = parser.parse();
+        IRCompiler irCompiler = new IRCompiler(statements);
     }
 
     public static void error(int line, String message) {

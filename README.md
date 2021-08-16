@@ -11,7 +11,8 @@ Welcome to the home of the Crypt Programming language!
 Crypt aims to be a powerful, yet easy to learn/use  programming language leveraging Java's libraries and cross-platform ability by running on the JVM.
 
 ## Compiler Pipeline
-Lexing -> Parsing -> Compiling to IR -> IR Compiles to JVM Bytecode.
+Lexing -> Parsing -> JVM Bytecode emitting -> Running
+But, before this... I will setup an interpreter to run the language
 
 ## Phase
 **In Development** : A new compiler is being actively developed, with updates being released every week. The full compiler, once completed, will be uploaded into this repository.
@@ -21,7 +22,13 @@ Lexing -> Parsing -> Compiling to IR -> IR Compiles to JVM Bytecode.
   - [ ] IRCompiler
   - [ ] IR to JVM Bytecode Compiler
 
-_I Recommend not downloading source code as the compiler is incomplete and is subject to many changes._
+_I Recommend not downloading source code as the compiler is incomplete and is subject to many changes. But, if you wish to try what has been done so far... go right ahead :)_
+
+### Running
+ - clone repo
+ - build `mvn build`
+ - run the main function in `Crypt.java` to open REPL.
+ - Type in expressions (that's all that has been done so far.. statements coming soon!)
 
 ### Community
 Have some ideas for Crypt features? Maybe you have a couple questions to ask about Crypt (or related)? If you do, don't hesitate to ask at the community chat room below.

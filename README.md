@@ -18,9 +18,9 @@ But, before this... I will setup an interpreter to run the language
 **In Development** : A new compiler is being actively developed, with updates being released every week. The full compiler, once completed, will be uploaded into this repository.
 
   - [x] Lexer
-  - [ ] Parser --> In Progress
-  - [ ] IRCompiler
-  - [ ] IR to JVM Bytecode Compiler
+  - [x] Parser
+  - [x] Interpreter (for quick tests)
+  - [ ] JVM Bytecode Compiler
 
 _I Recommend not downloading source code as the compiler is incomplete and is subject to many changes. But, if you wish to try what has been done so far... go right ahead :)_
 
@@ -28,7 +28,11 @@ _I Recommend not downloading source code as the compiler is incomplete and is su
  - clone repo
  - build `mvn build`
  - run the main function in `Crypt.java` to open REPL.
- - Type in expressions (that's all that has been done so far.. statements coming soon!)
+ - Type some syntax!
+     - Printing
+     - Variables
+     - If Statements
+     - While loops
 
 ### Community
 Have some ideas for Crypt features? Maybe you have a couple questions to ask about Crypt (or related)? If you do, don't hesitate to ask at the community chat room below.

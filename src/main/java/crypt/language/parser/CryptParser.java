@@ -4,7 +4,10 @@ import crypt.language.Crypt;
 import crypt.language.lexer.token.Token;
 import crypt.language.lexer.token.TokenType;
 import crypt.language.parser.AST.Expression;
+import crypt.language.parser.AST.Statement;
 
+import javax.swing.plaf.nimbus.State;
+import java.util.ArrayList;
 import java.util.List;
 
 import static crypt.language.lexer.token.TokenType.*;
@@ -24,7 +27,49 @@ public class CryptParser {
      */
 
     private Expression expression() {
-        return equality();
+        return assignment();
+    }
+
+    private Expression assignment() {
+        Expression expr = or();
+
+        if (match(COLON)) {
+            Token equals = previous();
+            Expression value = assignment();
+
+            if (expr instanceof Expression.Variable) {
+                Token name = ((Expression.Variable)expr).name;
+                return new Expression.Assignment(name, value);
+            }
+
+            error(equals, "Invalid assignment target.");
+        }
+
+        return expr;
+    }
+
+    private Expression or() {
+        Expression expr = and();
+
+        while (match(OR)) {
+            Token operator = previous();
+            Expression right = and();
+            expr = new Expression.Logical(expr, operator, right);
+        }
+
+        return expr;
+    }
+
+    private Expression and() {
+        Expression expr = equality();
+
+        while (match(AND)) {
+            Token operator = previous();
+            Expression right = equality();
+            expr = new Expression.Logical(expr, operator, right);
+        }
+
+        return expr;
     }
 
     private Expression equality() {
@@ -94,12 +139,101 @@ public class CryptParser {
             return new Expression.Literal(previous().literal);
         }
 
+        else if (match(ID)) {
+            return new Expression.Variable(previous());
+        }
+
         else if (match(L_PAREN)) {
             Expression expr = expression();
             consume(R_PAREN, "Expect ')' after expression.");
             return new Expression.Grouping(expr);
         }
         else return null; //TODO: find a way to stop error
+    }
+
+    /*
+    * ================================
+    * Statement Parsing
+    * ================================
+    */
+
+    private Statement declaration() {
+        try {
+            if (match(LET)) return variableDeclaration();
+            return statement();
+        } catch (ParseError error) {
+            synchronize();
+            return null;
+        }
+    }
+
+    private Statement statement() {
+        if(match(PRINT)) return printStatement();
+        if(match(PRINTLN)) return printlnStatement();
+        if(match(IF)) return ifStatement();
+        if(match(WHILE)) return whileStatement();
+        if(match(TILDE) && match(L_BRACE)) return new Statement.Block(blockStatement());
+        return expressionStatement();
+    }
+
+    private Statement printStatement() {
+        Expression value = expression();
+        consume(SEMICOLON, "Expect ';' after value.");
+        return new Statement.Print(value);
+    }
+
+    private Statement printlnStatement() {
+        Expression value = expression();
+        consume(SEMICOLON, "Expect ';' after value.");
+        return new Statement.Println(value);
+    }
+
+    private Statement expressionStatement() {
+        Expression expr = expression();
+        consume(SEMICOLON, "Expect ';' after expression.");
+        return new Statement.ExpressionStatement(expr);
+    }
+
+    private Statement variableDeclaration() {
+        Token name = consume(ID, "Expect variable name.");
+
+        Expression initializer = null;
+        if (match(COLON)) {
+            initializer = expression();
+        }
+
+        consume(SEMICOLON, "Expect ';' after variable declaration.");
+        return new Statement.Variable(name, initializer);
+    }
+
+    private List<Statement> blockStatement(){
+        List<Statement> statements = new ArrayList<>();
+
+        while (!check(R_BRACE) && !isAtEnd()) {
+            statements.add(declaration());
+        }
+
+        consume(R_BRACE, "Expect '}' after block.");
+        return statements;
+    }
+
+    private Statement ifStatement(){
+        Expression condition = expression();
+
+        Statement thenBranch = statement();
+        Statement elseBranch = null;
+
+        if (match(ELSE)) elseBranch = statement();
+
+
+        return new Statement.If(condition, thenBranch, elseBranch);
+    }
+
+    private Statement whileStatement(){
+        Expression condition = expression();
+        Statement body = statement();
+
+        return new Statement.While(condition, body);
     }
 
     /*
@@ -161,7 +295,7 @@ public class CryptParser {
             switch (peek().type) {
                 case TYPE:
                 case FN:
-                case SET:
+                case LET:
                 case FOR:
                 case IF:
                 case WHILE:
@@ -174,12 +308,13 @@ public class CryptParser {
         }
     }
 
-    public Expression parse() {
-        try {
-            return expression();
-        } catch (ParseError error) {
-            return null;
+    public List<Statement> parse() {
+        List<Statement> statements = new ArrayList<>();
+        while (!isAtEnd()) {
+            statements.add(declaration());
         }
+
+        return statements;
     }
 
     private static class ParseError extends RuntimeException {

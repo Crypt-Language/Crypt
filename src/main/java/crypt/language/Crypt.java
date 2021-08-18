@@ -1,8 +1,9 @@
 package crypt.language;
 
+import crypt.language.error.RuntimeError;
 import crypt.language.lexer.CryptLexer;
 import crypt.language.lexer.token.Token;
-import crypt.language.parser.AST.Expression;
+import crypt.language.parser.AST.Statement;
 import crypt.language.parser.CryptParser;
 
 import java.io.BufferedReader;
@@ -33,7 +34,7 @@ public class Crypt {
         run(new String(bytes, Charset.defaultCharset()));
 
         if (hadError) System.exit(65);
-        if (interpreter.hadRuntimeError) System.exit(70);
+        if (CryptInterpreter.hadRuntimeError) System.exit(70);
     }
 
     private static void runPrompt() throws IOException {
@@ -53,19 +54,23 @@ public class Crypt {
         CryptLexer lexer = new CryptLexer(source);
         List<Token> tokens = lexer.lex();
         CryptParser parser = new CryptParser(tokens);
-        Expression expression = parser.parse();
+        List<Statement> statements = parser.parse();
 
         // Stop if there was a syntax error.
         if(hadError) return;
-        interpreter.interpret(expression);
+        interpreter.interpret(statements);
     }
 
     public static void error(int line, String message) {
-        report(line, "", message);
+        report(line, message);
     }
 
-    private static void report(int line, String where, String message) {
-        System.err.println("line : " + line + " Error => '" + where + "' | " + message);
+    private static void report(int line, String message) {
+        System.err.println("line : " + line + " Error => '" + "" + "' | " + message);
         hadError = true;
+    }
+
+    public static void runtimeError(RuntimeError error){
+        error.printStackTrace();
     }
 }

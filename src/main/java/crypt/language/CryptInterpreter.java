@@ -3,9 +3,16 @@ package crypt.language;
 import crypt.language.error.RuntimeError;
 import crypt.language.lexer.token.Token;
 import crypt.language.parser.AST.Expression;
+import crypt.language.parser.AST.Statement;
+import crypt.language.parser.environments.Environment;
 
-public class CryptInterpreter implements Expression.Visitor<Object>{
+import java.util.List;
+
+import static crypt.language.lexer.token.TokenType.*;
+
+public class CryptInterpreter implements Expression.Visitor<Object>, Statement.Visitor<Void> {
     public static boolean hadRuntimeError = false;
+    private Environment environment = new Environment();
 
     @Override
     public Object visit(Expression expression){
@@ -13,8 +20,30 @@ public class CryptInterpreter implements Expression.Visitor<Object>{
         if(expression instanceof Expression.Unary) return visitUnaryExpression((Expression.Unary)expression);
         if(expression instanceof Expression.Grouping) return visitGroupingExpression((Expression.Grouping) expression);
         if(expression instanceof Expression.Literal) return visitLiteralExpression((Expression.Literal) expression);
+        if(expression instanceof Expression.Variable) return visitVariableReference((Expression.Variable) expression);
+        if(expression instanceof Expression.Assignment) return visitAssignment((Expression.Assignment) expression);
+        if(expression instanceof Expression.Logical) return visitLogicalExpression((Expression.Logical) expression);
         throw new Error("Expression not found");
     }
+
+
+    @Override
+    public Void visit(Statement statement) {
+        if(statement instanceof Statement.Print) return visitPrintStatement((Statement.Print) statement);
+        if(statement instanceof Statement.Println) return visitPrintlnStatement((Statement.Println) statement);
+        if(statement instanceof Statement.ExpressionStatement) return visitExpressionStatement((Statement.ExpressionStatement) statement);
+        if(statement instanceof Statement.Variable) return visitVariableDeclaration((Statement.Variable) statement);
+        if(statement instanceof Statement.Block) return visitBlockStatement((Statement.Block) statement);
+        if(statement instanceof Statement.If) return visitIfStatement((Statement.If) statement);
+        if(statement instanceof Statement.While) return visitWhileStatement((Statement.While) statement);
+        throw new Error("Statement not found");
+    }
+
+    /*
+    * =======================================
+    * Expression Interpreting
+    * =======================================
+    */
 
     @Override
     public Object visitBinaryExpression(Expression.Binary expression) {
@@ -94,50 +123,133 @@ public class CryptInterpreter implements Expression.Visitor<Object>{
         return null;
     }
 
+    @Override
+    public Object visitVariableReference(Expression.Variable expression) {
+        return environment.get(expression.name);
+    }
+
+    @Override
+    public Object visitAssignment(Expression.Assignment expression) {
+        Object value = evaluate(expression.value);
+        environment.assign(expression.name, value);
+        return value;
+    }
+
+    @Override
+    public Object visitLogicalExpression(Expression.Logical expression) {
+        Object left = evaluate(expression.left);
+
+        if (expression.operator.type == OR) {
+            if (isTruthy(left)) return left;
+        } else {
+            if (!isTruthy(left)) return left;
+        }
+
+        return evaluate(expression.right);
+    }
+
+    /*
+    * ============================
+    * Statement Interpreting
+    * ============================
+    */
+
+    @Override
+    public Void visitPrintStatement(Statement.Print printStatement) {
+        Object value = evaluate(printStatement.expression);
+        System.out.print(stringify(value));
+        return null;
+    }
+
+    @Override
+    public Void visitPrintlnStatement(Statement.Println printlnStatement) {
+        Object value = evaluate(printlnStatement.expression);
+        System.out.println(stringify(value));
+        return null;
+    }
+
+    @Override
+    public Void visitExpressionStatement(Statement.ExpressionStatement expressionStatement) {
+        evaluate(expressionStatement.expression);
+        return null;
+    }
+
+    @Override
+    public Void visitVariableDeclaration(Statement.Variable statement) {
+        Object value = null;
+        if (statement.initializer != null) {
+            value = evaluate(statement.initializer);
+        }
+
+        environment.define(statement.name.lexeme, value);
+        return null;
+    }
+
+    @Override
+    public Void visitBlockStatement(Statement.Block statement) {
+        executeBlock(statement.statements, new Environment(environment));
+        return null;
+    }
+
+    @Override
+    public Void visitIfStatement(Statement.If statement) {
+        if (isTruthy(evaluate(statement.condition))) execute(statement.thenStatement);
+        else if (statement.elseStatement != null) execute(statement.elseStatement);
+
+        return null;
+    }
+
+    @Override
+    public Void visitWhileStatement(Statement.While statement) {
+        while (isTruthy(evaluate(statement.condition))) {
+            execute(statement.body);
+        }
+        return null;
+    }
+
     /*
      * ============================
      * Helper functions
      * ============================
      */
-    private Object evaluate(Expression expr) {
+    Object evaluate(Expression expr) {
         return expr.accept(this);
     }
 
-    private boolean isTruthy(Object object) {
+    boolean isTruthy(Object object) {
         if (object == null) return false;
         if (object instanceof Boolean) return (boolean)object;
         return true;
     }
 
-    private boolean isEqual(Object a, Object b) {
+    boolean isEqual(Object a, Object b) {
         if (a == null && b == null) return true;
         if (a == null) return false;
 
         return a.equals(b);
     }
 
-    private void checkNumberOperand(Token operator, Object operand) {
+    void checkNumberOperand(Token operator, Object operand) {
         if (operand instanceof Double) return;
         throw new RuntimeError(operator, "Operand must be a number.");
     }
 
-    private void checkNumberOperands(Token operator,
+    void checkNumberOperands(Token operator,
                                      Object left, Object right) {
         if (left instanceof Double && right instanceof Double) return;
 
         throw new RuntimeError(operator, "Operands must be numbers.");
     }
 
-    void interpret(Expression expression) {
+    void interpret(List<Statement> statements) {
         try {
-            Object value = evaluate(expression);
-            System.out.println(stringify(value));
+            statements.forEach(this::execute);
         } catch (RuntimeError error) {
-            runtimeError(error);
+            Crypt.runtimeError(error);
         }
     }
 
-    private String stringify(Object object) {
+    String stringify(Object object) {
         if (object == null) return "nil";
 
         if (object instanceof Double) {
@@ -155,5 +267,20 @@ public class CryptInterpreter implements Expression.Visitor<Object>{
         System.err.println(error.getMessage() +
                 "\n[line " + error.token.line + "]");
         hadRuntimeError = true;
+    }
+
+    void execute(Statement stmt) {
+        stmt.accept(this);
+    }
+
+    void executeBlock(List<Statement> statements, Environment environment) {
+        Environment previous = this.environment;
+
+        try {
+            this.environment = environment;
+            statements.forEach(this::execute);
+        } finally {
+            this.environment = previous;
+        }
     }
 }

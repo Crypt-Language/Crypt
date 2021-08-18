@@ -50,7 +50,11 @@ public class CryptLexer {
             case '}': newToken(R_BRACE); break;
             case ',': newToken(COMMA); break;
             case '.': newToken(DOT); break;
-            case '-': newToken(MINUS); break;
+            case '?': newToken(Q_MARK); break;
+            case '-':
+                if(hasMatchedExpected('>')) newToken(ARROW_RIGHT);
+                else newToken(MINUS);
+                break;
             case '+': newToken(PLUS); break;
             case ';': newToken(SEMICOLON); break;
             case '*': newToken(ASTERISK); break;
@@ -67,7 +71,6 @@ public class CryptLexer {
 
             case '>':
                 if(hasMatchedExpected('=')) newToken(GREATER_OR_EQUAL);
-                else if(hasMatchedExpected('>')) newToken(BLOCK_OP);
                 else newToken(GREATER);
                 break;
 
@@ -139,7 +142,7 @@ public class CryptLexer {
         keywords.put("super",  SUPER);
         keywords.put("this",   THIS);
         keywords.put("true",   TRUE);
-        keywords.put("set",    SET);
+        keywords.put("let",    LET);
         keywords.put("while",  WHILE);
     }
 

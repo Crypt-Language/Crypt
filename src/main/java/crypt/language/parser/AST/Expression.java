@@ -63,11 +63,59 @@ public abstract class Expression {
         }
     }
 
+    public static class Variable extends Expression {
+        public Variable(Token name){
+            this.name = name;
+        }
+
+        public Token name;
+
+        @Override
+        public <T> T accept(Visitor<T> visitor){
+            return visitor.visit(this);
+        }
+    }
+
+    public static class Assignment extends Expression {
+        public Assignment(Token name, Expression value){
+            this.name = name;
+            this.value = value;
+        }
+
+        public Token name;
+        public Expression value;
+
+        @Override
+        public <T> T accept(Visitor<T> visitor){
+            return visitor.visit(this);
+        }
+    }
+
+    public static class Logical extends Expression {
+        public Logical(Expression left, Token operator, Expression right){
+            this.left = left;
+            this.operator = operator;
+            this.right = right;
+        }
+
+        public Expression left;
+        public Token operator;
+        public Expression right;
+
+        @Override
+        public <T> T accept(Visitor<T> visitor){
+            return visitor.visit(this);
+        }
+    }
+
     public interface Visitor<T> {
         T visit(Expression expression);
         T visitBinaryExpression(Expression.Binary expression);
         T visitGroupingExpression(Expression.Grouping expression);
         T visitLiteralExpression(Expression.Literal expression);
         T visitUnaryExpression(Expression.Unary expression);
+        T visitVariableReference(Expression.Variable expression);
+        T visitAssignment(Expression.Assignment expression);
+        T visitLogicalExpression(Expression.Logical expression);
     }
 }

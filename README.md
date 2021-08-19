@@ -33,6 +33,9 @@ _I Recommend not downloading source code as the compiler is incomplete and is su
      - Variables
      - If Statements
      - While loops
+     - For loops
+     - Functions
+     - `return` statement
 
 ### Community
 Have some ideas for Crypt features? Maybe you have a couple questions to ask about Crypt (or related)? If you do, don't hesitate to ask at the community chat room below.

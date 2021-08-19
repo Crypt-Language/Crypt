@@ -144,6 +144,7 @@ public class CryptLexer {
         keywords.put("true",   TRUE);
         keywords.put("let",    LET);
         keywords.put("while",  WHILE);
+        keywords.put("to", TO);
     }
 
     /*

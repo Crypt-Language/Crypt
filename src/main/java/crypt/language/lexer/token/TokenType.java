@@ -18,7 +18,7 @@ public enum TokenType {
     INDENT, DEDENT,
 
     // Keywords.
-    AND, TYPE, ELSE, FALSE, FN, FOR, IF, NIL, OR, NOT,
+    AND, TYPE, ELSE, FALSE, FN, FOR, IF, NIL, OR, NOT, TO,
     PRINT, PRINTLN, RETURN, SUPER, THIS, TRUE, LET, WHILE,
 
     EOF

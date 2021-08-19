@@ -8,6 +8,7 @@ import crypt.language.parser.AST.Statement;
 
 import javax.swing.plaf.nimbus.State;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static crypt.language.lexer.token.TokenType.*;
@@ -127,7 +128,21 @@ public class CryptParser {
             return new Expression.Unary(operator, right);
         }
 
-        return primary();
+        return call();
+    }
+
+    private Expression call(){
+        Expression expr = primary();
+
+        while (true) {
+            if (match(L_PAREN)) {
+                expr = finishCall(expr);
+            } else {
+                break;
+            }
+        }
+
+        return expr;
     }
 
     private Expression primary() {
@@ -160,6 +175,7 @@ public class CryptParser {
     private Statement declaration() {
         try {
             if (match(LET)) return variableDeclaration();
+            if (match(FN)) return function("function");
             return statement();
         } catch (ParseError error) {
             synchronize();
@@ -172,7 +188,9 @@ public class CryptParser {
         if(match(PRINTLN)) return printlnStatement();
         if(match(IF)) return ifStatement();
         if(match(WHILE)) return whileStatement();
-        if(match(TILDE) && match(L_BRACE)) return new Statement.Block(blockStatement());
+        if(match(ARROW_RIGHT)) return new Statement.Block(blockStatement());
+        if (match(FOR)) return forStatement();
+        if (match(RETURN)) return returnStatement();
         return expressionStatement();
     }
 
@@ -209,11 +227,15 @@ public class CryptParser {
     private List<Statement> blockStatement(){
         List<Statement> statements = new ArrayList<>();
 
-        while (!check(R_BRACE) && !isAtEnd()) {
+        if(check(L_BRACE)) {
+            while (!check(R_BRACE) && !isAtEnd()) {
+                statements.add(declaration());
+            }
+
+            consume(R_BRACE, "Expect '}' after block.");
+        } else {
             statements.add(declaration());
         }
-
-        consume(R_BRACE, "Expect '}' after block.");
         return statements;
     }
 
@@ -234,6 +256,80 @@ public class CryptParser {
         Statement body = statement();
 
         return new Statement.While(condition, body);
+    }
+
+    private Statement forStatement(){
+        //initializer
+        Statement initializer;
+        if (match(SEMICOLON)) {
+            initializer = null;
+        } else if (match(LET)) {
+            initializer = variableDeclaration();
+        } else {
+            initializer = expressionStatement();
+        }
+
+
+        //condition
+        Expression condition = null;
+        if (!check(SEMICOLON)) {
+            condition = expression();
+        }
+        consume(SEMICOLON, "Expect ';' after loop condition.");
+
+        //increment
+        Expression increment = null;
+        if (!check(R_PAREN)) {
+            increment = expression();
+        }
+
+        //body
+        Statement body = statement();
+
+        if (increment != null) {
+            body = new Statement.Block(
+                    Arrays.asList(
+                            body,
+                            new Statement.ExpressionStatement(increment)
+                    )
+            );
+        }
+
+        if (condition == null) condition = new Expression.Literal(true);
+        body = new Statement.While(condition, body);
+
+        if (initializer != null) body = new Statement.Block(Arrays.asList(initializer, body));
+
+        return body;
+    }
+
+    private Statement.Function function(String kind) {
+        Token name = consume(ID, "Expect " + kind + " name.");
+
+        consume(L_PAREN, "Expect '(' after " + kind + " name.");
+
+        List<Token> parameters = new ArrayList<>();
+        if (!check(R_PAREN)) {
+            do {
+                if (parameters.size() >= 255) error(peek(), "Can't have more than 255 parameters.");
+                parameters.add(consume(ID, "Expect parameter name."));
+            } while (match(COMMA));
+        }
+
+        consume(R_PAREN, "Expect ')' after parameters.");
+
+        consume(ARROW_RIGHT, "Expect '~' before " + kind + " body.");
+        List<Statement> body = blockStatement();
+        return new Statement.Function(name, parameters, body);
+    }
+
+    private Statement returnStatement() {
+        Token keyword = previous();
+        Expression value = null;
+        if (!check(SEMICOLON)) value = expression();
+
+        consume(SEMICOLON, "Expect ';' after return value.");
+        return new Statement.Return(keyword, value);
     }
 
     /*
@@ -315,6 +411,20 @@ public class CryptParser {
         }
 
         return statements;
+    }
+
+    private Expression finishCall(Expression callee) {
+        List<Expression> arguments = new ArrayList<>();
+        if (!check(R_PAREN)) {
+            do {
+                if (arguments.size() >= 255) error(peek(), "Can't have more than 255 arguments.");
+                arguments.add(expression());
+            } while (match(COMMA));
+        }
+
+        Token paren = consume(R_PAREN, "Expect ')' after arguments.");
+
+        return new Expression.Call(callee, paren, arguments);
     }
 
     private static class ParseError extends RuntimeException {

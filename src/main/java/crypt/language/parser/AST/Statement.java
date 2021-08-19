@@ -107,6 +107,38 @@ public abstract class Statement {
         }
     }
 
+    public static class Function extends Statement {
+        public Function(Token name, List<Token> parameters, List<Statement> body){
+            this.name = name;
+            this.parameters = parameters;
+            this.body = body;
+        }
+
+        public Token name;
+        public List<Token> parameters;
+        public List<Statement> body;
+
+        @Override
+        public <T> T accept(Visitor<T> visitor){
+            return visitor.visit(this);
+        }
+    }
+
+    public static class Return extends Statement {
+        public Return(Token keyword, Expression value){
+            this.keyword = keyword;
+            this.value = value;
+        }
+
+        public Token keyword;
+        public Expression value;
+
+        @Override
+        public <T> T accept(Visitor<T> visitor){
+            return visitor.visit(this);
+        }
+    }
+
     public interface Visitor<T> {
         T visit(Statement statement);
         T visitPrintStatement(Statement.Print printStatement);
@@ -116,5 +148,7 @@ public abstract class Statement {
         T visitBlockStatement(Statement.Block statement);
         T visitIfStatement(Statement.If statement);
         T visitWhileStatement(Statement.While statement);
+        T visitFunctionDeclaration(Statement.Function statement);
+        T visitReturnStatement(Statement.Return statement);
     }
 }

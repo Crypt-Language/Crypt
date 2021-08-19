@@ -4,15 +4,34 @@ import crypt.language.error.RuntimeError;
 import crypt.language.lexer.token.Token;
 import crypt.language.parser.AST.Expression;
 import crypt.language.parser.AST.Statement;
+import crypt.language.parser.environments.CryptCallable;
+import crypt.language.parser.environments.CryptFunction;
 import crypt.language.parser.environments.Environment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static crypt.language.lexer.token.TokenType.*;
 
 public class CryptInterpreter implements Expression.Visitor<Object>, Statement.Visitor<Void> {
+    public final Environment globals = new Environment();
+    private Environment environment = globals;
     public static boolean hadRuntimeError = false;
-    private Environment environment = new Environment();
+
+    public CryptInterpreter(){
+        globals.define("clock", new CryptCallable() {
+            @Override
+            public int arity() { return 0; }
+
+            @Override
+            public Object call(CryptInterpreter interpreter, List<Object> arguments) {
+                return (double)System.currentTimeMillis() / 1000.0;
+            }
+
+            @Override
+            public String toString() { return "<native fn>"; }
+        });
+    }
 
     @Override
     public Object visit(Expression expression){
@@ -23,6 +42,7 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
         if(expression instanceof Expression.Variable) return visitVariableReference((Expression.Variable) expression);
         if(expression instanceof Expression.Assignment) return visitAssignment((Expression.Assignment) expression);
         if(expression instanceof Expression.Logical) return visitLogicalExpression((Expression.Logical) expression);
+        if(expression instanceof Expression.Call) return visitCallExpression((Expression.Call) expression);
         throw new Error("Expression not found");
     }
 
@@ -36,6 +56,8 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
         if(statement instanceof Statement.Block) return visitBlockStatement((Statement.Block) statement);
         if(statement instanceof Statement.If) return visitIfStatement((Statement.If) statement);
         if(statement instanceof Statement.While) return visitWhileStatement((Statement.While) statement);
+        if(statement instanceof Statement.Function) return visitFunctionDeclaration((Statement.Function) statement);
+        if(statement instanceof Statement.Return) return visitReturnStatement((Statement.Return) statement);
         throw new Error("Statement not found");
     }
 
@@ -148,6 +170,30 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
         return evaluate(expression.right);
     }
 
+    @Override
+    public Object visitCallExpression(Expression.Call expression) {
+        Object callee = evaluate(expression.callee);
+
+        List<Object> arguments = new ArrayList<>();
+        for (Expression argument : expression.arguments) {
+            arguments.add(evaluate(argument));
+        }
+
+        if (!(callee instanceof CryptCallable))
+            throw new RuntimeError(expression.paren, "Can only call functions and classes.");
+
+
+        CryptCallable function = (CryptCallable)callee;
+
+        if (arguments.size() != function.arity()) {
+            throw new RuntimeError(expression.paren, "Expected " +
+                    function.arity() + " arguments but got " +
+                    arguments.size() + ".");
+        }
+
+        return function.call(this, arguments);
+    }
+
     /*
     * ============================
     * Statement Interpreting
@@ -205,6 +251,21 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
             execute(statement.body);
         }
         return null;
+    }
+
+    @Override
+    public Void visitFunctionDeclaration(Statement.Function statement) {
+        CryptFunction function = new CryptFunction(statement, environment);
+        environment.define(statement.name.lexeme, function);
+        return null;
+    }
+
+    @Override
+    public Void visitReturnStatement(Statement.Return statement) {
+        Object value = null;
+        if (statement.value != null) value = evaluate(statement.value);
+
+        throw new Return(value);
     }
 
     /*
@@ -273,7 +334,7 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
         stmt.accept(this);
     }
 
-    void executeBlock(List<Statement> statements, Environment environment) {
+    public void executeBlock(List<Statement> statements, Environment environment) {
         Environment previous = this.environment;
 
         try {
@@ -281,6 +342,20 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
             statements.forEach(this::execute);
         } finally {
             this.environment = previous;
+        }
+    }
+
+    /*
+    * RETURN
+    * ERROR
+    */
+
+    public class Return extends RuntimeException {
+        public final Object value;
+
+        Return(Object value) {
+            super(null, null, false, false);
+            this.value = value;
         }
     }
 }

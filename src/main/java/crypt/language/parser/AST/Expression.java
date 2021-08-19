@@ -2,6 +2,8 @@ package crypt.language.parser.AST;
 
 import crypt.language.lexer.token.Token;
 
+import java.util.List;
+
 public abstract class Expression {
     public abstract <T> T accept(Visitor<T> visitor);
 
@@ -108,6 +110,23 @@ public abstract class Expression {
         }
     }
 
+    public static class Call extends Expression {
+        public Call(Expression callee, Token paren, List<Expression> arguments){
+            this.callee = callee;
+            this.paren = paren;
+            this.arguments = arguments;
+        }
+
+        public Expression callee;
+        public Token paren;
+        public List<Expression> arguments;
+
+        @Override
+        public <T> T accept(Visitor<T> visitor){
+            return visitor.visit(this);
+        }
+    }
+
     public interface Visitor<T> {
         T visit(Expression expression);
         T visitBinaryExpression(Expression.Binary expression);
@@ -117,5 +136,6 @@ public abstract class Expression {
         T visitVariableReference(Expression.Variable expression);
         T visitAssignment(Expression.Assignment expression);
         T visitLogicalExpression(Expression.Logical expression);
+        T visitCallExpression(Expression.Call expression);
     }
 }

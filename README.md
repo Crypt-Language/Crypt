@@ -27,15 +27,10 @@ _I Recommend not downloading source code as the compiler is incomplete and is su
 ### Running
  - clone repo
  - build `mvn build`
- - run the main function in `Crypt.java` to open REPL.
- - Type some syntax!
-     - Printing
-     - Variables
-     - If Statements
-     - While loops
-     - For loops
-     - Functions
-     - `return` statement
+ - run the main function in `Crypt.java` to run CLI.
+ - to run a `.crypt` file, type `crypt <path to file>` on the CLI.
+ - or type `runPrompt` to run the REPL.
+
 
 ### Community
 Have some ideas for Crypt features? Maybe you have a couple questions to ask about Crypt (or related)? If you do, don't hesitate to ask at the community chat room below.

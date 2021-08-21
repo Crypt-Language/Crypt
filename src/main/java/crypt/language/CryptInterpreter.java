@@ -5,15 +5,21 @@ import crypt.language.lexer.token.Token;
 import crypt.language.parser.AST.Expression;
 import crypt.language.parser.AST.Statement;
 import crypt.language.parser.environments.CryptCallable;
-import crypt.language.parser.environments.CryptFunction;
+import crypt.language.parser.environments.type.classType.CryptClass;
+import crypt.language.parser.environments.type.classType.CryptInstance;
+import crypt.language.parser.environments.type.functionType.CryptFunction;
 import crypt.language.parser.environments.Environment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static crypt.language.lexer.token.TokenType.*;
 
 public class CryptInterpreter implements Expression.Visitor<Object>, Statement.Visitor<Void> {
+    private final Map<Expression, Integer> locals = new HashMap<>();
+
     public final Environment globals = new Environment();
     private Environment environment = globals;
     public static boolean hadRuntimeError = false;
@@ -43,6 +49,9 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
         if(expression instanceof Expression.Assignment) return visitAssignment((Expression.Assignment) expression);
         if(expression instanceof Expression.Logical) return visitLogicalExpression((Expression.Logical) expression);
         if(expression instanceof Expression.Call) return visitCallExpression((Expression.Call) expression);
+        if(expression instanceof Expression.Get) return visitGetExpression((Expression.Get) expression);
+        if(expression instanceof Expression.Set) return visitSetExpression((Expression.Set) expression);
+        if(expression instanceof Expression.This) return visitThisExpression((Expression.This) expression);
         throw new Error("Expression not found");
     }
 
@@ -58,14 +67,15 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
         if(statement instanceof Statement.While) return visitWhileStatement((Statement.While) statement);
         if(statement instanceof Statement.Function) return visitFunctionDeclaration((Statement.Function) statement);
         if(statement instanceof Statement.Return) return visitReturnStatement((Statement.Return) statement);
+        if(statement instanceof Statement.Class) return visitClassDeclaration((Statement.Class) statement);
         throw new Error("Statement not found");
     }
 
     /*
-    * =======================================
-    * Expression Interpreting
-    * =======================================
-    */
+     * =======================================
+     * Expression Interpreting
+     * =======================================
+     */
 
     @Override
     public Object visitBinaryExpression(Expression.Binary expression) {
@@ -147,13 +157,25 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
 
     @Override
     public Object visitVariableReference(Expression.Variable expression) {
+        //return lookUpVariable(expression.name, expression);
         return environment.get(expression.name);
     }
 
     @Override
     public Object visitAssignment(Expression.Assignment expression) {
         Object value = evaluate(expression.value);
-        environment.assign(expression.name, value);
+
+        environment.assign(expression.name, expression);
+
+        /*
+        Integer distance = locals.get(expression);
+        if (distance != null) {
+            environment.assignAt(distance, expression.name, value);
+        } else {
+            globals.assign(expression.name, value);
+        }
+         */
+
         return value;
     }
 
@@ -194,11 +216,40 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
         return function.call(this, arguments);
     }
 
+    @Override
+    public Object visitGetExpression(Expression.Get expression) {
+        Object object = evaluate(expression.object);
+        if (object instanceof CryptInstance) {
+            return ((CryptInstance) object).get(expression.name);
+        }
+
+        throw new RuntimeError(expression.name, "Only instances have properties.");
+    }
+
+    @Override
+    public Object visitSetExpression(Expression.Set expression) {
+        Object object = evaluate(expression.object);
+
+        if (!(object instanceof CryptInstance)) {
+            throw new RuntimeError(expression.name,
+                    "Only instances have fields.");
+        }
+
+        Object value = evaluate(expression.value);
+        ((CryptInstance)object).set(expression.name, value);
+        return value;
+    }
+
+    @Override
+    public Object visitThisExpression(Expression.This expression) {
+        return null;
+    }
+
     /*
-    * ============================
-    * Statement Interpreting
-    * ============================
-    */
+     * ============================
+     * Statement Interpreting
+     * ============================
+     */
 
     @Override
     public Void visitPrintStatement(Statement.Print printStatement) {
@@ -255,7 +306,7 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
 
     @Override
     public Void visitFunctionDeclaration(Statement.Function statement) {
-        CryptFunction function = new CryptFunction(statement, environment);
+        CryptFunction function = new CryptFunction(statement, environment, false);
         environment.define(statement.name.lexeme, function);
         return null;
     }
@@ -266,6 +317,28 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
         if (statement.value != null) value = evaluate(statement.value);
 
         throw new Return(value);
+    }
+
+    @Override
+    public Void visitClassDeclaration(Statement.Class statement) {
+        Object superClass = null;
+        if (statement.superClass != null) {
+            superClass = evaluate(statement.superClass);
+            if (!(superClass instanceof CryptClass)) {
+                throw new RuntimeError(statement.superClass.name, "Superclass must be a class.");
+            }
+        }
+
+        environment.define(statement.name.lexeme, null);
+        Map<String, CryptFunction> methods = new HashMap<>();
+        for (Statement.Function method : statement.methods) {
+            CryptFunction function = new CryptFunction(method, environment, method.name.lexeme.equals("init"));
+            methods.put(method.name.lexeme, function);
+        }
+
+        CryptClass type = new CryptClass(statement.name.lexeme, (CryptClass) superClass, methods);
+        environment.assign(statement.name, type);
+        return null;
     }
 
     /*
@@ -296,7 +369,7 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
     }
 
     void checkNumberOperands(Token operator,
-                                     Object left, Object right) {
+                             Object left, Object right) {
         if (left instanceof Double && right instanceof Double) return;
 
         throw new RuntimeError(operator, "Operands must be numbers.");
@@ -345,10 +418,23 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
         }
     }
 
+    public void resolve(Expression expr, int depth) {
+        locals.put(expr, depth);
+    }
+
+    private Object lookUpVariable(Token name, Expression expr) {
+        Integer distance = locals.get(expr);
+        if (distance != null) {
+            return environment.getAt(distance, name.lexeme);
+        } else {
+            return globals.get(name);
+        }
+    }
+
     /*
-    * RETURN
-    * ERROR
-    */
+     * RETURN
+     * ERROR
+     */
 
     public class Return extends RuntimeException {
         public final Object value;

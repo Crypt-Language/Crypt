@@ -139,6 +139,23 @@ public abstract class Statement {
         }
     }
 
+    public static class Class extends Statement {
+        public Class(Token name, Expression.Variable superClass, List<Statement.Function> methods){
+            this.name = name;
+            this.methods = methods;
+            this.superClass = superClass;
+        }
+
+        public Token name;
+        public List<Statement.Function> methods;
+        public Expression.Variable superClass;
+
+        @Override
+        public <T> T accept(Visitor<T> visitor){
+            return visitor.visit(this);
+        }
+    }
+
     public interface Visitor<T> {
         T visit(Statement statement);
         T visitPrintStatement(Statement.Print printStatement);
@@ -150,5 +167,6 @@ public abstract class Statement {
         T visitWhileStatement(Statement.While statement);
         T visitFunctionDeclaration(Statement.Function statement);
         T visitReturnStatement(Statement.Return statement);
+        T visitClassDeclaration(Statement.Class statement);
     }
 }

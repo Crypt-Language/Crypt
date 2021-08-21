@@ -41,6 +41,9 @@ public class CryptParser {
             if (expr instanceof Expression.Variable) {
                 Token name = ((Expression.Variable)expr).name;
                 return new Expression.Assignment(name, value);
+            } else if (expr instanceof Expression.Get) {
+                Expression.Get get = (Expression.Get)expr;
+                return new Expression.Set(get.object, get.name, value);
             }
 
             error(equals, "Invalid assignment target.");
@@ -137,6 +140,9 @@ public class CryptParser {
         while (true) {
             if (match(L_PAREN)) {
                 expr = finishCall(expr);
+            } else if (match(DOT)) {
+                Token name = consume(ID, "Expect property name after '.'.");
+                expr = new Expression.Get(expr, name);
             } else {
                 break;
             }
@@ -149,14 +155,13 @@ public class CryptParser {
         if (match(FALSE)) return new Expression.Literal(false);
         else if (match(TRUE)) return new Expression.Literal(true);
         else if (match(NIL)) return new Expression.Literal(null);
+        else if (match(NUMBER, STRING)) return new Expression.Literal(previous().literal);
 
-        else if (match(NUMBER, STRING)) {
-            return new Expression.Literal(previous().literal);
-        }
 
-        else if (match(ID)) {
-            return new Expression.Variable(previous());
-        }
+        if (match(THIS)) return new Expression.This(previous());
+
+        else if (match(ID)) return new Expression.Variable(previous());
+
 
         else if (match(L_PAREN)) {
             Expression expr = expression();
@@ -176,6 +181,7 @@ public class CryptParser {
         try {
             if (match(LET)) return variableDeclaration();
             if (match(FN)) return function("function");
+            if (match(TYPE)) return classDeclaration();
             return statement();
         } catch (ParseError error) {
             synchronize();
@@ -193,6 +199,7 @@ public class CryptParser {
         if (match(RETURN)) return returnStatement();
         return expressionStatement();
     }
+
 
     private Statement printStatement() {
         Expression value = expression();
@@ -227,7 +234,7 @@ public class CryptParser {
     private List<Statement> blockStatement(){
         List<Statement> statements = new ArrayList<>();
 
-        if(check(L_BRACE)) {
+        if(match(L_BRACE)) {
             while (!check(R_BRACE) && !isAtEnd()) {
                 statements.add(declaration());
             }
@@ -330,6 +337,28 @@ public class CryptParser {
 
         consume(SEMICOLON, "Expect ';' after return value.");
         return new Statement.Return(keyword, value);
+    }
+
+    private Statement classDeclaration(){
+        Token name = consume(ID, "Expect class name.");
+
+        Expression.Variable superclass = null;
+        if (match(DB_COLON)) {
+            consume(ID, "Expect superclass name.");
+            superclass = new Expression.Variable(previous());
+        }
+
+        consume(ARROW_RIGHT, "Expect '->' before block class body.");
+        consume(L_BRACE, "Expect '{' after class body.");
+
+        List<Statement.Function> methods = new ArrayList<>();
+        while (!check(R_BRACE) && !isAtEnd()) {
+            methods.add(function("method"));
+        }
+
+        consume(R_BRACE, "Expect '}' after class body.");
+
+        return new Statement.Class(name, superclass, methods);
     }
 
     /*

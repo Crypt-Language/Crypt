@@ -127,6 +127,51 @@ public abstract class Expression {
         }
     }
 
+    public static class Get extends Expression {
+        public Get(Expression object, Token name){
+            this.object = object;
+            this.name = name;
+        }
+
+        public Expression object;
+        public Token name;
+
+        @Override
+        public <T> T accept(Visitor<T> visitor){
+            return visitor.visit(this);
+        }
+    }
+
+    public static class Set extends Expression {
+        public Set(Expression object, Token name, Expression value){
+            this.object = object;
+            this.name = name;
+            this.value = value;
+        }
+
+        public Expression object;
+        public Token name;
+        public Expression value;
+
+        @Override
+        public <T> T accept(Visitor<T> visitor){
+            return visitor.visit(this);
+        }
+    }
+
+    public static class This extends Expression {
+        public This(Token keyword){
+            this.keyword = keyword;
+        }
+
+        public Token keyword;
+
+        @Override
+        public <T> T accept(Visitor<T> visitor){
+            return visitor.visit(this);
+        }
+    }
+
     public interface Visitor<T> {
         T visit(Expression expression);
         T visitBinaryExpression(Expression.Binary expression);
@@ -137,5 +182,8 @@ public abstract class Expression {
         T visitAssignment(Expression.Assignment expression);
         T visitLogicalExpression(Expression.Logical expression);
         T visitCallExpression(Expression.Call expression);
+        T visitGetExpression(Expression.Get expression);
+        T visitSetExpression(Expression.Set expression);
+        T visitThisExpression(Expression.This expression);
     }
 }

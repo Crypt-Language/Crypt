@@ -94,16 +94,17 @@ public class Crypt {
     private static void run(String source) {
         CryptLexer lexer = new CryptLexer(source);
         List<Token> tokens = lexer.lex();
+
         CryptParser parser = new CryptParser(tokens);
         List<Statement> statements = parser.parse();
 
         // Stop if there was a syntax error.
         if(hadError) return;
 
-        //Resolver resolver = new Resolver(interpreter);
-        //resolver.resolve(statements);
+        Resolver resolver = new Resolver(interpreter);
+        resolver.resolve(statements);
 
-        //if (hadError) return;
+        if (hadError) return;
 
         interpreter.interpret(statements);
     }

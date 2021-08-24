@@ -9,6 +9,7 @@ import crypt.language.parser.environments.type.classType.CryptClass;
 import crypt.language.parser.environments.type.classType.CryptInstance;
 import crypt.language.parser.environments.type.functionType.CryptFunction;
 import crypt.language.parser.environments.Environment;
+import crypt.language.parser.environments.type.functionType.FunctionType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,6 +53,7 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
         if(expression instanceof Expression.Get) return visitGetExpression((Expression.Get) expression);
         if(expression instanceof Expression.Set) return visitSetExpression((Expression.Set) expression);
         if(expression instanceof Expression.This) return visitThisExpression((Expression.This) expression);
+        if(expression instanceof Expression.Super) return visitSuperExpression((Expression.Super) expression);
         throw new Error("Expression not found");
     }
 
@@ -157,24 +159,24 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
 
     @Override
     public Object visitVariableReference(Expression.Variable expression) {
-        //return lookUpVariable(expression.name, expression);
-        return environment.get(expression.name);
+        return lookUpVariable(expression.name, expression);
+        //return environment.get(expression.name);
     }
 
     @Override
     public Object visitAssignment(Expression.Assignment expression) {
         Object value = evaluate(expression.value);
 
-        environment.assign(expression.name, expression);
+        //environment.assign(expression.name, expression);
 
-        /*
+
         Integer distance = locals.get(expression);
         if (distance != null) {
             environment.assignAt(distance, expression.name, value);
         } else {
             globals.assign(expression.name, value);
         }
-         */
+
 
         return value;
     }
@@ -243,6 +245,19 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
     @Override
     public Object visitThisExpression(Expression.This expression) {
         return null;
+    }
+
+    @Override
+    public Object visitSuperExpression(Expression.Super expression) {
+        int distance = locals.get(expression);
+
+        CryptClass superClass = (CryptClass)environment.getAt(distance, "super");
+        CryptInstance object = (CryptInstance)environment.getAt(distance - 1, "this");
+        CryptFunction method = superClass.findMethod(expression.method.lexeme);
+
+        if (method == null) throw new RuntimeError(expression.method, "Undefined property '" + expression.method.lexeme + "'.");
+
+        return method.bind(object);
     }
 
     /*
@@ -330,6 +345,12 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
         }
 
         environment.define(statement.name.lexeme, null);
+
+        if (statement.superClass != null) {
+            environment = new Environment(environment);
+            environment.define("super", superClass);
+        }
+
         Map<String, CryptFunction> methods = new HashMap<>();
         for (Statement.Function method : statement.methods) {
             CryptFunction function = new CryptFunction(method, environment, method.name.lexeme.equals("init"));
@@ -337,6 +358,11 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
         }
 
         CryptClass type = new CryptClass(statement.name.lexeme, (CryptClass) superClass, methods);
+
+        if (superClass != null) {
+            environment = environment.enclosing;
+        }
+
         environment.assign(statement.name, type);
         return null;
     }

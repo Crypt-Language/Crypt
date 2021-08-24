@@ -22,6 +22,7 @@ public class Resolver implements Expression.Visitor<Object>, Statement.Visitor<V
 
     public Resolver(CryptInterpreter interpreter){
         this.interpreter = interpreter;
+        scopes.push(new HashMap<>());
     }
 
     /*
@@ -41,6 +42,7 @@ public class Resolver implements Expression.Visitor<Object>, Statement.Visitor<V
         if(expression instanceof Expression.Call) return visitCallExpression((Expression.Call) expression);
         if(expression instanceof Expression.Get) return visitGetExpression((Expression.Get) expression);
         if(expression instanceof Expression.Set) return visitSetExpression((Expression.Set) expression);
+        if(expression instanceof Expression.Super) return visitSuperExpression((Expression.Super) expression);
         throw new Error("Expression not resolved");
     }
 
@@ -115,6 +117,19 @@ public class Resolver implements Expression.Visitor<Object>, Statement.Visitor<V
 
     @Override
     public Object visitThisExpression(Expression.This expression) {
+        return null;
+    }
+
+    @Override
+    public Object visitSuperExpression(Expression.Super expression) {
+        if (currentClass == ClassType.NONE) {
+            Crypt.error(expression.keyword.line,
+                    "Can't use 'super' outside of a class.");
+        } else if (currentClass != ClassType.SUBCLASS) {
+            Crypt.error(expression.keyword.line,
+                    "Can't use 'super' in a class with no superclass.");
+        }
+        resolveLocal(expression, expression.keyword);
         return null;
     }
 
@@ -226,7 +241,11 @@ public class Resolver implements Expression.Visitor<Object>, Statement.Visitor<V
                     "A class can't inherit from itself.");
         }
 
-        beginScope();
+        if (statement.superClass != null) {
+            currentClass = ClassType.SUBCLASS;
+            beginScope();
+            scopes.peek().put("super", true);
+        }
         scopes.peek().put("this", true);
 
         for (Statement.Function method : statement.methods) {
@@ -236,7 +255,8 @@ public class Resolver implements Expression.Visitor<Object>, Statement.Visitor<V
             }
             resolveFunction(method, declaration);
         }
-        endScope();
+        if (statement.superClass != null) endScope();
+
         currentClass = enclosingClass;
         return null;
     }
@@ -262,7 +282,7 @@ public class Resolver implements Expression.Visitor<Object>, Statement.Visitor<V
     }
 
     private void beginScope() {
-        scopes.push(new HashMap<String, Boolean>());
+        scopes.push(new HashMap<>());
     }
 
     private void endScope() {
@@ -286,7 +306,7 @@ public class Resolver implements Expression.Visitor<Object>, Statement.Visitor<V
     private void resolveLocal(Expression expr, Token name) {
         for (int i = scopes.size() - 1; i >= 0; i--) {
             if (scopes.get(i).containsKey(name.lexeme)) {
-                //interpreter.resolve(expr, scopes.size() - 1 - i);
+                interpreter.resolve(expr, scopes.size() - 1 - i);
                 return;
             }
         }

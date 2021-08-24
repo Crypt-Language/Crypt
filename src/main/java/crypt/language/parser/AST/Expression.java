@@ -172,6 +172,21 @@ public abstract class Expression {
         }
     }
 
+    public static class Super extends Expression {
+        public Super(Token keyword, Token method){
+            this.keyword = keyword;
+            this.method = method;
+        }
+
+        public Token keyword;
+        public Token method;
+
+        @Override
+        public <T> T accept(Visitor<T> visitor){
+            return visitor.visit(this);
+        }
+    }
+
     public interface Visitor<T> {
         T visit(Expression expression);
         T visitBinaryExpression(Expression.Binary expression);
@@ -185,5 +200,6 @@ public abstract class Expression {
         T visitGetExpression(Expression.Get expression);
         T visitSetExpression(Expression.Set expression);
         T visitThisExpression(Expression.This expression);
+        T visitSuperExpression(Expression.Super expression);
     }
 }

@@ -58,7 +58,10 @@ public class CryptLexer {
             case '+': newToken(PLUS); break;
             case ';': newToken(SEMICOLON); break;
             case '*': newToken(ASTERISK); break;
-            case '=': newToken(EQUALS); break;
+            case '=':
+                if(hasMatchedExpected('>')) newToken(ARROW_RIGHT_BIG);
+                else newToken(EQUALS);
+                break;
             case '~': newToken(TILDE); break;
             case '!':
                 if(hasMatchedExpected('=')) newToken(NOT_EQUAL);

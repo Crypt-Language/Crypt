@@ -157,6 +157,13 @@ public class CryptParser {
         else if (match(NIL)) return new Expression.Literal(null);
         else if (match(NUMBER, STRING)) return new Expression.Literal(previous().literal);
 
+        if (match(SUPER)) {
+            Token keyword = previous();
+            consume(DOT, "Expect '.' after 'super'.");
+            Token method = consume(ID, "Expect superclass method name.");
+            return new Expression.Super(keyword, method);
+        }
+
 
         if (match(THIS)) return new Expression.This(previous());
 
@@ -194,7 +201,7 @@ public class CryptParser {
         if(match(PRINTLN)) return printlnStatement();
         if(match(IF)) return ifStatement();
         if(match(WHILE)) return whileStatement();
-        if(match(ARROW_RIGHT)) return new Statement.Block(blockStatement());
+        if(match(ARROW_RIGHT_BIG)) return new Statement.Block(blockStatement());
         if (match(FOR)) return forStatement();
         if (match(RETURN)) return returnStatement();
         return expressionStatement();
@@ -325,7 +332,7 @@ public class CryptParser {
 
         consume(R_PAREN, "Expect ')' after parameters.");
 
-        consume(ARROW_RIGHT, "Expect '~' before " + kind + " body.");
+        consume(ARROW_RIGHT_BIG, "Expect '=>' before " + kind + " body.");
         List<Statement> body = blockStatement();
         return new Statement.Function(name, parameters, body);
     }
@@ -348,8 +355,8 @@ public class CryptParser {
             superclass = new Expression.Variable(previous());
         }
 
-        consume(ARROW_RIGHT, "Expect '->' before block class body.");
-        consume(L_BRACE, "Expect '{' after class body.");
+        consume(ARROW_RIGHT_BIG, "Expect '=>' before block class body.");
+        consume(L_BRACE, "Expect '{' before class body.");
 
         List<Statement.Function> methods = new ArrayList<>();
         while (!check(R_BRACE) && !isAtEnd()) {

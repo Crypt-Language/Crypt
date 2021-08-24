@@ -8,7 +8,7 @@ public enum TokenType {
     // One or two character tokens.
 
     COLON, DB_COLON,
-    GREATER, GREATER_OR_EQUAL, ARROW_RIGHT,
+    GREATER, GREATER_OR_EQUAL, ARROW_RIGHT, ARROW_RIGHT_BIG,
     LESS, LESS_OR_EQUAL,
 
     // Literals.

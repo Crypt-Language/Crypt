@@ -44,7 +44,7 @@ public class CryptClass implements CryptCallable {
         return instance;
     }
 
-    CryptFunction findMethod(String name) {
+    public CryptFunction findMethod(String name) {
         if (methods.containsKey(name)) {
             return methods.get(name);
         }

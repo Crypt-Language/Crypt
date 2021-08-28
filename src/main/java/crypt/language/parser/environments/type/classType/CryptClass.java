@@ -4,6 +4,7 @@ import crypt.language.CryptInterpreter;
 import crypt.language.parser.environments.CryptCallable;
 import crypt.language.parser.environments.type.functionType.CryptFunction;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +36,7 @@ public class CryptClass implements CryptCallable {
     }
 
     @Override
-    public Object call(CryptInterpreter interpreter, List<Object> arguments) {
+    public Object call(CryptInterpreter interpreter, List<Object> arguments) throws IOException {
         CryptInstance instance = new CryptInstance(this);
         CryptFunction initializer = findMethod("init");
         if (initializer != null) {

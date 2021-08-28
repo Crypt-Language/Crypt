@@ -11,6 +11,9 @@ import crypt.language.parser.environments.type.functionType.CryptFunction;
 import crypt.language.parser.environments.Environment;
 import crypt.language.parser.environments.type.functionType.FunctionType;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +44,7 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
     }
 
     @Override
-    public Object visit(Expression expression){
+    public Object visit(Expression expression) throws IOException {
         if(expression instanceof Expression.Binary) return visitBinaryExpression((Expression.Binary)expression);
         if(expression instanceof Expression.Unary) return visitUnaryExpression((Expression.Unary)expression);
         if(expression instanceof Expression.Grouping) return visitGroupingExpression((Expression.Grouping) expression);
@@ -59,7 +62,7 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
 
 
     @Override
-    public Void visit(Statement statement) {
+    public Void visit(Statement statement) throws IOException {
         if(statement instanceof Statement.Print) return visitPrintStatement((Statement.Print) statement);
         if(statement instanceof Statement.Println) return visitPrintlnStatement((Statement.Println) statement);
         if(statement instanceof Statement.ExpressionStatement) return visitExpressionStatement((Statement.ExpressionStatement) statement);
@@ -70,6 +73,7 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
         if(statement instanceof Statement.Function) return visitFunctionDeclaration((Statement.Function) statement);
         if(statement instanceof Statement.Return) return visitReturnStatement((Statement.Return) statement);
         if(statement instanceof Statement.Class) return visitClassDeclaration((Statement.Class) statement);
+        if(statement instanceof Statement.Input) return visitInputStatement((Statement.Input) statement);
         throw new Error("Statement not found");
     }
 
@@ -80,7 +84,7 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
      */
 
     @Override
-    public Object visitBinaryExpression(Expression.Binary expression) {
+    public Object visitBinaryExpression(Expression.Binary expression) throws IOException {
         Object left = evaluate(expression.left);
         Object right = evaluate(expression.right);
 
@@ -131,7 +135,7 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
     }
 
     @Override
-    public Object visitGroupingExpression(Expression.Grouping expression) {
+    public Object visitGroupingExpression(Expression.Grouping expression) throws IOException {
         return evaluate(expression.expression);
     }
 
@@ -141,7 +145,7 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
     }
 
     @Override
-    public Object visitUnaryExpression(Expression.Unary expression) {
+    public Object visitUnaryExpression(Expression.Unary expression) throws IOException {
         Object right = evaluate(expression.right);
 
         switch (expression.operator.type) {
@@ -164,7 +168,7 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
     }
 
     @Override
-    public Object visitAssignment(Expression.Assignment expression) {
+    public Object visitAssignment(Expression.Assignment expression) throws IOException {
         Object value = evaluate(expression.value);
 
         //environment.assign(expression.name, expression);
@@ -182,7 +186,7 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
     }
 
     @Override
-    public Object visitLogicalExpression(Expression.Logical expression) {
+    public Object visitLogicalExpression(Expression.Logical expression) throws IOException {
         Object left = evaluate(expression.left);
 
         if (expression.operator.type == OR) {
@@ -195,7 +199,7 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
     }
 
     @Override
-    public Object visitCallExpression(Expression.Call expression) {
+    public Object visitCallExpression(Expression.Call expression) throws IOException {
         Object callee = evaluate(expression.callee);
 
         List<Object> arguments = new ArrayList<>();
@@ -219,7 +223,7 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
     }
 
     @Override
-    public Object visitGetExpression(Expression.Get expression) {
+    public Object visitGetExpression(Expression.Get expression) throws IOException {
         Object object = evaluate(expression.object);
         if (object instanceof CryptInstance) {
             return ((CryptInstance) object).get(expression.name);
@@ -229,7 +233,7 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
     }
 
     @Override
-    public Object visitSetExpression(Expression.Set expression) {
+    public Object visitSetExpression(Expression.Set expression) throws IOException {
         Object object = evaluate(expression.object);
 
         if (!(object instanceof CryptInstance)) {
@@ -267,27 +271,27 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
      */
 
     @Override
-    public Void visitPrintStatement(Statement.Print printStatement) {
+    public Void visitPrintStatement(Statement.Print printStatement) throws IOException {
         Object value = evaluate(printStatement.expression);
         System.out.print(stringify(value));
         return null;
     }
 
     @Override
-    public Void visitPrintlnStatement(Statement.Println printlnStatement) {
+    public Void visitPrintlnStatement(Statement.Println printlnStatement) throws IOException {
         Object value = evaluate(printlnStatement.expression);
         System.out.println(stringify(value));
         return null;
     }
 
     @Override
-    public Void visitExpressionStatement(Statement.ExpressionStatement expressionStatement) {
+    public Void visitExpressionStatement(Statement.ExpressionStatement expressionStatement) throws IOException {
         evaluate(expressionStatement.expression);
         return null;
     }
 
     @Override
-    public Void visitVariableDeclaration(Statement.Variable statement) {
+    public Void visitVariableDeclaration(Statement.Variable statement) throws IOException {
         Object value = null;
         if (statement.initializer != null) {
             value = evaluate(statement.initializer);
@@ -298,13 +302,13 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
     }
 
     @Override
-    public Void visitBlockStatement(Statement.Block statement) {
+    public Void visitBlockStatement(Statement.Block statement) throws IOException {
         executeBlock(statement.statements, new Environment(environment));
         return null;
     }
 
     @Override
-    public Void visitIfStatement(Statement.If statement) {
+    public Void visitIfStatement(Statement.If statement) throws IOException {
         if (isTruthy(evaluate(statement.condition))) execute(statement.thenStatement);
         else if (statement.elseStatement != null) execute(statement.elseStatement);
 
@@ -312,7 +316,7 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
     }
 
     @Override
-    public Void visitWhileStatement(Statement.While statement) {
+    public Void visitWhileStatement(Statement.While statement) throws IOException {
         while (isTruthy(evaluate(statement.condition))) {
             execute(statement.body);
         }
@@ -327,7 +331,7 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
     }
 
     @Override
-    public Void visitReturnStatement(Statement.Return statement) {
+    public Void visitReturnStatement(Statement.Return statement) throws IOException {
         Object value = null;
         if (statement.value != null) value = evaluate(statement.value);
 
@@ -335,7 +339,7 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
     }
 
     @Override
-    public Void visitClassDeclaration(Statement.Class statement) {
+    public Void visitClassDeclaration(Statement.Class statement) throws IOException {
         Object superClass = null;
         if (statement.superClass != null) {
             superClass = evaluate(statement.superClass);
@@ -367,12 +371,27 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
         return null;
     }
 
+    @Override
+    public Void visitInputStatement(Statement.Input statement) throws IOException {
+        Object value = evaluate(statement.expression);
+        System.out.print(stringify(value));
+
+        InputStreamReader input = new InputStreamReader(System.in);
+        BufferedReader reader = new BufferedReader(input);
+
+        String userInput = reader.readLine();
+
+        evaluate(new Expression.Literal(userInput));
+
+        return null;
+    }
+
     /*
      * ============================
      * Helper functions
      * ============================
      */
-    Object evaluate(Expression expr) {
+    Object evaluate(Expression expr) throws IOException {
         return expr.accept(this);
     }
 
@@ -401,9 +420,11 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
         throw new RuntimeError(operator, "Operands must be numbers.");
     }
 
-    void interpret(List<Statement> statements) {
+    void interpret(List<Statement> statements) throws IOException {
         try {
-            statements.forEach(this::execute);
+            for (Statement statement : statements) {
+                execute(statement);
+            }
         } catch (RuntimeError error) {
             Crypt.runtimeError(error);
         }
@@ -429,16 +450,18 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
         hadRuntimeError = true;
     }
 
-    void execute(Statement stmt) {
+    void execute(Statement stmt) throws IOException {
         stmt.accept(this);
     }
 
-    public void executeBlock(List<Statement> statements, Environment environment) {
+    public void executeBlock(List<Statement> statements, Environment environment) throws IOException {
         Environment previous = this.environment;
 
         try {
             this.environment = environment;
-            statements.forEach(this::execute);
+            for (Statement statement : statements) {
+                execute(statement);
+            }
         } finally {
             this.environment = previous;
         }

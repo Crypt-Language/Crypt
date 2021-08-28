@@ -20,6 +20,7 @@ public enum TokenType {
     // Keywords.
     AND, TYPE, ELSE, FALSE, FN, FOR, IF, NIL, OR, NOT, TO,
     PRINT, PRINTLN, RETURN, SUPER, THIS, TRUE, LET, WHILE,
+    INPUT,
 
     EOF
 }

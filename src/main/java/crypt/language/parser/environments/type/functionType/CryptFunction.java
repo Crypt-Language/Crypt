@@ -6,6 +6,7 @@ import crypt.language.parser.environments.CryptCallable;
 import crypt.language.parser.environments.Environment;
 import crypt.language.parser.environments.type.classType.CryptInstance;
 
+import java.io.IOException;
 import java.util.List;
 
 public class CryptFunction implements CryptCallable {
@@ -25,7 +26,7 @@ public class CryptFunction implements CryptCallable {
     }
 
     @Override
-    public Object call(CryptInterpreter interpreter, List<Object> arguments) {
+    public Object call(CryptInterpreter interpreter, List<Object> arguments) throws IOException {
         Environment environment = new Environment(closure);
         for (int i = 0; i < declaration.parameters.size(); i++) {
             environment.define(declaration.parameters.get(i).lexeme,

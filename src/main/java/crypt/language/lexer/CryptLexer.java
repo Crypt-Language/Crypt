@@ -148,6 +148,7 @@ public class CryptLexer {
         keywords.put("let",    LET);
         keywords.put("while",  WHILE);
         keywords.put("to", TO);
+        keywords.put("input", INPUT);
 
         types.put("int", Types.INT);
         types.put("str", Types.STRING);

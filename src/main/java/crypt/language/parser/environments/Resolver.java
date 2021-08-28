@@ -8,6 +8,7 @@ import crypt.language.parser.AST.Statement;
 import crypt.language.parser.environments.type.classType.ClassType;
 import crypt.language.parser.environments.type.functionType.FunctionType;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class Resolver implements Expression.Visitor<Object>, Statement.Visitor<V
      * =================================================
      */
     @Override
-    public Object visit(Expression expression) {
+    public Object visit(Expression expression) throws IOException {
         if(expression instanceof Expression.Binary) return visitBinaryExpression((Expression.Binary)expression);
         if(expression instanceof Expression.Unary) return visitUnaryExpression((Expression.Unary)expression);
         if(expression instanceof Expression.Grouping) return visitGroupingExpression((Expression.Grouping) expression);
@@ -47,14 +48,14 @@ public class Resolver implements Expression.Visitor<Object>, Statement.Visitor<V
     }
 
     @Override
-    public Object visitBinaryExpression(Expression.Binary expression) {
+    public Object visitBinaryExpression(Expression.Binary expression) throws IOException {
         resolve(expression.left);
         resolve(expression.right);
         return null;
     }
 
     @Override
-    public Object visitGroupingExpression(Expression.Grouping expression) {
+    public Object visitGroupingExpression(Expression.Grouping expression) throws IOException {
         resolve(expression.expression);
         return null;
     }
@@ -65,7 +66,7 @@ public class Resolver implements Expression.Visitor<Object>, Statement.Visitor<V
     }
 
     @Override
-    public Object visitUnaryExpression(Expression.Unary expression) {
+    public Object visitUnaryExpression(Expression.Unary expression) throws IOException {
         resolve(expression.right);
         return null;
     }
@@ -82,34 +83,34 @@ public class Resolver implements Expression.Visitor<Object>, Statement.Visitor<V
     }
 
     @Override
-    public Object visitAssignment(Expression.Assignment expression) {
+    public Object visitAssignment(Expression.Assignment expression) throws IOException {
         resolve(expression.value);
         resolveLocal(expression, expression.name);
         return null;
     }
 
     @Override
-    public Object visitLogicalExpression(Expression.Logical expression) {
+    public Object visitLogicalExpression(Expression.Logical expression) throws IOException {
         resolve(expression.left);
         resolve(expression.right);
         return null;
     }
 
     @Override
-    public Object visitCallExpression(Expression.Call expression) {
+    public Object visitCallExpression(Expression.Call expression) throws IOException {
         resolve(expression.callee);
         for (Expression argument : expression.arguments) resolve(argument);
         return null;
     }
 
     @Override
-    public Object visitGetExpression(Expression.Get expression) {
+    public Object visitGetExpression(Expression.Get expression) throws IOException {
         resolve(expression.object);
         return null;
     }
 
     @Override
-    public Object visitSetExpression(Expression.Set expression) {
+    public Object visitSetExpression(Expression.Set expression) throws IOException {
         resolve(expression.value);
         resolve(expression.object);
         return null;
@@ -140,7 +141,7 @@ public class Resolver implements Expression.Visitor<Object>, Statement.Visitor<V
     */
 
     @Override
-    public Void visit(Statement statement) {
+    public Void visit(Statement statement) throws IOException {
         if(statement instanceof Statement.Print) return visitPrintStatement((Statement.Print) statement);
         if(statement instanceof Statement.Println) return visitPrintlnStatement((Statement.Println) statement);
         if(statement instanceof Statement.ExpressionStatement) return visitExpressionStatement((Statement.ExpressionStatement) statement);
@@ -155,25 +156,25 @@ public class Resolver implements Expression.Visitor<Object>, Statement.Visitor<V
     }
 
     @Override
-    public Void visitPrintStatement(Statement.Print printStatement) {
+    public Void visitPrintStatement(Statement.Print printStatement) throws IOException {
         resolve(printStatement.expression);
         return null;
     }
 
     @Override
-    public Void visitPrintlnStatement(Statement.Println printlnStatement) {
+    public Void visitPrintlnStatement(Statement.Println printlnStatement) throws IOException {
         resolve(printlnStatement.expression);
         return null;
     }
 
     @Override
-    public Void visitExpressionStatement(Statement.ExpressionStatement expressionStatement) {
+    public Void visitExpressionStatement(Statement.ExpressionStatement expressionStatement) throws IOException {
         resolve(expressionStatement.expression);
         return null;
     }
 
     @Override
-    public Void visitVariableDeclaration(Statement.Variable statement) {
+    public Void visitVariableDeclaration(Statement.Variable statement) throws IOException {
         declare(statement.name);
         if (statement.initializer != null) {
             resolve(statement.initializer);
@@ -183,7 +184,7 @@ public class Resolver implements Expression.Visitor<Object>, Statement.Visitor<V
     }
 
     @Override
-    public Void visitBlockStatement(Statement.Block statement) {
+    public Void visitBlockStatement(Statement.Block statement) throws IOException {
         beginScope();
         resolve(statement.statements);
         endScope();
@@ -191,7 +192,7 @@ public class Resolver implements Expression.Visitor<Object>, Statement.Visitor<V
     }
 
     @Override
-    public Void visitIfStatement(Statement.If statement) {
+    public Void visitIfStatement(Statement.If statement) throws IOException {
         resolve(statement.condition);
         resolve(statement.thenStatement);
         if (statement.elseStatement != null) resolve(statement.elseStatement);
@@ -199,14 +200,14 @@ public class Resolver implements Expression.Visitor<Object>, Statement.Visitor<V
     }
 
     @Override
-    public Void visitWhileStatement(Statement.While statement) {
+    public Void visitWhileStatement(Statement.While statement) throws IOException {
         resolve(statement.condition);
         resolve(statement.body);
         return null;
     }
 
     @Override
-    public Void visitFunctionDeclaration(Statement.Function statement) {
+    public Void visitFunctionDeclaration(Statement.Function statement) throws IOException {
         declare(statement.name);
         define(statement.name);
 
@@ -215,7 +216,7 @@ public class Resolver implements Expression.Visitor<Object>, Statement.Visitor<V
     }
 
     @Override
-    public Void visitReturnStatement(Statement.Return statement) {
+    public Void visitReturnStatement(Statement.Return statement) throws IOException {
         if (currentFunction == FunctionType.NONE) Crypt.error(statement.keyword.line, "Can't return from top-level code.");
 
         if (statement.value != null){
@@ -228,7 +229,7 @@ public class Resolver implements Expression.Visitor<Object>, Statement.Visitor<V
     }
 
     @Override
-    public Void visitClassDeclaration(Statement.Class statement) {
+    public Void visitClassDeclaration(Statement.Class statement) throws IOException {
         ClassType enclosingClass = currentClass;
         currentClass = ClassType.CLASS;
 
@@ -261,23 +262,29 @@ public class Resolver implements Expression.Visitor<Object>, Statement.Visitor<V
         return null;
     }
 
+    @Override
+    public Void visitInputStatement(Statement.Input statement) throws IOException {
+        resolve(statement);
+        return null;
+    }
+
     /*
      * =================================================
      * Helpers
      * =================================================
      */
 
-    public void resolve(List<Statement> statements) {
+    public void resolve(List<Statement> statements) throws IOException {
         for (Statement statement : statements) {
             resolve(statement);
         }
     }
 
-    private void resolve(Statement stmt) {
+    private void resolve(Statement stmt) throws IOException {
         stmt.accept(this);
     }
 
-    private void resolve(Expression expr) {
+    private void resolve(Expression expr) throws IOException {
         expr.accept(this);
     }
 
@@ -312,7 +319,7 @@ public class Resolver implements Expression.Visitor<Object>, Statement.Visitor<V
         }
     }
 
-    private void resolveFunction(Statement.Function function, FunctionType type) {
+    private void resolveFunction(Statement.Function function, FunctionType type) throws IOException {
         FunctionType enclosingFunction = currentFunction;
         currentFunction = type;
 

@@ -2,10 +2,11 @@ package crypt.language.parser.AST;
 
 import crypt.language.lexer.token.Token;
 
+import java.io.IOException;
 import java.util.List;
 
 public abstract class Expression {
-    public abstract <T> T accept(Visitor<T> visitor);
+    public abstract <T> T accept(Visitor<T> visitor) throws IOException;
 
     public static class Binary extends Expression {
         public Binary(Expression left, Token operator, Expression right) {
@@ -19,7 +20,7 @@ public abstract class Expression {
         public final Expression right;
 
         @Override
-        public <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor) throws IOException {
             return visitor.visit(this);
         }
     }
@@ -32,7 +33,7 @@ public abstract class Expression {
         public final Expression expression;
 
         @Override
-        public <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor) throws IOException {
             return visitor.visit(this);
         }
     }
@@ -45,7 +46,7 @@ public abstract class Expression {
         public final Object value;
 
         @Override
-        public <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor) throws IOException {
             return visitor.visit(this);
         }
     }
@@ -60,7 +61,7 @@ public abstract class Expression {
         public final Expression right;
 
         @Override
-        public <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor) throws IOException {
             return visitor.visit(this);
         }
     }
@@ -73,7 +74,7 @@ public abstract class Expression {
         public Token name;
 
         @Override
-        public <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor) throws IOException {
             return visitor.visit(this);
         }
     }
@@ -88,7 +89,7 @@ public abstract class Expression {
         public Expression value;
 
         @Override
-        public <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor) throws IOException {
             return visitor.visit(this);
         }
     }
@@ -105,7 +106,7 @@ public abstract class Expression {
         public Expression right;
 
         @Override
-        public <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor) throws IOException {
             return visitor.visit(this);
         }
     }
@@ -122,7 +123,7 @@ public abstract class Expression {
         public List<Expression> arguments;
 
         @Override
-        public <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor) throws IOException {
             return visitor.visit(this);
         }
     }
@@ -137,7 +138,7 @@ public abstract class Expression {
         public Token name;
 
         @Override
-        public <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor) throws IOException {
             return visitor.visit(this);
         }
     }
@@ -154,7 +155,7 @@ public abstract class Expression {
         public Expression value;
 
         @Override
-        public <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor) throws IOException {
             return visitor.visit(this);
         }
     }
@@ -167,7 +168,7 @@ public abstract class Expression {
         public Token keyword;
 
         @Override
-        public <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor) throws IOException {
             return visitor.visit(this);
         }
     }
@@ -182,23 +183,23 @@ public abstract class Expression {
         public Token method;
 
         @Override
-        public <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor) throws IOException {
             return visitor.visit(this);
         }
     }
 
     public interface Visitor<T> {
-        T visit(Expression expression);
-        T visitBinaryExpression(Expression.Binary expression);
-        T visitGroupingExpression(Expression.Grouping expression);
+        T visit(Expression expression) throws IOException;
+        T visitBinaryExpression(Expression.Binary expression) throws IOException;
+        T visitGroupingExpression(Expression.Grouping expression) throws IOException;
         T visitLiteralExpression(Expression.Literal expression);
-        T visitUnaryExpression(Expression.Unary expression);
+        T visitUnaryExpression(Expression.Unary expression) throws IOException;
         T visitVariableReference(Expression.Variable expression);
-        T visitAssignment(Expression.Assignment expression);
-        T visitLogicalExpression(Expression.Logical expression);
-        T visitCallExpression(Expression.Call expression);
-        T visitGetExpression(Expression.Get expression);
-        T visitSetExpression(Expression.Set expression);
+        T visitAssignment(Expression.Assignment expression) throws IOException;
+        T visitLogicalExpression(Expression.Logical expression) throws IOException;
+        T visitCallExpression(Expression.Call expression) throws IOException;
+        T visitGetExpression(Expression.Get expression) throws IOException;
+        T visitSetExpression(Expression.Set expression) throws IOException;
         T visitThisExpression(Expression.This expression);
         T visitSuperExpression(Expression.Super expression);
     }

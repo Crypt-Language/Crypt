@@ -202,8 +202,9 @@ public class CryptParser {
         if(match(IF)) return ifStatement();
         if(match(WHILE)) return whileStatement();
         if(match(ARROW_RIGHT_BIG)) return new Statement.Block(blockStatement());
-        if (match(FOR)) return forStatement();
-        if (match(RETURN)) return returnStatement();
+        if(match(FOR)) return forStatement();
+        if(match(RETURN)) return returnStatement();
+        if(match(INPUT)) return inputStatement();
         return expressionStatement();
     }
 
@@ -218,6 +219,12 @@ public class CryptParser {
         Expression value = expression();
         consume(SEMICOLON, "Expect ';' after value.");
         return new Statement.Println(value);
+    }
+
+    private Statement inputStatement() {
+        Expression value = expression();
+        consume(SEMICOLON, "Expect ';' after value.");
+        return new Statement.Input(value);
     }
 
     private Statement expressionStatement() {

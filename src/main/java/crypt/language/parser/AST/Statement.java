@@ -3,10 +3,11 @@ package crypt.language.parser.AST;
 import crypt.language.lexer.token.Token;
 
 import javax.swing.plaf.nimbus.State;
+import java.io.IOException;
 import java.util.List;
 
 public abstract class Statement {
-    public abstract <T> T accept(Statement.Visitor<T> visitor);
+    public abstract <T> T accept(Statement.Visitor<T> visitor) throws IOException;
 
     public static class Print extends Statement{
         public Print(Expression expression){
@@ -16,7 +17,7 @@ public abstract class Statement {
         public Expression expression;
 
         @Override
-        public <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor) throws IOException {
             return visitor.visit(this);
         }
     }
@@ -29,7 +30,7 @@ public abstract class Statement {
         public Expression expression;
 
         @Override
-        public <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor) throws IOException {
             return visitor.visit(this);
         }
     }
@@ -42,7 +43,7 @@ public abstract class Statement {
         public Expression expression;
 
         @Override
-        public <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor) throws IOException {
             return visitor.visit(this);
         }
     }
@@ -57,7 +58,7 @@ public abstract class Statement {
         public Expression initializer;
 
         @Override
-        public <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor) throws IOException {
             return visitor.visit(this);
         }
     }
@@ -70,7 +71,7 @@ public abstract class Statement {
         public List<Statement> statements;
 
         @Override
-        public <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor) throws IOException {
             return visitor.visit(this);
         }
     }
@@ -87,7 +88,7 @@ public abstract class Statement {
         public Statement elseStatement;
 
         @Override
-        public <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor) throws IOException {
             return visitor.visit(this);
         }
     }
@@ -102,7 +103,7 @@ public abstract class Statement {
         public Statement body;
 
         @Override
-        public <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor) throws IOException {
             return visitor.visit(this);
         }
     }
@@ -119,7 +120,7 @@ public abstract class Statement {
         public List<Statement> body;
 
         @Override
-        public <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor) throws IOException {
             return visitor.visit(this);
         }
     }
@@ -134,7 +135,7 @@ public abstract class Statement {
         public Expression value;
 
         @Override
-        public <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor) throws IOException {
             return visitor.visit(this);
         }
     }
@@ -151,22 +152,36 @@ public abstract class Statement {
         public Expression.Variable superClass;
 
         @Override
-        public <T> T accept(Visitor<T> visitor){
+        public <T> T accept(Visitor<T> visitor) throws IOException {
+            return visitor.visit(this);
+        }
+    }
+
+    public static class Input extends Statement{
+        public Input(Expression expression){
+            this.expression = expression;
+        }
+
+        public Expression expression;
+
+        @Override
+        public <T> T accept(Visitor<T> visitor) throws IOException {
             return visitor.visit(this);
         }
     }
 
     public interface Visitor<T> {
-        T visit(Statement statement);
-        T visitPrintStatement(Statement.Print printStatement);
-        T visitPrintlnStatement(Statement.Println printlnStatement);
-        T visitExpressionStatement(Statement.ExpressionStatement expressionStatement);
-        T visitVariableDeclaration(Statement.Variable statement);
-        T visitBlockStatement(Statement.Block statement);
-        T visitIfStatement(Statement.If statement);
-        T visitWhileStatement(Statement.While statement);
-        T visitFunctionDeclaration(Statement.Function statement);
-        T visitReturnStatement(Statement.Return statement);
-        T visitClassDeclaration(Statement.Class statement);
+        T visit(Statement statement) throws IOException;
+        T visitPrintStatement(Statement.Print printStatement) throws IOException;
+        T visitPrintlnStatement(Statement.Println printlnStatement) throws IOException;
+        T visitExpressionStatement(Statement.ExpressionStatement expressionStatement) throws IOException;
+        T visitVariableDeclaration(Statement.Variable statement) throws IOException;
+        T visitBlockStatement(Statement.Block statement) throws IOException;
+        T visitIfStatement(Statement.If statement) throws IOException;
+        T visitWhileStatement(Statement.While statement) throws IOException;
+        T visitFunctionDeclaration(Statement.Function statement) throws IOException;
+        T visitReturnStatement(Statement.Return statement) throws IOException;
+        T visitClassDeclaration(Statement.Class statement) throws IOException;
+        T visitInputStatement(Statement.Input statement) throws IOException;
     }
 }

@@ -20,7 +20,7 @@ But, before this... I will setup an interpreter to run the language
   - [x] Lexer
   - [x] Parser
   - [x] Interpreter (for quick tests)
-  - [ ] JVM Bytecode Compiler
+  - [ ] JVM Bytecode Compiler --> (In Progress)
 
 _I Recommend not downloading source code as the compiler is incomplete and is subject to many changes. But, if you wish to try what has been done so far... go right ahead :)_
 

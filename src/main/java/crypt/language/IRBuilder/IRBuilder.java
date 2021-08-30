@@ -1,5 +1,6 @@
 package crypt.language.IRBuilder;
 
+import crypt.language.IRBuilder.generator.StatementGenerator;
 import crypt.language.lexer.CryptLexer;
 import crypt.language.lexer.token.Token;
 import crypt.language.parser.AST.Statement;
@@ -39,6 +40,8 @@ public class IRBuilder implements Opcodes{
         * actual bytecode generation
         * ============================================================
         */
+        StatementGenerator statementGenerator = new StatementGenerator(methodVisitor);
+        statementGenerator.generate(statements);
 
         //methodVisitor.visitInsn(RETURN);
         methodVisitor.visitMaxs(100, 0);

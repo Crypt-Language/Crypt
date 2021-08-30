@@ -24,15 +24,6 @@ public class Crypt {
     public static final IRBuilder builder = new IRBuilder();
 
     public static void main(String[] args) throws IOException {
-        //if (args.length > 1) {
-        //    System.out.println("Usage: crypt [script]");
-        //    System.exit(64);
-        //} else if (args.length == 1) {
-        //    runFile(args[0]);
-        //} else {
-        //    runPrompt();
-        //}
-
         runCommandPrompts();
     }
 
@@ -146,8 +137,10 @@ public class Crypt {
     }
 
     public static void printCommandList(){
+        System.out.println(" ========================================");
         System.out.println(" ========== Crypt Command Table =========");
-        System.out.println(" <<<<< List of commands: >>>>>");
+        System.out.println(" ========================================\n");
+        System.out.println(" <<<<< List of commands: (For command help, type 'help <command name>') >>>>>");
         System.out.println(" -> help <command name>");
         System.out.println(" -> crypt <path to file>");
         System.out.println(" -> cryptc <path to file>");

@@ -1,6 +1,7 @@
 package crypt.language.parser;
 
 import crypt.language.Crypt;
+import crypt.language.error.Errors;
 import crypt.language.lexer.token.Token;
 import crypt.language.lexer.token.TokenType;
 import crypt.language.parser.AST.Expression;
@@ -115,7 +116,7 @@ public class CryptParser {
     private Expression factor() {
         Expression expr = unary();
 
-        while (match(SLASH, ASTERISK)) {
+        while (match(SLASH, ASTERISK, POW)) {
             Token operator = previous();
             Expression right = unary();
             expr = new Expression.Binary(expr, operator, right);
@@ -125,7 +126,7 @@ public class CryptParser {
     }
 
     private Expression unary() {
-        if (match(NOT, MINUS)) {
+        if (match(NOT, MINUS, ROOT)) {
             Token operator = previous();
             Expression right = unary();
             return new Expression.Unary(operator, right);
@@ -421,7 +422,7 @@ public class CryptParser {
     }
 
     private ParseError error(Token token, String message) {
-        Crypt.error(token.line, message);
+        Errors.report(2, token.lexeme, token.line);
         return new ParseError();
     }
 

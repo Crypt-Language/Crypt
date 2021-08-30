@@ -1,6 +1,7 @@
 package crypt.language.lexer;
 
 import crypt.language.Crypt;
+import crypt.language.error.Errors;
 import crypt.language.lexer.token.Token;
 import crypt.language.lexer.token.TokenType;
 import crypt.language.parser.environments.type.Types;
@@ -53,6 +54,11 @@ public class CryptLexer {
             case ',': newToken(COMMA); break;
             case '.': newToken(DOT); break;
             case '?': newToken(Q_MARK); break;
+            case '^':
+                if(hasMatchedExpected('/')) newToken(ROOT);
+                else newToken(POW);
+                break;
+
             case '-':
                 if(hasMatchedExpected('>')) newToken(ARROW_RIGHT);
                 else newToken(MINUS);
@@ -119,7 +125,7 @@ public class CryptLexer {
             default:
                 if (isDigit(c)) number();
                 else if (isAlpha(c)) identifier();
-                else Crypt.error(line, "Unexpected character.");
+                else Errors.report(1, String.valueOf(c), line);
                 break;
         }
     }

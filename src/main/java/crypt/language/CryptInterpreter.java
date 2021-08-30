@@ -106,7 +106,15 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
                 else if (left instanceof String && right instanceof String) return (String) left + (String) right;
                 throw new RuntimeError(expression.operator, "Operands must be two numbers or two strings.");
 
-                // Comparision
+            case POW:
+                checkNumberOperands(expression.operator, left, right);
+                return Math.pow((double) left, (double) right);
+
+            case ROOT:
+                checkNumberOperands(expression.operator, left, right);
+                return Math.sqrt((double) right);
+
+            // Comparision
 
             case GREATER:
                 checkNumberOperands(expression.operator, left, right);
@@ -155,6 +163,10 @@ public class CryptInterpreter implements Expression.Visitor<Object>, Statement.V
 
             case NOT:
                 return !isTruthy(right);
+
+            case ROOT:
+                checkNumberOperand(expression.operator, right);
+                return Math.sqrt((double) right);
         }
 
         // Unreachable.

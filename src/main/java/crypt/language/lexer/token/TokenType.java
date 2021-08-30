@@ -3,7 +3,8 @@ package crypt.language.lexer.token;
 public enum TokenType {
     // Single-character tokens.
     L_PAREN, R_PAREN, L_BRACE, R_BRACE, TILDE, Q_MARK,
-    COMMA, DOT, MINUS, PLUS, SEMICOLON, SLASH, ASTERISK,EQUALS,NOT_EQUAL,
+    COMMA, DOT, MINUS, PLUS, SEMICOLON, SLASH, ASTERISK,
+    EQUALS,NOT_EQUAL, POW, ROOT,
 
     // One or two character tokens.
 

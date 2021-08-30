@@ -1,70 +1,87 @@
 package crypt.language.IRBuilder.generator;
 
 import crypt.language.parser.AST.Expression;
+import crypt.language.parser.AST.Statement;
 
-public class ExpressionGenerator implements Expression.Visitor{
+import java.util.List;
+
+public class ExpressionGenerator implements Expression.Visitor<Void>{
+    public void generate(Expression expression){ visit(expression); }
+
     @Override
-    public Object visit(Expression expression) {
+    public Void visit(Expression expression) {
+        if(expression instanceof Expression.Binary) return visitBinaryExpression((Expression.Binary)expression);
+        if(expression instanceof Expression.Unary) return visitUnaryExpression((Expression.Unary)expression);
+        if(expression instanceof Expression.Grouping) return visitGroupingExpression((Expression.Grouping) expression);
+        if(expression instanceof Expression.Literal) return visitLiteralExpression((Expression.Literal) expression);
+        if(expression instanceof Expression.Variable) return visitVariableReference((Expression.Variable) expression);
+        if(expression instanceof Expression.Assignment) return visitAssignment((Expression.Assignment) expression);
+        if(expression instanceof Expression.Logical) return visitLogicalExpression((Expression.Logical) expression);
+        if(expression instanceof Expression.Call) return visitCallExpression((Expression.Call) expression);
+        if(expression instanceof Expression.Get) return visitGetExpression((Expression.Get) expression);
+        if(expression instanceof Expression.Set) return visitSetExpression((Expression.Set) expression);
+        if(expression instanceof Expression.This) return visitThisExpression((Expression.This) expression);
+        if(expression instanceof Expression.Super) return visitSuperExpression((Expression.Super) expression);
+        throw new Error("Expression not found");
+    }
+
+    @Override
+    public Void visitBinaryExpression(Expression.Binary expression) {
         return null;
     }
 
     @Override
-    public Object visitBinaryExpression(Expression.Binary expression) {
+    public Void visitGroupingExpression(Expression.Grouping expression) {
         return null;
     }
 
     @Override
-    public Object visitGroupingExpression(Expression.Grouping expression) {
+    public Void visitLiteralExpression(Expression.Literal expression) {
         return null;
     }
 
     @Override
-    public Object visitLiteralExpression(Expression.Literal expression) {
+    public Void visitUnaryExpression(Expression.Unary expression) {
         return null;
     }
 
     @Override
-    public Object visitUnaryExpression(Expression.Unary expression) {
+    public Void visitVariableReference(Expression.Variable expression) {
         return null;
     }
 
     @Override
-    public Object visitVariableReference(Expression.Variable expression) {
+    public Void visitAssignment(Expression.Assignment expression) {
         return null;
     }
 
     @Override
-    public Object visitAssignment(Expression.Assignment expression) {
+    public Void visitLogicalExpression(Expression.Logical expression) {
         return null;
     }
 
     @Override
-    public Object visitLogicalExpression(Expression.Logical expression) {
+    public Void visitCallExpression(Expression.Call expression) {
         return null;
     }
 
     @Override
-    public Object visitCallExpression(Expression.Call expression) {
+    public Void visitGetExpression(Expression.Get expression) {
         return null;
     }
 
     @Override
-    public Object visitGetExpression(Expression.Get expression) {
+    public Void visitSetExpression(Expression.Set expression) {
         return null;
     }
 
     @Override
-    public Object visitSetExpression(Expression.Set expression) {
+    public Void visitThisExpression(Expression.This expression) {
         return null;
     }
 
     @Override
-    public Object visitThisExpression(Expression.This expression) {
-        return null;
-    }
-
-    @Override
-    public Object visitSuperExpression(Expression.Super expression) {
+    public Void visitSuperExpression(Expression.Super expression) {
         return null;
     }
 }

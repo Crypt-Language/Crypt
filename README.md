@@ -45,8 +45,7 @@ Discord coming soon!
 
 ## Contributing
 
-<!--Interested in contributing to Crypt? Refer [CONTRIBUTING.md](https://github.com/Crypt-Language/Crypt/blob/main/CONTRIBUTING.md) for more info.-->
-Contributions are closed until a finished compiler is uploaded. (*Sorry*) :(
+Interested in contributing to the Crypt Interpreter? Refer [CONTRIBUTING.md](https://github.com/Crypt-Language/Crypt/blob/main/CONTRIBUTING.md) for more info.
 
 ## License
 

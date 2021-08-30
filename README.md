@@ -28,8 +28,12 @@ _I Recommend not downloading source code as the compiler is incomplete and is su
  - clone repo
  - build `mvn build`
  - run the main function in `Crypt.java` to run CLI.
+ - type `commands` to get list of commands
  - to run a `.crypt` file, type `crypt <path to file>` on the CLI.
+
+
  - or type `runPrompt` to run the REPL.
+ - type `exitPrompt` to exit REPL.
 
 
 ### Community

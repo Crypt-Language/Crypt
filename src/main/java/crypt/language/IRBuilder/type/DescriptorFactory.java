@@ -4,12 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DescriptorFactory {
-    public static Map<Byte, String> typeDescriptors = new HashMap<>();
-    public static String getDescriptor(byte type){
+    public static Map<Type, String> typeDescriptors = new HashMap<>();
+    public static String getDescriptor(Type type){
         return typeDescriptors.get(type);
     }
 
     static {
-        typeDescriptors.put(TypeFactory.NULL, ""); //TODO: Add descriptors
+        typeDescriptors.put(Types.INT, "I");
+        typeDescriptors.put(Types.STRING, "Ljava/lang/String;");
+        typeDescriptors.put(Types.FLOAT, "F");
+        typeDescriptors.put(Types.DOUBLE, "D");
     }
 }

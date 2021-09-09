@@ -12,12 +12,12 @@ public class TypeFactory {
     public static final byte FLOAT = 3;
     public static final byte DOUBLE = 4;
 
-    public static byte getType(Expression expression){
+    public static Type getType(Expression expression){
         if(expression instanceof Expression.Literal) {
-            if (Ints.tryParse(String.valueOf(expression)) != null) return INT;
-            if (Floats.tryParse(String.valueOf(expression)) != null) return FLOAT;
-            if (Doubles.tryParse(String.valueOf(expression)) != null) return DOUBLE;
+            if (Ints.tryParse(String.valueOf(expression)) != null) return Types.INT;
+            if (Floats.tryParse(String.valueOf(expression)) != null) return Types.FLOAT;
+            if (Doubles.tryParse(String.valueOf(expression)) != null) return Types.DOUBLE;
         }
-        return NULL;
+        return null;
     }
 }

@@ -2,6 +2,7 @@ package crypt.language.IRBuilder.generator.statement;
 
 import crypt.language.IRBuilder.generator.ExpressionGenerator;
 import crypt.language.IRBuilder.type.DescriptorFactory;
+import crypt.language.IRBuilder.type.Type;
 import crypt.language.IRBuilder.type.TypeFactory;
 import crypt.language.parser.AST.Expression;
 import crypt.language.parser.AST.Statement;
@@ -14,7 +15,7 @@ public record PrintStatementGenerator(ExpressionGenerator expressionGenerator, M
         Expression expression = printStatement.expression;
         methodVisitor.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
         expressionGenerator.generate(expression);
-        byte type = TypeFactory.getType(expression);
+        Type type = TypeFactory.getType(expression);
         String descriptor = "(" + DescriptorFactory.getDescriptor(type) + ")V";
         methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "print", descriptor, false);
     }

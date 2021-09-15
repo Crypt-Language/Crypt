@@ -1,0 +1,14 @@
+// Variable demo for Crypt
+
+let a : 10; // declare variable
+println a; //prints 10
+
+let math : (2 + 2) * 3 + 5; //expressions are allowed too
+println math; //prints 17
+
+/*
+You can print entire expressions too
+Uncomment the below print statement to see for yourself
+*/
+
+//println 3 + 5 * 2 - 3; //prints 10

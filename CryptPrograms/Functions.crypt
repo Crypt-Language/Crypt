@@ -1,0 +1,12 @@
+// Functions in Crypt
+
+//Function bodies can be one lined as well
+// Utility functions
+fn add(x, y) => return x + y;
+fn subtract(x, y) => return x - y;
+fn multiply(x, y) => return x * y;
+
+//Time to do stuff hehe
+println add(10, 2);
+println subtract(10, 2);
+println multiply(10, 2);

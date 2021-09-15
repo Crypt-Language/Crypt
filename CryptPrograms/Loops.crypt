@@ -1,0 +1,33 @@
+//Loops in Crypt
+
+/*
+=============================
+While Loop
+=============================
+*/
+
+let x : 1;
+
+
+println "============================ ";
+println "While Loop : Counting to Ten ";
+println "============================ ";
+
+while x <= 10 => {
+    println x;
+    x : x + 1;
+}
+
+println "";
+
+/*
+=============================
+For Loop
+=============================
+*/
+
+println "============================ ";
+println "For Loop : Counting to Ten ";
+println "============================ ";
+
+for let x : 1; x <= 10; x : x + 1 => println x; //One lining of blocks are allowed too

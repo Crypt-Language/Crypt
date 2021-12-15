@@ -1,6 +1,9 @@
 package crypt.language.IRBuilder.generator.statement;
 
 import crypt.language.IRBuilder.generator.ExpressionGenerator;
+import crypt.language.IRBuilder.type.DescriptorFactory;
+import crypt.language.IRBuilder.type.Type;
+import crypt.language.IRBuilder.type.TypeFactory;
 import crypt.language.parser.AST.Expression;
 import crypt.language.parser.AST.Statement;
 import org.objectweb.asm.MethodVisitor;
@@ -10,10 +13,13 @@ public record PrintlnStatementGenerator(ExpressionGenerator expressionGenerator,
     public void generate(Statement.Println printStatement) {
         Expression expression = printStatement.expression;
         methodVisitor.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-        //expression.visit(expressionGenerator);
-        //Type type = expression.getType();
-        //String descriptor = "(" + type.getDescriptor() + ")V";
-        //methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", descriptor, false);
+        expressionGenerator.generate(expression);
+
+        Type type = TypeFactory.getType(expression);
+        String descriptor = "(" + DescriptorFactory.getDescriptor(type) + ")V";
+        
+        System.out.println("Descriptor: " + descriptor);
+        methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", descriptor, false);
     }
 }
 

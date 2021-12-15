@@ -11,12 +11,14 @@ import javax.swing.plaf.nimbus.State;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static crypt.language.lexer.token.TokenType.*;
 
 public class CryptParser {
     private final List<Token> tokens;
     private int current = 0;
+    public boolean parseError = false;
 
     public CryptParser(List<Token> tokens) {
         this.tokens = tokens;
@@ -417,13 +419,15 @@ public class CryptParser {
 
     private Token consume(TokenType type, String message) {
         if (check(type)) return advance();
-        else error(peek(), message);
-        return null; //TODO : null here as well
+
+        error(peek(), message);
+        parseError = true;
+        return advance();
     }
 
-    private ParseError error(Token token, String message) {
+    private void error(Token token, String message) {
         Errors.report(2, token.lexeme, token.line);
-        return new ParseError();
+        throw new ParseError(message);
     }
 
     private void synchronize() {
@@ -432,7 +436,7 @@ public class CryptParser {
         while (!isAtEnd()) {
             if (previous().type == SEMICOLON) return;
 
-            switch (peek().type) {
+            switch (Objects.requireNonNull(peek().type)) {
                 case TYPE:
                 case FN:
                 case LET:
@@ -472,6 +476,8 @@ public class CryptParser {
     }
 
     private static class ParseError extends RuntimeException {
-
+        public ParseError(String message){
+            super(message);
+        }
     }
 }

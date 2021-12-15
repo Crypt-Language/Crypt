@@ -6,7 +6,7 @@ import java.util.Map;
 public class DescriptorFactory {
     public static Map<Type, String> typeDescriptors = new HashMap<>();
     public static String getDescriptor(Type type){
-        return typeDescriptors.get(type);
+        return typeDescriptors.getOrDefault(type, "");
     }
 
     static {

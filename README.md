@@ -1,5 +1,4 @@
 # The Crypt Programming Language
-> *I've decided to take a little break from programming, so this project won't be active for a bit... don't worry, its not dead xD*
 
 <img src="https://github.com/Crypt-Language/Crypt/blob/main/Logo/PNG/CryptLogoLarge_Dark.png" width="1000px" height="auto">
 

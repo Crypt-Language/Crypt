@@ -26,7 +26,7 @@ _I Recommend not downloading source code as the compiler is incomplete and is su
 
 ### Running
  - clone repo
- - build `mvn build`
+ - build `mvn clean package`
  - run the main function in `Crypt.java` to run CLI.
  - type `commands` to get list of commands
  - to run a `.crypt` file, type `crypt <path to file>` on the CLI.

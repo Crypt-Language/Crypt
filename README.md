@@ -15,7 +15,7 @@ Lexing -> Parsing -> JVM Bytecode emitting -> Running
 But, before this... I will setup an interpreter to run the language
 
 ## Phase
-**In Development** : A new compiler is being actively developed, with updates being released every week. The full compiler, once completed, will be uploaded into this repository.
+**Inactive** : The project is currently inactive. It may be picked up once more at a later date.
 
   - [x] Lexer
   - [x] Parser
@@ -34,12 +34,6 @@ _I Recommend not downloading source code as the compiler is incomplete and is su
 
  - or type `runPrompt` to run the REPL.
  - type `exitPrompt` to exit REPL.
-
-
-### Community
-Have some ideas for Crypt features? Maybe you have a couple questions to ask about Crypt (or related)? If you do, don't hesitate to ask at the community chat room below.
-
-[![Gitter](https://badges.gitter.im/Crypt-Language/community.svg)](https://gitter.im/Crypt-Language/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Discord coming soon!
 
